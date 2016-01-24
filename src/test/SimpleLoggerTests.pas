@@ -47,7 +47,7 @@ var
   Logger: ILogger;
 begin
   LoggerFactory := TSimpleLoggerFactory.Create;
-  Logger := LoggerFactory.GetLogger('nop');
+  Logger := LoggerFactory.GetLogger('simple');
 end;
 
 procedure TSimpleLoggerTests.TestDebug;
@@ -58,13 +58,13 @@ var
 begin
   LoggerFactory := TSimpleLoggerFactory.Create;
 
-  Logger := LoggerFactory.GetLogger('nop');
+  Logger := LoggerFactory.GetLogger('simple');
 
-  Logger.Debug('nop msg');
-  Logger.Debug('nop msg', ['a', 2, Date]);
+  Logger.Debug('simple msg');
+  Logger.Debug('simple msg', ['a', 2, Date]);
 
-  E := EAbort.Create('example exception');
-  Logger.Debug('nop msg', E);
+  E := EAbort.Create('simple example exception');
+  Logger.Debug('simple msg', E);
   E.Free;
 end;
 
