@@ -5,14 +5,17 @@ program Unittests;
 uses
   NOPLoggerTests in 'NOPLoggerTests.pas',
   SimpleLoggerTests in 'SimpleLoggerTests.pas',
+  LoggerFactoryTests in 'LoggerFactoryTests.pas',
+  djLogImplSimple in '..\main\djLogImplSimple.pas',
   TestFramework,
   GUITestRunner,
   TextTestRunner,
   SysUtils;
 
 begin
-  RegisterTests('NOP Logger', [TNOPLoggerTests.Suite]);
-  RegisterTests('Simple Logger', [TSimpleLoggerTests.Suite]);
+  RegisterTests('TdjLoggerFactory Tests', [TdjLoggerFactoryTests.Suite]);
+  RegisterTests('TNOPLogger Tests', [TNOPLoggerTests.Suite]);
+  RegisterTests('TSimpleLogger Tests', [TSimpleLoggerTests.Suite]);
 
   if FindCmdLineSwitch('text-mode', ['-', '/'], True) then
   begin
