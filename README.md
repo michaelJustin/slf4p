@@ -23,7 +23,7 @@ Typical usage pattern:
     begin
       inherited;
       
-      LoggerFactory := TNOPLoggerFactory.Create;
+      LoggerFactory := TLoggerFactory.Create;
       Logger := LoggerFactory.GetLogger('TMyMainClass');
       Logger.Debug('Creating instance %d', GetTickCount);
       ...
