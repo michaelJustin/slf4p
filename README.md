@@ -6,12 +6,11 @@ Typical usage pattern:
 
     uses 
        ...
-       djLog;
+       djLogAPI, djLoggingFactory;
        
     type
       TMyMainClass = class(TObject)
       private
-         LoggerFactory: ILoggerFactory;
          Logger: ILogger;
          ...
       public
@@ -23,8 +22,7 @@ Typical usage pattern:
     begin
       inherited;
       
-      LoggerFactory := TLoggerFactory.Create;
-      Logger := LoggerFactory.GetLogger('TMyMainClass');
+      Logger := TdjLoggerFactory.GetLogger('TMyMainClass');
       Logger.Debug('Creating instance %d', GetTickCount);
       ...
     end;
