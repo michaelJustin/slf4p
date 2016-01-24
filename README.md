@@ -11,8 +11,8 @@ Typical usage pattern:
     type
       TMyMainClass = class(TObject)
       private
-         Logger: ILogger;
-         ...
+        Logger: ILogger;
+        ...
       public
         constructor Create;
         ...
@@ -26,4 +26,18 @@ Typical usage pattern:
       Logger.Debug('Creating instance %d', GetTickCount);
       ...
     end;
+    
      
+Bindings
+--------
+
+Included bindings: NOPLogger, SimpleLogger
+
+Binding usage
+-------------
+
+To use a specific binding, add the corresponding unit to your project:
+
+* to use the NOPLogger, add unit *TdjLogImplNOP*
+* to use the SimpleLogger, add unit *TdjLogImplSimple*
+
