@@ -1,2 +1,2 @@
 # slf4p
-Simple logging faceade for Pascal
+A simple logging facade for Object Pascal.
