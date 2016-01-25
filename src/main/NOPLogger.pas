@@ -27,8 +27,8 @@ type
   TNOPLogger = class(TInterfacedObject, ILogger)
   public
     procedure Debug(const AMsg: string); overload;
-    procedure Debug(const AFormat: string; AArgs: array of const); overload;
-    procedure Debug(const AMsg: string; AException: Exception); overload;
+    procedure Debug(const AFormat: string; const AArgs: array of const); overload;
+    procedure Debug(const AMsg: string; const AException: Exception); overload;
   end;
 
   TNOPLoggerFactory = class(TInterfacedObject, ILoggerFactory)
@@ -45,12 +45,12 @@ begin
   //
 end;
 
-procedure TNOPLogger.Debug(const AFormat: string; AArgs: array of const);
+procedure TNOPLogger.Debug(const AFormat: string; const AArgs: array of const);
 begin
   //
 end;
 
-procedure TNOPLogger.Debug(const AMsg: string; AException: Exception);
+procedure TNOPLogger.Debug(const AMsg: string; const AException: Exception);
 begin
   //
 end;
