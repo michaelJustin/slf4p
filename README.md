@@ -1,5 +1,5 @@
 # slf4p
-A simple logging facade for Object Pascal.
+A simple logging facade for Object Pascal, which eliminates dependencies on a spcific logging framework.
 
 
 ## Typical usage pattern
