@@ -14,26 +14,18 @@
    limitations under the License.
 *)
 
-unit djLogAPI;
+unit djLogImplLog4D;
 
 {$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
 
 interface
 
-uses
-  SysUtils;
-
-type
-  ILogger = interface ['{58764670-2414-477F-8CE6-02A418D4CF09}']
-    procedure Debug(const AMsg: string); overload;
-    procedure Debug(const AFormat: string; const AArgs: array of const); overload;
-    procedure Debug(const AMsg: string; const AException: Exception); overload;
-  end;
-
-  ILoggerFactory = interface ['{B5EC64AC-85D6-40F1-88CC-EC045D9ED653}']
-    function GetLogger(const AName: string): ILogger;
-  end;
-
 implementation
+
+uses
+  djLoggerFactory, Log4DLogger;
+
+initialization
+  RegisterFactory(TLog4DLoggerFactory.Create);
 
 end.

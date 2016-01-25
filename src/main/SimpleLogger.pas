@@ -27,8 +27,8 @@ type
   TSimpleLogger = class(TInterfacedObject, ILogger)
   public
     procedure Debug(const AMsg: string); overload;
-    procedure Debug(const AFormat: string; AArgs: array of const); overload;
-    procedure Debug(const AMsg: string; AException: Exception); overload;
+    procedure Debug(const AFormat: string; const AArgs: array of const); overload;
+    procedure Debug(const AMsg: string; const AException: Exception); overload;
   end;
 
   TSimpleLoggerFactory = class(TInterfacedObject, ILoggerFactory)
@@ -45,12 +45,12 @@ begin
   WriteLn(AMsg);
 end;
 
-procedure TSimpleLogger.Debug(const AFormat: string; AArgs: array of const);
+procedure TSimpleLogger.Debug(const AFormat: string; const AArgs: array of const);
 begin
   WriteLn(Format(AFormat, AArgs));
 end;
 
-procedure TSimpleLogger.Debug(const AMsg: string; AException: Exception);
+procedure TSimpleLogger.Debug(const AMsg: string; const AException: Exception);
 begin
   WriteLn(AMsg);
   WriteLn(AException.ClassName);
