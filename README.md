@@ -12,7 +12,7 @@ A simple logging facade for Object Pascal.
     interface
     
     uses
-      djLogImplLog4D,
+      djLogImplLog4D, // the djLog logging facade unit
       Log4D, // required for additional configuration
       ...;
       
@@ -38,7 +38,7 @@ A simple logging facade for Object Pascal.
     
     uses 
        ...
-       djLogAPI, djLoggingFactory;
+       djLogAPI, djLoggerFactory;
        
     type
       TMyMainClass = class(TObject)
