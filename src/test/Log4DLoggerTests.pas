@@ -32,12 +32,12 @@ type
   published
     procedure CreateLogger;
     procedure TestDebug;
+    procedure TestInfo;
   end;
 
 implementation
 
 uses
-  Log4D,
   djLogAPI, Log4DLogger, SysUtils;
 
 { TLog4DLoggerTests }
@@ -57,11 +57,6 @@ var
   Logger: ILogger;
   E: EAbort;
 begin
-  // Create a default ODS logger
-  TLogBasicConfigurator.Configure;
-  // see output in the 'Event log' IDE Window
-  TLogLogger.GetRootLogger.Level := Debug;
-
   LoggerFactory := TLog4DLoggerFactory.Create;
 
   Logger := LoggerFactory.GetLogger('log4d');
@@ -71,6 +66,24 @@ begin
 
   E := EAbort.Create('example');
   Logger.Debug('log4d msg', E);
+  E.Free;
+end;
+
+procedure TLog4DLoggerTests.TestInfo;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  E: EAbort;
+begin
+  LoggerFactory := TLog4DLoggerFactory.Create;
+
+  Logger := LoggerFactory.GetLogger('simple');
+
+  Logger.Info('simple msg');
+  Logger.Info('simple msg', ['a', 2, Date]);
+
+  E := EAbort.Create('simple example exception');
+  Logger.Info('simple msg', E);
   E.Free;
 end;
 

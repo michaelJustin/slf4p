@@ -3,13 +3,13 @@ program Unittests;
 {$APPTYPE CONSOLE}
 
 uses
+  djLogAPI in '..\main\djLogAPI.pas',
+  djLogImplNOP in '..\main\djLogImplNOP.pas',
   LoggerFactoryTests in 'LoggerFactoryTests.pas',
   NOPLoggerTests in 'NOPLoggerTests.pas',
   SimpleLoggerTests in 'SimpleLoggerTests.pas',
-  {.IFDEF USE_LOG4D}
   Log4DLoggerTests in 'Log4DLoggerTests.pas',
-  {.ENDIF}
-  djLogImplNOP in '..\main\djLogImplNOP.pas',
+  Log4D,
   TestFramework,
   GUITestRunner,
   TextTestRunner,
@@ -20,6 +20,11 @@ begin
   RegisterTests('TNOPLogger Tests', [TNOPLoggerTests.Suite]);
   RegisterTests('TSimpleLogger Tests', [TSimpleLoggerTests.Suite]);
   RegisterTests('TLog4DLogger Tests', [TLog4DLoggerTests.Suite]);
+
+  // Create a default ODS logger
+  TLogBasicConfigurator.Configure;
+  // see output in the 'Event log' IDE Window
+  TLogLogger.GetRootLogger.Level := Debug;
 
   if FindCmdLineSwitch('text-mode', ['-', '/'], True) then
   begin

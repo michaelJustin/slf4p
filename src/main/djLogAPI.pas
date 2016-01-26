@@ -28,6 +28,22 @@ type
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
+
+    procedure Error(const AMsg: string); overload;
+    procedure Error(const AFormat: string; const AArgs: array of const); overload;
+    procedure Error(const AMsg: string; const AException: Exception); overload;
+
+    procedure Info(const AMsg: string); overload;
+    procedure Info(const AFormat: string; const AArgs: array of const); overload;
+    procedure Info(const AMsg: string; const AException: Exception); overload;
+
+    procedure Warn(const AMsg: string); overload;
+    procedure Warn(const AFormat: string; const AArgs: array of const); overload;
+    procedure Warn(const AMsg: string; const AException: Exception); overload;
+
+    procedure Trace(const AMsg: string); overload;
+    procedure Trace(const AFormat: string; const AArgs: array of const); overload;
+    procedure Trace(const AMsg: string; const AException: Exception); overload;
   end;
 
   ILoggerFactory = interface ['{B5EC64AC-85D6-40F1-88CC-EC045D9ED653}']
