@@ -32,6 +32,7 @@ type
   published
     procedure CreateLogger;
     procedure TestDebug;
+    procedure TestInfo;
   end;
 
 implementation
@@ -65,6 +66,24 @@ begin
 
   E := EAbort.Create('simple example exception');
   Logger.Debug('simple msg', E);
+  E.Free;
+end;
+
+procedure TSimpleLoggerTests.TestInfo;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  E: EAbort;
+begin
+  LoggerFactory := TSimpleLoggerFactory.Create;
+
+  Logger := LoggerFactory.GetLogger('simple');
+
+  Logger.Info('simple msg');
+  Logger.Info('simple msg', ['a', 2, Date]);
+
+  E := EAbort.Create('simple example exception');
+  Logger.Info('simple msg', E);
   E.Free;
 end;
 

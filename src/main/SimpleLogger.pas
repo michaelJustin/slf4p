@@ -29,6 +29,22 @@ type
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
+
+    procedure Error(const AMsg: string); overload;
+    procedure Error(const AFormat: string; const AArgs: array of const); overload;
+    procedure Error(const AMsg: string; const AException: Exception); overload;
+
+    procedure Info(const AMsg: string); overload;
+    procedure Info(const AFormat: string; const AArgs: array of const); overload;
+    procedure Info(const AMsg: string; const AException: Exception); overload;
+
+    procedure Warn(const AMsg: string); overload;
+    procedure Warn(const AFormat: string; const AArgs: array of const); overload;
+    procedure Warn(const AMsg: string; const AException: Exception); overload;
+
+    procedure Trace(const AMsg: string); overload;
+    procedure Trace(const AFormat: string; const AArgs: array of const); overload;
+    procedure Trace(const AMsg: string; const AException: Exception); overload;
   end;
 
   TSimpleLoggerFactory = class(TInterfacedObject, ILoggerFactory)
@@ -55,6 +71,78 @@ begin
   WriteLn(AMsg);
   WriteLn(AException.ClassName);
   WriteLn(AException.Message);
+end;
+
+procedure TSimpleLogger.Error(const AMsg: string; const AException: Exception);
+begin
+  WriteLn(AMsg);
+  WriteLn(AException.ClassName);
+  WriteLn(AException.Message);
+end;
+
+procedure TSimpleLogger.Error(const AFormat: string;
+  const AArgs: array of const);
+begin
+  WriteLn(Format(AFormat, AArgs));
+end;
+
+procedure TSimpleLogger.Error(const AMsg: string);
+begin
+  WriteLn(AMsg);
+end;
+
+procedure TSimpleLogger.Info(const AMsg: string; const AException: Exception);
+begin
+  WriteLn(AMsg);
+  WriteLn(AException.ClassName);
+  WriteLn(AException.Message);
+end;
+
+procedure TSimpleLogger.Info(const AFormat: string;
+  const AArgs: array of const);
+begin
+  WriteLn(Format(AFormat, AArgs));
+end;
+
+procedure TSimpleLogger.Info(const AMsg: string);
+begin
+  WriteLn(AMsg);
+end;
+
+procedure TSimpleLogger.Trace(const AMsg: string; const AException: Exception);
+begin
+  WriteLn(AMsg);
+  WriteLn(AException.ClassName);
+  WriteLn(AException.Message);
+end;
+
+procedure TSimpleLogger.Trace(const AFormat: string;
+  const AArgs: array of const);
+begin
+  WriteLn(Format(AFormat, AArgs));
+end;
+
+procedure TSimpleLogger.Trace(const AMsg: string);
+begin
+  WriteLn(AMsg);
+end;
+
+procedure TSimpleLogger.Warn(const AMsg: string; const AException: Exception);
+begin
+  WriteLn(AMsg);
+  WriteLn(AException.ClassName);
+  WriteLn(AException.Message);
+end;
+
+procedure TSimpleLogger.Warn(const AFormat: string;
+  const AArgs: array of const);
+begin
+  WriteLn(Format(AFormat, AArgs));
+end;
+
+procedure TSimpleLogger.Warn(const AMsg: string);
+begin
+  WriteLn(AMsg);
 end;
 
 { TSimpleLoggerFactory }
