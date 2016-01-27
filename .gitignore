@@ -67,3 +67,18 @@ __history/
 # DUnit configuration
 dunit.ini
 Unittests.dproj
+
+# Free Pascal compiler-generated binaries (safe to delete)
+*.ppu
+*.compiled
+*.ico
+*.res
+lib
+
+# Free Pascal history and backups
+backup
+*.bak
+*.or
+
+# Free Pascal local files (user-specific info)
+*.lps
