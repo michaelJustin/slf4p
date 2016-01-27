@@ -83,7 +83,7 @@ begin
   inherited Create;
 
   Delegate := TLogger.GetInstance;
-  Delegate.AddAppender(TFileAppender.Create('test.log'));
+  // Delegate.AddAppender(TFileAppender.Create('test.log'));
 
   FName := AName;
 end;
