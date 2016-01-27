@@ -14,7 +14,7 @@
    limitations under the License.
 *)
 
-unit djLogImplSimple;
+unit djLogOverNOPLogger;
 
 {$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
 
@@ -23,9 +23,9 @@ interface
 implementation
 
 uses
-  djLoggerFactory, SimpleLogger;
+  djLoggerFactory, NOPLogger;
 
 initialization
-  RegisterFactory(TSimpleLoggerFactory.Create);
+  RegisterFactory(TNOPLoggerFactory.Create);
 
 end.

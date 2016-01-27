@@ -4,14 +4,16 @@ program Unittests;
 
 uses
   djLogAPI in '..\main\djLogAPI.pas',
-  djLogImplNOP in '..\main\djLogImplNOP.pas',
+  djLoggerFactory in '..\main\djLoggerFactory.pas',
+  djLogOverNOPLogger in '..\main\djLogOverNOPLogger.pas',
   LoggerFactoryTests in 'LoggerFactoryTests.pas',
   NOPLoggerTests in 'NOPLoggerTests.pas',
   SimpleLoggerTests in 'SimpleLoggerTests.pas',
   Log4DLoggerTests in 'Log4DLoggerTests.pas',
   Log4DelphiLoggerTests in 'Log4DelphiLoggerTests.pas',
   Log4D,
-  TLoggerUnit, TConfiguratorUnit,
+  TLoggerUnit,
+  TConfiguratorUnit,
   TestFramework,
   GUITestRunner,
   TextTestRunner,

@@ -39,8 +39,12 @@ var
 
 procedure RegisterFactory(const AFactory: ILoggerFactory);
 begin
-  Assert(not Assigned(LoggerFactory));
   Assert(Assigned(AFactory));
+
+  if Assigned(LoggerFactory) then
+  begin
+    WriteLn('Warning: overwriting logger factory!');
+  end;
 
   LoggerFactory := AFactory;
 end;
