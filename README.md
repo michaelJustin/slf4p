@@ -1,25 +1,13 @@
 # slf4p
-A simple logging facade for Object Pascal, which eliminates dependencies on a specific logging framework.
+A simple logging facade for Object Pascal
 
-The idea behind using a 'facade' is that your code can be prepared for log output, without the need to add  {$IFDEF LOGGING_ENABLED} switches all over it, and without linking a specfic logging solution such as Log4D or Log4Delphi etc.
+## Usage
 
-The facade allows to start with a NOP implementation, which does nothing, and switch to a different logging framework, such as Log4Delphi or Log4D, when needed. This can be useful when
-
-* application size is important (using a NOP logger keeps the executable compact)
-* commercial / open source licenses may collide 
-
-
-## Example
-
-*Add a self-registering binding unit to the project*
-
-* to use a NOPLogger, add unit *TdjLogImplNOP*
-* to use a SimpleLogger, add unit *TdjLogImplSimple*
-
+### Register a specific implementation
 
 
     
-        program Test;
+    program Test;
         interface
         uses
           djLogImplSimple, // registers the 'simple' logger implementation
@@ -27,10 +15,10 @@ The facade allows to start with a NOP implementation, which does nothing, and sw
           ...;
         begin
           ...
-        end.
+    end.
 
 
-*Create loggers where needed:*
+### Create loggers where needed
 
 
     unit UnitA;
