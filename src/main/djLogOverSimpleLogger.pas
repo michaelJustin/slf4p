@@ -14,7 +14,7 @@
    limitations under the License.
 *)
 
-unit djLogImplLog4Delphi;
+unit djLogOverSimpleLogger;
 
 {$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
 
@@ -23,9 +23,9 @@ interface
 implementation
 
 uses
-  djLoggerFactory, Log4DelphiLogger;
+  djLoggerFactory, SimpleLogger;
 
 initialization
-  RegisterFactory(TLog4DelphiLoggerFactory.Create);
+  RegisterFactory(TSimpleLoggerFactory.Create);
 
 end.
