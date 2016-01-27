@@ -9,9 +9,13 @@ The facade allows to start with a NOP implementation, which does nothing, and sw
 * commercial / open source licenses may collide 
 
 
-# Usage example
+## Example
 
-## Add a self-registering binding unit. It will register a factory for the actual logging framework. 
+*Add a self-registering binding unit to the project*
+
+* to use a NOPLogger, add unit *TdjLogImplNOP*
+* to use a SimpleLogger, add unit *TdjLogImplSimple*
+* to use the Log4D framework, add unit *TdjLogImplLog4D*  
 
 
     program Test;
@@ -28,7 +32,7 @@ The facade allows to start with a NOP implementation, which does nothing, and sw
     end.
 
 
-## Create loggers where needed.
+*Create loggers where needed:*
 
 
     unit A;
@@ -59,16 +63,3 @@ The facade allows to start with a NOP implementation, which does nothing, and sw
     end;
     
      
-Bindings
---------
-
-Included bindings: NOPLogger, SimpleLogger
-
-Binding usage
--------------
-
-To use a specific binding, add the corresponding unit to your project:
-
-* to use the NOPLogger, add unit *TdjLogImplNOP*
-* to use the SimpleLogger, add unit *TdjLogImplSimple*
-
