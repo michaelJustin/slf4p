@@ -15,27 +15,25 @@ The facade allows to start with a NOP implementation, which does nothing, and sw
 
 * to use a NOPLogger, add unit *TdjLogImplNOP*
 * to use a SimpleLogger, add unit *TdjLogImplSimple*
-* to use the Log4D framework, add unit *TdjLogImplLog4D*  
 
 
-    program Test;
+
     
-    interface
-    
-    uses
-      ...
-      djLogImplSimple, // registers the 'simple' logger implementation
-      ...;
-      
-    begin
-      ...
-    end.
+        program Test;
+        interface
+        uses
+          djLogImplSimple, // registers the 'simple' logger implementation
+          UnitA, ...
+          ...;
+        begin
+          ...
+        end.
 
 
 *Create loggers where needed:*
 
 
-    unit A;
+    unit UnitA;
     
     interface
     
