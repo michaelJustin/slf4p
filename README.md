@@ -8,13 +8,13 @@ A simple logging facade for Object Pascal
 
     
     program Test;
-        interface
-        uses
-          djLogImplSimple, // registers the 'simple' logger implementation
-          UnitA, ...
-          ...;
-        begin
-          ...
+    interface
+    uses
+      djLogImplSimple, // registers the 'simple' logger implementation
+      UnitA, ...
+      ...;
+    begin
+      ...
     end.
 
 
