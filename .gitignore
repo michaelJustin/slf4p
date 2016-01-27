@@ -85,3 +85,5 @@ backup
 
 # Heaptrace
 heaptrace.log
+/src/test/Unittests.fpcunit.ini
+/src/test/log4delphi.log
