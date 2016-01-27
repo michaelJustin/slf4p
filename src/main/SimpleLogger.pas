@@ -25,7 +25,12 @@ uses
 
 type
   TSimpleLogger = class(TInterfacedObject, ILogger)
+  private
+    FName: string;
+
   public
+    constructor Create(AName: string);
+
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
@@ -45,6 +50,15 @@ type
     procedure Trace(const AMsg: string); overload;
     procedure Trace(const AFormat: string; const AArgs: array of const); overload;
     procedure Trace(const AMsg: string; const AException: Exception); overload;
+
+    function Name: string;
+
+    function IsDebugEnabled: Boolean;
+    function IsErrorEnabled: Boolean;
+    function IsInfoEnabled: Boolean;
+    function IsWarnEnabled: Boolean;
+    function IsTraceEnabled: Boolean;
+
   end;
 
   TSimpleLoggerFactory = class(TInterfacedObject, ILoggerFactory)
@@ -55,6 +69,11 @@ type
 implementation
 
 { TSimpleLogger }
+
+constructor TSimpleLogger.Create(AName: string);
+begin
+  FName := AName;
+end;
 
 procedure TSimpleLogger.Debug(const AMsg: string);
 begin
@@ -80,6 +99,11 @@ begin
   WriteLn(AException.Message);
 end;
 
+function TSimpleLogger.Name: string;
+begin
+  Result := FName;
+end;
+
 procedure TSimpleLogger.Error(const AFormat: string;
   const AArgs: array of const);
 begin
@@ -96,6 +120,31 @@ begin
   WriteLn(AMsg);
   WriteLn(AException.ClassName);
   WriteLn(AException.Message);
+end;
+
+function TSimpleLogger.IsDebugEnabled: Boolean;
+begin
+  Result := True;
+end;
+
+function TSimpleLogger.IsErrorEnabled: Boolean;
+begin
+  Result := True;
+end;
+
+function TSimpleLogger.IsInfoEnabled: Boolean;
+begin
+  Result := True;
+end;
+
+function TSimpleLogger.IsTraceEnabled: Boolean;
+begin
+  Result := True;
+end;
+
+function TSimpleLogger.IsWarnEnabled: Boolean;
+begin
+  Result := True;
 end;
 
 procedure TSimpleLogger.Info(const AFormat: string;
@@ -149,7 +198,7 @@ end;
 
 function TSimpleLoggerFactory.GetLogger(const AName: string): ILogger;
 begin
-  Result := TSimpleLogger.Create;
+  Result := TSimpleLogger.Create(AName);
 end;
 
 end.
