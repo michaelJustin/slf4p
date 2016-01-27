@@ -48,6 +48,8 @@ var
 begin
   LoggerFactory := TNOPLoggerFactory.Create;
   Logger := LoggerFactory.GetLogger('nop');
+
+  CheckEquals('nop', Logger.Name);
 end;
 
 procedure TNOPLoggerTests.TestDebug;

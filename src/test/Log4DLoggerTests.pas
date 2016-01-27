@@ -48,7 +48,9 @@ var
   Logger: ILogger;
 begin
   LoggerFactory := TLog4DLoggerFactory.Create;
-  Logger := LoggerFactory.GetLogger('log4d');
+  Logger := LoggerFactory.GetLogger('log4dlogger');
+
+  CheckEquals('log4dlogger', Logger.Name);
 end;
 
 procedure TLog4DLoggerTests.TestDebug;

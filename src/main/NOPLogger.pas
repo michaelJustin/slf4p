@@ -25,7 +25,12 @@ uses
 
 type
   TNOPLogger = class(TInterfacedObject, ILogger)
+  private
+    FName: string;
+
   public
+    constructor Create(AName: string);
+
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
@@ -45,6 +50,15 @@ type
     procedure Trace(const AMsg: string); overload;
     procedure Trace(const AFormat: string; const AArgs: array of const); overload;
     procedure Trace(const AMsg: string; const AException: Exception); overload;
+
+    function Name: string;
+
+    function IsDebugEnabled: Boolean;
+    function IsErrorEnabled: Boolean;
+    function IsInfoEnabled: Boolean;
+    function IsWarnEnabled: Boolean;
+    function IsTraceEnabled: Boolean;
+
   end;
 
   TNOPLoggerFactory = class(TInterfacedObject, ILoggerFactory)
@@ -55,6 +69,11 @@ type
 implementation
 
 { TNOPLogger }
+
+constructor TNOPLogger.Create(AName: string);
+begin
+  FName := AName;
+end;
 
 procedure TNOPLogger.Debug(const AMsg: string);
 begin
@@ -76,6 +95,11 @@ begin
 
 end;
 
+function TNOPLogger.Name: string;
+begin
+  Result := FName;
+end;
+
 procedure TNOPLogger.Error(const AFormat: string; const AArgs: array of const);
 begin
 
@@ -89,6 +113,31 @@ end;
 procedure TNOPLogger.Info(const AMsg: string; const AException: Exception);
 begin
 
+end;
+
+function TNOPLogger.IsDebugEnabled: Boolean;
+begin
+  Result := False;
+end;
+
+function TNOPLogger.IsErrorEnabled: Boolean;
+begin
+  Result := False;
+end;
+
+function TNOPLogger.IsInfoEnabled: Boolean;
+begin
+  Result := False;
+end;
+
+function TNOPLogger.IsTraceEnabled: Boolean;
+begin
+  Result := False;
+end;
+
+function TNOPLogger.IsWarnEnabled: Boolean;
+begin
+  Result := False;
 end;
 
 procedure TNOPLogger.Info(const AFormat: string; const AArgs: array of const);
@@ -135,7 +184,7 @@ end;
 
 function TNOPLoggerFactory.GetLogger(const AName: string): ILogger;
 begin
-  Result := TNOPLogger.Create;
+  Result := TNOPLogger.Create(AName);
 end;
 
 end.

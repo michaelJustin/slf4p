@@ -55,6 +55,14 @@ type
     procedure Trace(const AFormat: string; const AArgs: array of const); overload;
     procedure Trace(const AMsg: string; const AException: Exception); overload;
 
+    function Name: string;
+
+    function IsDebugEnabled: Boolean;
+    function IsErrorEnabled: Boolean;
+    function IsInfoEnabled: Boolean;
+    function IsWarnEnabled: Boolean;
+    function IsTraceEnabled: Boolean;
+
   end;
 
   TLog4DLoggerFactory = class(TInterfacedObject, ILoggerFactory)
@@ -147,9 +155,39 @@ begin
   Delegate.Error(AMsg, AException);
 end;
 
+function TLog4DLogger.Name: string;
+begin
+  Result := Delegate.Name;
+end;
+
 procedure TLog4DLogger.Info(const AMsg: string; const AException: Exception);
 begin
   Delegate.Info(AMsg, AException);
+end;
+
+function TLog4DLogger.IsDebugEnabled: Boolean;
+begin
+  Result := Delegate.IsDebugEnabled;
+end;
+
+function TLog4DLogger.IsErrorEnabled: Boolean;
+begin
+  Result := Delegate.IsErrorEnabled;
+end;
+
+function TLog4DLogger.IsInfoEnabled: Boolean;
+begin
+  Result := Delegate.IsInfoEnabled;
+end;
+
+function TLog4DLogger.IsTraceEnabled: Boolean;
+begin
+  Result := Delegate.IsTraceEnabled;
+end;
+
+function TLog4DLogger.IsWarnEnabled: Boolean;
+begin
+  Result := Delegate.IsWarnEnabled;
 end;
 
 procedure TLog4DLogger.Info(const AFormat: string; const AArgs: array of const);

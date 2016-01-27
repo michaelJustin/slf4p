@@ -49,6 +49,8 @@ var
 begin
   LoggerFactory := TSimpleLoggerFactory.Create;
   Logger := LoggerFactory.GetLogger('simple');
+
+  CheckEquals('simple', Logger.Name);
 end;
 
 procedure TSimpleLoggerTests.TestDebug;

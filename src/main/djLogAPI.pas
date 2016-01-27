@@ -44,6 +44,15 @@ type
     procedure Trace(const AMsg: string); overload;
     procedure Trace(const AFormat: string; const AArgs: array of const); overload;
     procedure Trace(const AMsg: string; const AException: Exception); overload;
+
+    function IsDebugEnabled: Boolean;
+    function IsErrorEnabled: Boolean;
+    function IsInfoEnabled: Boolean;
+    function IsWarnEnabled: Boolean;
+    function IsTraceEnabled: Boolean;
+
+    function Name: string;
+
   end;
 
   ILoggerFactory = interface ['{B5EC64AC-85D6-40F1-88CC-EC045D9ED653}']
