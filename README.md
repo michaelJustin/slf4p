@@ -10,7 +10,7 @@ A simple logging facade for Object Pascal
     program Test;
     interface
     uses
-      djLogImplSimple, // registers the 'simple' logger implementation
+      djLogOverSimpleLogger, // registers the 'simple' logger implementation
       UnitA, ...
       ...;
     begin
@@ -22,13 +22,10 @@ A simple logging facade for Object Pascal
 
 
     unit UnitA;
-    
     interface
-    
     uses 
        ...
        djLogAPI, djLoggerFactory;
-       
     type
       TMyMainClass = class(TObject)
       private
