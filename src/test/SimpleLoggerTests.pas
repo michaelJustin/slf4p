@@ -31,6 +31,7 @@ type
   TSimpleLoggerTests = class(TTestCase)
   published
     procedure CreateLogger;
+    procedure TestConfig;
     procedure TestDebug;
     procedure TestInfo;
   end;
@@ -38,7 +39,7 @@ type
 implementation
 
 uses
-  djLogAPI, SimpleLogger, SysUtils;
+  djLogAPI, SimpleLogger, Classes, SysUtils;
 
 { TSimpleLoggerTests }
 
@@ -51,6 +52,32 @@ begin
   Logger := LoggerFactory.GetLogger('simple');
 
   CheckEquals('simple', Logger.Name);
+end;
+
+procedure TSimpleLoggerTests.TestConfig;
+var
+  S: TStrings;
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+begin
+  LoggerFactory := TSimpleLoggerFactory.Create;
+
+  S := TStringList.Create;
+  try
+    S.Values['defaultLogLevel'] := 'trace';
+    SimpleLogger.Configure(S);
+    Logger := LoggerFactory.GetLogger('simple');
+    CheckTrue(Logger.IsTraceEnabled, 'trace');
+
+    S.Values['defaultLogLevel'] := 'info';
+    SimpleLogger.Configure(S);
+    Logger := LoggerFactory.GetLogger('simple');
+    CheckFalse(Logger.IsTraceEnabled, 'trace 2');
+    CheckTrue(Logger.IsInfoEnabled, 'info');
+
+  finally
+    S.Free;
+  end;
 end;
 
 procedure TSimpleLoggerTests.TestDebug;

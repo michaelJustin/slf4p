@@ -21,15 +21,27 @@ unit SimpleLogger;
 interface
 
 uses
-  djLogAPI, SysUtils;
+  djLogAPI, Classes, SysUtils;
 
 type
+  TSimpleLogLevel = (Trace, Debug, Info, Warn, Error);
+
+  { TSimpleLogger }
+
   TSimpleLogger = class(TInterfacedObject, ILogger)
   private
+    FLevel: TSimpleLogLevel;
     FName: string;
+    LevelAsString: string;
+
+    function LevelIsGreaterOrEqual(ALogLevel: TSimpleLogLevel): Boolean;
+
+    procedure WriteMsg(const AMsg: string);
+
+    procedure SetLevel(AValue: TSimpleLogLevel);
 
   public
-    constructor Create(AName: string);
+    constructor Create(const AName: string);
 
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
@@ -59,44 +71,145 @@ type
     function IsWarnEnabled: Boolean;
     function IsTraceEnabled: Boolean;
 
+    property Level: TSimpleLogLevel read FLevel write SetLevel;
   end;
+
+  { TSimpleLoggerFactory }
 
   TSimpleLoggerFactory = class(TInterfacedObject, ILoggerFactory)
   public
+    constructor Create;
+
     function GetLogger(const AName: string): ILogger;
   end;
 
+
+procedure Configure(const AStrings: TStrings);
+
 implementation
+
+type
+  { TSimpleLoggerConfiguration }
+  TSimpleLoggerConfiguration = class(TObject)
+  private
+    FLevel: TSimpleLogLevel;
+  public
+    constructor Create;
+
+    procedure Configure(const AStrings: TStrings);
+
+    property Level: TSimpleLogLevel read FLevel;
+  end;
+
+const
+  MilliSecsPerDay = 24 * 60 * 60 * 1000;
+
+var
+  { Contains logger configuration }
+  Config: TSimpleLoggerConfiguration;
+
+  { Start time for the logging process - to compute elapsed time. }
+  StartTime: TDateTime;
+
+  { The elapsed time since package start up (in milliseconds). }
+  function GetElapsedTime: LongInt;
+  begin
+    Result := Round((Now - StartTime) * MilliSecsPerDay);
+  end;
+
+{ TSimpleLoggerConfiguration }
+
+constructor TSimpleLoggerConfiguration.Create;
+begin
+  FLevel := Info;
+end;
+
+procedure TSimpleLoggerConfiguration.Configure(const AStrings: TStrings);
+var
+  Line: string;
+begin
+  Line := AStrings.Values['defaultLogLevel'];
+
+  if Line = 'trace' then FLevel := Trace
+  else if Line = 'debug' then FLevel := Debug
+  else if Line = 'info' then FLevel := Info
+  else if Line = 'warn' then FLevel := Warn
+  else if Line = 'error' then FLevel := Error
+  else WriteLn('unknown log level ' + Line);
+
+end;
+
+procedure Configure(const AStrings: TStrings);
+begin
+  Config.Configure(AStrings);
+end;
 
 { TSimpleLogger }
 
-constructor TSimpleLogger.Create(AName: string);
+constructor TSimpleLogger.Create(const AName: string);
 begin
   FName := AName;
 end;
 
+function TSimpleLogger.LevelIsGreaterOrEqual(ALogLevel: TSimpleLogLevel
+  ): Boolean;
+begin
+  Result := Ord(FLevel) <= Ord(ALogLevel);
+end;
+
+procedure TSimpleLogger.WriteMsg(const AMsg: string);
+begin
+  WriteLn(IntToStr(GetElapsedTime) + ' '
+    + LevelAsString + ' '
+    + Name + ' - '
+    + AMsg);
+end;
+
+procedure TSimpleLogger.SetLevel(AValue: TSimpleLogLevel);
+begin
+  if FLevel=AValue then Exit;
+
+  FLevel:=AValue;
+
+  case Level of
+    SimpleLogger.Trace: LevelAsString:= 'TRACE';
+    SimpleLogger.Debug: LevelAsString:= 'DEBUG';
+    SimpleLogger.Info: LevelAsString:= 'INFO';
+    SimpleLogger.Warn: LevelAsString:= 'WARN';
+    SimpleLogger.Error: LevelAsString:= 'ERROR';
+  end;
+end;
+
 procedure TSimpleLogger.Debug(const AMsg: string);
 begin
-  WriteLn(AMsg);
+  if IsDebugEnabled then
+    WriteMsg(AMsg);
 end;
 
 procedure TSimpleLogger.Debug(const AFormat: string; const AArgs: array of const);
 begin
-  WriteLn(Format(AFormat, AArgs));
+  if IsDebugEnabled then
+    WriteLn(Format(AFormat, AArgs));
 end;
 
 procedure TSimpleLogger.Debug(const AMsg: string; const AException: Exception);
 begin
-  WriteLn(AMsg);
-  WriteLn(AException.ClassName);
-  WriteLn(AException.Message);
+  if IsDebugEnabled then
+  begin
+    WriteMsg(AMsg);
+    WriteLn(AException.ClassName);
+    WriteLn(AException.Message);
+  end;
 end;
 
 procedure TSimpleLogger.Error(const AMsg: string; const AException: Exception);
 begin
-  WriteLn(AMsg);
-  WriteLn(AException.ClassName);
-  WriteLn(AException.Message);
+  if IsErrorEnabled then
+  begin
+    WriteMsg(AMsg);
+    WriteLn(AException.ClassName);
+    WriteLn(AException.Message);
+  end;
 end;
 
 function TSimpleLogger.Name: string;
@@ -107,98 +220,128 @@ end;
 procedure TSimpleLogger.Error(const AFormat: string;
   const AArgs: array of const);
 begin
-  WriteLn(Format(AFormat, AArgs));
+  if IsErrorEnabled then
+    WriteMsg(Format(AFormat, AArgs));
 end;
 
 procedure TSimpleLogger.Error(const AMsg: string);
 begin
-  WriteLn(AMsg);
-end;
-
-procedure TSimpleLogger.Info(const AMsg: string; const AException: Exception);
-begin
-  WriteLn(AMsg);
-  WriteLn(AException.ClassName);
-  WriteLn(AException.Message);
+  if IsErrorEnabled then
+    WriteMsg(AMsg);
 end;
 
 function TSimpleLogger.IsDebugEnabled: Boolean;
 begin
-  Result := True;
+  Result := LevelIsGreaterOrEqual(SimpleLogger.Debug);
 end;
 
 function TSimpleLogger.IsErrorEnabled: Boolean;
 begin
-  Result := True;
+  Result := LevelIsGreaterOrEqual(SimpleLogger.Error);
 end;
 
 function TSimpleLogger.IsInfoEnabled: Boolean;
 begin
-  Result := True;
+  Result := LevelIsGreaterOrEqual(SimpleLogger.Info);
 end;
 
 function TSimpleLogger.IsTraceEnabled: Boolean;
 begin
-  Result := True;
+  Result := LevelIsGreaterOrEqual(SimpleLogger.Trace);
 end;
 
 function TSimpleLogger.IsWarnEnabled: Boolean;
 begin
-  Result := True;
+  Result := LevelIsGreaterOrEqual(SimpleLogger.Warn);
 end;
 
 procedure TSimpleLogger.Info(const AFormat: string;
   const AArgs: array of const);
 begin
-  WriteLn(Format(AFormat, AArgs));
+  if IsInfoEnabled then
+    WriteMsg(Format(AFormat, AArgs));
 end;
 
 procedure TSimpleLogger.Info(const AMsg: string);
 begin
-  WriteLn(AMsg);
+  if IsInfoEnabled then
+    WriteMsg(AMsg);
+end;
+
+procedure TSimpleLogger.Info(const AMsg: string; const AException: Exception);
+begin
+  if IsInfoEnabled then
+  begin
+    WriteMsg(AMsg);
+    WriteLn(AException.ClassName);
+    WriteLn(AException.Message);
+  end;
 end;
 
 procedure TSimpleLogger.Trace(const AMsg: string; const AException: Exception);
 begin
-  WriteLn(AMsg);
-  WriteLn(AException.ClassName);
-  WriteLn(AException.Message);
+  if IsTraceEnabled then
+  begin
+    WriteMsg(AMsg);
+    WriteLn(AException.ClassName);
+    WriteLn(AException.Message);
+  end;
 end;
 
 procedure TSimpleLogger.Trace(const AFormat: string;
   const AArgs: array of const);
 begin
-  WriteLn(Format(AFormat, AArgs));
+  if IsTraceEnabled then
+    WriteMsg(Format(AFormat, AArgs));
 end;
 
 procedure TSimpleLogger.Trace(const AMsg: string);
 begin
-  WriteLn(AMsg);
+  WriteMsg(AMsg);
 end;
 
 procedure TSimpleLogger.Warn(const AMsg: string; const AException: Exception);
 begin
-  WriteLn(AMsg);
-  WriteLn(AException.ClassName);
-  WriteLn(AException.Message);
+  if IsWarnEnabled then
+  begin
+    WriteMsg(AMsg);
+    WriteLn(AException.ClassName);
+    WriteLn(AException.Message);
+  end;
 end;
 
 procedure TSimpleLogger.Warn(const AFormat: string;
   const AArgs: array of const);
 begin
-  WriteLn(Format(AFormat, AArgs));
+  if IsWarnEnabled then
+    WriteMsg(Format(AFormat, AArgs));
 end;
 
 procedure TSimpleLogger.Warn(const AMsg: string);
 begin
-  WriteLn(AMsg);
+  if IsWarnEnabled then
+    WriteMsg(AMsg);
 end;
 
 { TSimpleLoggerFactory }
 
-function TSimpleLoggerFactory.GetLogger(const AName: string): ILogger;
+constructor TSimpleLoggerFactory.Create;
 begin
-  Result := TSimpleLogger.Create(AName);
+  inherited Create;
+
+  Config := TSimpleLoggerConfiguration.Create;
 end;
+
+function TSimpleLoggerFactory.GetLogger(const AName: string): ILogger;
+var
+  L: TSimpleLogger;
+begin
+  L := TSimpleLogger.Create(AName);
+  L.Level := Config.Level;
+  Result := L;
+end;
+
+initialization
+  StartTime := Now;
 
 end.
