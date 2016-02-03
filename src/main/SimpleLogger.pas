@@ -79,12 +79,15 @@ type
   TSimpleLoggerFactory = class(TInterfacedObject, ILoggerFactory)
   public
     constructor Create;
+    destructor Destroy; override;
 
     function GetLogger(const AName: string): ILogger;
   end;
 
 
-procedure Configure(const AStrings: TStrings);
+procedure Configure(const AStrings: TStrings); overload;
+
+procedure Configure(const AKey, AValue: string); overload;
 
 implementation
 
@@ -96,7 +99,9 @@ type
   public
     constructor Create;
 
-    procedure Configure(const AStrings: TStrings);
+    procedure Configure(const AStrings: TStrings); overload;
+
+    procedure Configure(const AKey, AValue: string); overload;
 
     property Level: TSimpleLogLevel read FLevel;
   end;
@@ -117,6 +122,16 @@ var
     Result := Round((Now - StartTime) * MilliSecsPerDay);
   end;
 
+procedure Configure(const AStrings: TStrings);
+begin
+  Config.Configure(AStrings);
+end;
+
+procedure Configure(const AKey, AValue: string);
+begin
+  Config.Configure(AKey, AValue);
+end;
+
 { TSimpleLoggerConfiguration }
 
 constructor TSimpleLoggerConfiguration.Create;
@@ -128,7 +143,7 @@ procedure TSimpleLoggerConfiguration.Configure(const AStrings: TStrings);
 var
   Line: string;
 begin
-  Line := AStrings.Values['defaultLogLevel'];
+  Line := LowerCase(AStrings.Values['defaultLogLevel']);
 
   if Line = 'trace' then FLevel := Trace
   else if Line = 'debug' then FLevel := Debug
@@ -139,9 +154,17 @@ begin
 
 end;
 
-procedure Configure(const AStrings: TStrings);
+procedure TSimpleLoggerConfiguration.Configure(const AKey, AValue: string);
+var
+  SL: TStrings;
 begin
-  Config.Configure(AStrings);
+  SL := TStringList.Create;
+  try
+    SL.Values[AKey] := AValue;
+    Configure(SL);
+  finally
+    SL.Free;
+  end;
 end;
 
 { TSimpleLogger }
@@ -330,6 +353,13 @@ begin
   inherited Create;
 
   Config := TSimpleLoggerConfiguration.Create;
+end;
+
+destructor TSimpleLoggerFactory.Destroy;
+begin
+  Config.Free;
+
+  inherited;
 end;
 
 function TSimpleLoggerFactory.GetLogger(const AName: string): ILogger;
