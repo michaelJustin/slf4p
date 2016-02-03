@@ -4,7 +4,7 @@ program Unittests;
 
 uses
   djLogAPI,
-  djLogImplNOP, djLoggerFactory,
+  djLogOverNOPLogger, djLoggerFactory,
   LoggerFactoryTests,
   NOPLoggerTests,
   SimpleLoggerTests,
