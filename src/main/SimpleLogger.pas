@@ -79,6 +79,7 @@ type
   TSimpleLoggerFactory = class(TInterfacedObject, ILoggerFactory)
   public
     constructor Create;
+    destructor Destroy; override;
 
     function GetLogger(const AName: string): ILogger;
   end;
@@ -352,6 +353,13 @@ begin
   inherited Create;
 
   Config := TSimpleLoggerConfiguration.Create;
+end;
+
+destructor TSimpleLoggerFactory.Destroy;
+begin
+  Config.Free;
+
+  inherited;
 end;
 
 function TSimpleLoggerFactory.GetLogger(const AName: string): ILogger;
