@@ -1,48 +1,6 @@
 # slf4p
 A simple logging facade for Object Pascal
 
-## Usage
+Licensed under Apache 2.0 license.
 
-### Register a specific implementation
-
-
-    
-    program Test;
-    interface
-    uses
-      djLogOverSimpleLogger, // registers the 'simple' logger implementation
-      UnitA, ...
-      ...;
-    begin
-      ...
-    end.
-
-
-### Create loggers where needed
-
-
-    unit UnitA;
-    interface
-    uses 
-       ...
-       djLogAPI, djLoggerFactory;
-    type
-      TMyMainClass = class(TObject)
-      private
-        Logger: ILogger;
-        ...
-      public
-        constructor Create;
-        ...
-      end;
-      ...
-    constructor TMyMainClass.Create;
-    begin
-      inherited;
-      
-      Logger := TdjLoggerFactory.GetLogger('TMyMainClass');
-      Logger.Debug('Creating instance %d', GetTickCount);
-      ...
-    end;
-    
-     
+Visit the Wiki for additional information.
