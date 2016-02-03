@@ -66,18 +66,18 @@ begin
   try
     S.Values['defaultLogLevel'] := 'trace';
     SimpleLogger.Configure(S);
-    Logger := LoggerFactory.GetLogger('simple');
-    CheckTrue(Logger.IsTraceEnabled, 'trace');
-
-    S.Values['defaultLogLevel'] := 'info';
-    SimpleLogger.Configure(S);
-    Logger := LoggerFactory.GetLogger('simple');
-    CheckFalse(Logger.IsTraceEnabled, 'trace 2');
-    CheckTrue(Logger.IsInfoEnabled, 'info');
-
   finally
     S.Free;
   end;
+
+  Logger := LoggerFactory.GetLogger('simple');
+  CheckTrue(Logger.IsTraceEnabled, 'trace');
+
+  // configure key-value pair
+  SimpleLogger.Configure('defaultLogLevel', 'info');
+  Logger := LoggerFactory.GetLogger('simple');
+  CheckFalse(Logger.IsTraceEnabled, 'trace 2');
+  CheckTrue(Logger.IsInfoEnabled, 'info');
 end;
 
 procedure TSimpleLoggerTests.TestDebug;
