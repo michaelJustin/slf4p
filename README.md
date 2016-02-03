@@ -1,45 +1,31 @@
 # slf4p
-A simple logging facade for Object Pascal, which eliminates dependencies on a specific logging framework.
+A simple logging facade for Object Pascal
+
+## Usage
+
+### Register a specific implementation
 
 
-## Typical usage pattern
-
-### Step 1: In the project file, add the required binding unit. It will register a factory for the actual logging framework.
-
-
+    
     program Test;
-    
     interface
-    
     uses
-      djLogImplLog4D, // the djLog logging facade unit
-      Log4D, // required for additional configuration
+      djLogOverSimpleLogger, // registers the 'simple' logger implementation
+      UnitA, ...
       ...;
-      
     begin
-      // Log4D specific configuration ----------------------
-      // Create a default ODS logger
-      Log4D.TLogBasicConfigurator.Configure;
-      // which directs output to the 'Event log' IDE Window
-      Log4D.TLogLogger.GetRootLogger.Level := Debug;
-      // ---------------------------------------------------
-      
       ...
-      
     end.
 
 
-### Step 2: create a new logger in your program where needed. 
+### Create loggers where needed
 
 
-    unit A;
-    
+    unit UnitA;
     interface
-    
     uses 
        ...
        djLogAPI, djLoggerFactory;
-       
     type
       TMyMainClass = class(TObject)
       private
@@ -60,16 +46,3 @@ A simple logging facade for Object Pascal, which eliminates dependencies on a sp
     end;
     
      
-Bindings
---------
-
-Included bindings: NOPLogger, SimpleLogger
-
-Binding usage
--------------
-
-To use a specific binding, add the corresponding unit to your project:
-
-* to use the NOPLogger, add unit *TdjLogImplNOP*
-* to use the SimpleLogger, add unit *TdjLogImplSimple*
-
