@@ -212,7 +212,7 @@ end;
 procedure TSimpleLogger.Debug(const AFormat: string; const AArgs: array of const);
 begin
   if IsDebugEnabled then
-    WriteLn(Format(AFormat, AArgs));
+    WriteMsg(Format(AFormat, AArgs));
 end;
 
 procedure TSimpleLogger.Debug(const AMsg: string; const AException: Exception);
