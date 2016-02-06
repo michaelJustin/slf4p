@@ -62,22 +62,30 @@ var
 begin
   LoggerFactory := TSimpleLoggerFactory.Create;
 
+  // configure with TStrings
   S := TStringList.Create;
   try
-    S.Values['defaultLogLevel'] := 'trace';
+    S.Values['defaultLogLevel'] := 'debug';
     SimpleLogger.Configure(S);
   finally
     S.Free;
   end;
 
   Logger := LoggerFactory.GetLogger('simple');
-  CheckTrue(Logger.IsTraceEnabled, 'trace');
+  CheckFalse(Logger.IsTraceEnabled, 'trace');
+  CheckTrue(Logger.IsDebugEnabled, 'debug');
+  CheckTrue(Logger.IsInfoEnabled, 'info');
+  CheckTrue(Logger.IsWarnEnabled, 'warn');
+  CheckTrue(Logger.IsErrorEnabled, 'error');
 
   // configure key-value pair
   SimpleLogger.Configure('defaultLogLevel', 'info');
   Logger := LoggerFactory.GetLogger('simple');
   CheckFalse(Logger.IsTraceEnabled, 'trace 2');
-  CheckTrue(Logger.IsInfoEnabled, 'info');
+  CheckFalse(Logger.IsDebugEnabled, 'debug 2');
+  CheckTrue(Logger.IsInfoEnabled, 'info 2');
+  CheckTrue(Logger.IsWarnEnabled, 'warn 2');
+  CheckTrue(Logger.IsErrorEnabled, 'error 2');
 end;
 
 procedure TSimpleLoggerTests.TestDebug;
@@ -88,10 +96,13 @@ var
 begin
   LoggerFactory := TSimpleLoggerFactory.Create;
 
+  SimpleLogger.Configure('defaultLogLevel', 'debug');
+
   Logger := LoggerFactory.GetLogger('simple');
 
-  Logger.Debug('simple msg');
-  Logger.Debug('simple msg', ['a', 2, Date]);
+  Logger.Trace('simple trace msg');
+  Logger.Debug('simple debug msg');
+  Logger.Info('simple info msg');
 
   E := EAbort.Create('simple example exception');
   Logger.Debug('simple msg', E);
@@ -106,10 +117,13 @@ var
 begin
   LoggerFactory := TSimpleLoggerFactory.Create;
 
+  SimpleLogger.Configure('defaultLogLevel', 'info');
+
   Logger := LoggerFactory.GetLogger('simple');
 
-  Logger.Info('simple msg');
-  Logger.Info('simple msg', ['a', 2, Date]);
+  Logger.Trace('simple trace msg');
+  Logger.Debug('simple debug msg');
+  Logger.Info('simple info msg');
 
   E := EAbort.Create('simple example exception');
   Logger.Info('simple msg', E);
