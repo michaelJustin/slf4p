@@ -32,7 +32,10 @@ type
   TLazLoggerLogger = class(TInterfacedObject, ILogger)
   private
     FLevel: TLazLogLevel;
+
     FName: string;
+
+    LogGroup: PLazLoggerLogGroup;
 
     function LevelAsString(const ALogLevel: TLazLogLevel): string;
 
@@ -107,6 +110,9 @@ end;
 constructor TLazLoggerLogger.Create(const AName: string);
 begin
   FName := AName;
+
+  LogGroup := DebugLogger.RegisterLogGroup(AName, True); // always on
+  // DebugLogger.ParamForEnabledLogGroups := '--debug-enabled=';
 end;
 
 function TLazLoggerLogger.LevelAsString(const ALogLevel: TLazLogLevel): string;
@@ -120,8 +126,7 @@ begin
   end;
 end;
 
-function TLazLoggerLogger.IsEnabledFor(ALogLevel: TLazLogLevel
-  ): Boolean;
+function TLazLoggerLogger.IsEnabledFor(ALogLevel: TLazLogLevel): Boolean;
 begin
    Result := Ord(FLevel) <= Ord(ALogLevel);
 end;
@@ -129,19 +134,17 @@ end;
 procedure TLazLoggerLogger.WriteMsg(const ALogLevel: TLazLogLevel; const AMsg: string);
 begin
   LazLogger.DebugLn(
-    IntToStr(GetElapsedTime) + ' '
-    + LevelAsString(ALogLevel) + ' '
-    + Name + ' - '
-    + AMsg);
+    LogGroup, IntToStr(GetElapsedTime) + ' ' + LevelAsString(ALogLevel) + ' '
+    + Name + ' - ' + AMsg);
 end;
 
 procedure TLazLoggerLogger.WriteMsg(const ALogLevel: TLazLogLevel; const AMsg: string;
   const AException: Exception);
 begin
   WriteMsg(ALogLevel,
-        AMsg + SLineBreak
-      + SBlanks + AException.ClassName + SLineBreak
-      + SBlanks + AException.Message);
+    AMsg + SLineBreak
+    + SBlanks + AException.ClassName + SLineBreak
+    + SBlanks + AException.Message);
 end;
 
 procedure TLazLoggerLogger.SetLevel(AValue: TLazLogLevel);
