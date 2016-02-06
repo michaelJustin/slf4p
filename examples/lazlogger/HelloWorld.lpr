@@ -1,4 +1,4 @@
-program demo;
+program HelloWorld;
 
 uses
   djLogOverLazLogger, djLogAPI, djLoggerFactory,
