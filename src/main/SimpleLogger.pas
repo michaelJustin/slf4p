@@ -36,7 +36,8 @@ type
 
     function LevelIsGreaterOrEqual(ALogLevel: TSimpleLogLevel): Boolean;
 
-    procedure WriteMsg(const AMsg: string);
+    procedure WriteMsg(const AMsg: string); overload;
+    procedure WriteMsg(const AMsg: string; const AException: Exception); overload;
 
     procedure SetLevel(AValue: TSimpleLogLevel);
 
@@ -108,6 +109,7 @@ type
 
 const
   MilliSecsPerDay = 24 * 60 * 60 * 1000;
+  SBlanks = '  ';
 
 var
   { Contains logger configuration }
@@ -188,6 +190,14 @@ begin
     + AMsg);
 end;
 
+procedure TSimpleLogger.WriteMsg(const AMsg: string;
+  const AException: Exception);
+begin
+  WriteMsg(AMsg + SLineBreak
+      + SBlanks + AException.ClassName + SLineBreak
+      + SBlanks + AException.Message);
+end;
+
 procedure TSimpleLogger.SetLevel(AValue: TSimpleLogLevel);
 begin
   if FLevel=AValue then Exit;
@@ -219,9 +229,7 @@ procedure TSimpleLogger.Debug(const AMsg: string; const AException: Exception);
 begin
   if IsDebugEnabled then
   begin
-    WriteMsg(AMsg);
-    WriteLn(AException.ClassName);
-    WriteLn(AException.Message);
+    WriteMsg(AMsg, AException);
   end;
 end;
 
@@ -229,9 +237,7 @@ procedure TSimpleLogger.Error(const AMsg: string; const AException: Exception);
 begin
   if IsErrorEnabled then
   begin
-    WriteMsg(AMsg);
-    WriteLn(AException.ClassName);
-    WriteLn(AException.Message);
+    WriteMsg(AMsg, AException);
   end;
 end;
 
@@ -295,9 +301,7 @@ procedure TSimpleLogger.Info(const AMsg: string; const AException: Exception);
 begin
   if IsInfoEnabled then
   begin
-    WriteMsg(AMsg);
-    WriteLn(AException.ClassName);
-    WriteLn(AException.Message);
+    WriteMsg(AMsg, AException);
   end;
 end;
 
@@ -305,9 +309,7 @@ procedure TSimpleLogger.Trace(const AMsg: string; const AException: Exception);
 begin
   if IsTraceEnabled then
   begin
-    WriteMsg(AMsg);
-    WriteLn(AException.ClassName);
-    WriteLn(AException.Message);
+    WriteMsg(AMsg, AException);
   end;
 end;
 
@@ -327,9 +329,7 @@ procedure TSimpleLogger.Warn(const AMsg: string; const AException: Exception);
 begin
   if IsWarnEnabled then
   begin
-    WriteMsg(AMsg);
-    WriteLn(AException.ClassName);
-    WriteLn(AException.Message);
+    WriteMsg(AMsg, AException);
   end;
 end;
 
