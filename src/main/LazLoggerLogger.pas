@@ -25,22 +25,23 @@ uses
   djLogAPI, SysUtils;
 
 type
-  TSimpleLogLevel = (Trace, Debug, Info, Warn, Error);
+  TLazLogLevel = (Trace, Debug, Info, Warn, Error);
 
   { TLazLoggerLogger }
 
   TLazLoggerLogger = class(TInterfacedObject, ILogger)
   private
-    FLevel: TSimpleLogLevel;
+    FLevel: TLazLogLevel;
     FName: string;
-    LevelAsString: string;
 
-   function LevelIsGreaterOrEqual(ALogLevel: TSimpleLogLevel): Boolean;
+    function LevelAsString(const ALogLevel: TLazLogLevel): string;
 
-   procedure SetLevel(AValue: TSimpleLogLevel);
+    function IsEnabledFor(ALogLevel: TLazLogLevel): Boolean;
 
-   procedure WriteMsg(const AMsg: string); overload;
-   procedure WriteMsg(const AMsg: string; const AException: Exception); overload;
+    procedure SetLevel(AValue: TLazLogLevel);
+
+    procedure WriteMsg(const ALogLevel: TLazLogLevel; const AMsg: string); overload;
+    procedure WriteMsg(const ALogLevel: TLazLogLevel; const AMsg: string; const AException: Exception); overload;
 
   public
     constructor Create(const AName: string);
@@ -73,7 +74,7 @@ type
     function IsWarnEnabled: Boolean;
     function IsTraceEnabled: Boolean;
 
-    property Level: TSimpleLogLevel read FLevel write SetLevel;
+    property Level: TLazLogLevel read FLevel write SetLevel;
 
   end;
 
@@ -81,6 +82,9 @@ type
   public
     function GetLogger(const AName: string): ILogger;
   end;
+
+var
+  DefaultLevel: TLazLogLevel;
 
 implementation
 
@@ -105,136 +109,133 @@ begin
   FName := AName;
 end;
 
-function TLazLoggerLogger.LevelIsGreaterOrEqual(ALogLevel: TSimpleLogLevel
+function TLazLoggerLogger.LevelAsString(const ALogLevel: TLazLogLevel): string;
+begin
+  case ALogLevel of
+    LazLoggerLogger.Trace: LevelAsString := 'TRACE';
+    LazLoggerLogger.Debug: LevelAsString := 'DEBUG';
+    LazLoggerLogger.Info: LevelAsString := 'INFO';
+    LazLoggerLogger.Warn: LevelAsString := 'WARN';
+    LazLoggerLogger.Error: LevelAsString := 'ERROR';
+  end;
+end;
+
+function TLazLoggerLogger.IsEnabledFor(ALogLevel: TLazLogLevel
   ): Boolean;
 begin
    Result := Ord(FLevel) <= Ord(ALogLevel);
 end;
 
-procedure TLazLoggerLogger.WriteMsg(const AMsg: string);
+procedure TLazLoggerLogger.WriteMsg(const ALogLevel: TLazLogLevel; const AMsg: string);
 begin
   LazLogger.DebugLn(
-    IntToStr(GetElapsedTime) + ' ' + LevelAsString + ' '
+    IntToStr(GetElapsedTime) + ' '
+    + LevelAsString(ALogLevel) + ' '
     + Name + ' - '
     + AMsg);
 end;
 
-procedure TLazLoggerLogger.WriteMsg(const AMsg: string;
+procedure TLazLoggerLogger.WriteMsg(const ALogLevel: TLazLogLevel; const AMsg: string;
   const AException: Exception);
 begin
-  WriteMsg(AMsg + SLineBreak
+  WriteMsg(ALogLevel,
+        AMsg + SLineBreak
       + SBlanks + AException.ClassName + SLineBreak
       + SBlanks + AException.Message);
 end;
 
-procedure TLazLoggerLogger.SetLevel(AValue: TSimpleLogLevel);
+procedure TLazLoggerLogger.SetLevel(AValue: TLazLogLevel);
 begin
-  if FLevel=AValue then Exit;
+  if FLevel = AValue then Exit;
 
-  FLevel:=AValue;
-
-  case Level of
-    LazLoggerLogger.Trace: LevelAsString:= 'TRACE';
-    LazLoggerLogger.Debug: LevelAsString:= 'DEBUG';
-    LazLoggerLogger.Info: LevelAsString:= 'INFO';
-    LazLoggerLogger.Warn: LevelAsString:= 'WARN';
-    LazLoggerLogger.Error: LevelAsString:= 'ERROR';
-  end;
+  FLevel := AValue;
 end;
 
 procedure TLazLoggerLogger.Debug(const AMsg: string);
 begin
   if IsDebugEnabled then
-    WriteMsg(AMsg);
+    WriteMsg(LazLoggerLogger.Debug, AMsg);
 end;
 
 procedure TLazLoggerLogger.Debug(const AFormat: string; const AArgs: array of const);
 begin
   if IsDebugEnabled then
-    WriteMsg(Format(AFormat, AArgs));
+    WriteMsg(LazLoggerLogger.Debug, Format(AFormat, AArgs));
 end;
 
 procedure TLazLoggerLogger.Debug(const AMsg: string; const AException: Exception);
 begin
   if IsDebugEnabled then
-  begin
-    WriteMsg(AMsg, AException);
-  end;
+    WriteMsg(LazLoggerLogger.Debug, AMsg, AException);
 end;
 
 procedure TLazLoggerLogger.Error(const AMsg: string; const AException: Exception);
 begin
   if IsErrorEnabled then
-  begin
-    WriteMsg(AMsg, AException);
-  end;
+    WriteMsg(LazLoggerLogger.Error, AMsg, AException);
 end;
 
 procedure TLazLoggerLogger.Error(const AFormat: string;
   const AArgs: array of const);
 begin
   if IsErrorEnabled then
-    WriteMsg(Format(AFormat, AArgs));
+    WriteMsg(LazLoggerLogger.Error, Format(AFormat, AArgs));
 end;
 
 procedure TLazLoggerLogger.Error(const AMsg: string);
 begin
   if IsErrorEnabled then
-    WriteMsg(AMsg);
+    WriteMsg(LazLoggerLogger.Error, AMsg);
 end;
 
 function TLazLoggerLogger.IsDebugEnabled: Boolean;
 begin
-  Result := LevelIsGreaterOrEqual(LazLoggerLogger.Debug);
+  Result := IsEnabledFor(LazLoggerLogger.Debug);
 end;
 
 function TLazLoggerLogger.IsErrorEnabled: Boolean;
 begin
-  Result := LevelIsGreaterOrEqual(LazLoggerLogger.Error);
+  Result := IsEnabledFor(LazLoggerLogger.Error);
 end;
 
 function TLazLoggerLogger.IsInfoEnabled: Boolean;
 begin
-  Result := LevelIsGreaterOrEqual(LazLoggerLogger.Info);
+  Result := IsEnabledFor(LazLoggerLogger.Info);
 end;
 
 function TLazLoggerLogger.IsTraceEnabled: Boolean;
 begin
-  Result := LevelIsGreaterOrEqual(LazLoggerLogger.Trace);
+  Result := IsEnabledFor(LazLoggerLogger.Trace);
 end;
 
 function TLazLoggerLogger.IsWarnEnabled: Boolean;
 begin
-  Result := LevelIsGreaterOrEqual(LazLoggerLogger.Warn);
+  Result := IsEnabledFor(LazLoggerLogger.Warn);
 end;
 
 procedure TLazLoggerLogger.Info(const AFormat: string;
   const AArgs: array of const);
 begin
   if IsInfoEnabled then
-    WriteMsg(Format(AFormat, AArgs));
+    WriteMsg(LazLoggerLogger.Info, Format(AFormat, AArgs));
 end;
 
 procedure TLazLoggerLogger.Info(const AMsg: string);
 begin
   if IsInfoEnabled then
-    WriteMsg(AMsg);
+    WriteMsg(LazLoggerLogger.Info, AMsg);
 end;
 
 procedure TLazLoggerLogger.Info(const AMsg: string; const AException: Exception);
 begin
   if IsInfoEnabled then
-  begin
-    WriteMsg(AMsg, AException);
-  end;
+    WriteMsg(LazLoggerLogger.Info, AMsg, AException);
 end;
 
 procedure TLazLoggerLogger.Trace(const AMsg: string; const AException: Exception);
 begin
   if IsTraceEnabled then
-  begin
-    WriteMsg(AMsg, AException);
-  end;
+    WriteMsg(LazLoggerLogger.Trace, AMsg, AException);
 end;
 
 function TLazLoggerLogger.Name: string;
@@ -246,43 +247,47 @@ procedure TLazLoggerLogger.Trace(const AFormat: string;
   const AArgs: array of const);
 begin
   if IsTraceEnabled then
-    WriteMsg(Format(AFormat, AArgs));
+    WriteMsg(LazLoggerLogger.Trace, Format(AFormat, AArgs));
 end;
 
 procedure TLazLoggerLogger.Trace(const AMsg: string);
 begin
-  WriteMsg(AMsg);
+  if IsTraceEnabled then
+    WriteMsg(LazLoggerLogger.Trace, AMsg);
 end;
 
 procedure TLazLoggerLogger.Warn(const AMsg: string; const AException: Exception);
 begin
   if IsWarnEnabled then
-  begin
-    WriteMsg(AMsg, AException);
-  end;
+    WriteMsg(LazLoggerLogger.Warn, AMsg, AException);
 end;
 
 procedure TLazLoggerLogger.Warn(const AFormat: string;
   const AArgs: array of const);
 begin
   if IsWarnEnabled then
-    WriteMsg(Format(AFormat, AArgs));
+    WriteMsg(LazLoggerLogger.Warn, Format(AFormat, AArgs));
 end;
 
 procedure TLazLoggerLogger.Warn(const AMsg: string);
 begin
   if IsWarnEnabled then
-    WriteMsg(AMsg);
+    WriteMsg(LazLoggerLogger.Warn, AMsg);
 end;
 
 { TLazLoggerFactory }
 
 function TLazLoggerFactory.GetLogger(const AName: string): ILogger;
+var
+  Logger: TLazLoggerLogger;
 begin
-  Result := TLazLoggerLogger.Create(AName);
+  Logger := TLazLoggerLogger.Create(AName);
+  Logger.Level := DefaultLevel;
+  Result := Logger;
 end;
 
 initialization
   StartTime := Now;
+  DefaultLevel:= Info;
 
 end.
