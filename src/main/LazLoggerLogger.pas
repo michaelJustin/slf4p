@@ -111,8 +111,8 @@ constructor TLazLoggerLogger.Create(const AName: string);
 begin
   FName := AName;
 
-  LogGroup := DebugLogger.RegisterLogGroup(AName, False);
-  DebugLogger.ParamForEnabledLogGroups := '--debug-enabled=';
+  LogGroup := DebugLogger.RegisterLogGroup(AName, True); // always on
+  // DebugLogger.ParamForEnabledLogGroups := '--debug-enabled=';
 end;
 
 function TLazLoggerLogger.LevelAsString(const ALogLevel: TLazLogLevel): string;
@@ -126,8 +126,7 @@ begin
   end;
 end;
 
-function TLazLoggerLogger.IsEnabledFor(ALogLevel: TLazLogLevel
-  ): Boolean;
+function TLazLoggerLogger.IsEnabledFor(ALogLevel: TLazLogLevel): Boolean;
 begin
    Result := Ord(FLevel) <= Ord(ALogLevel);
 end;
