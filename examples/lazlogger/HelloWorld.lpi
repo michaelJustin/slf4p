@@ -10,7 +10,7 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="demo"/>
+      <Title Value="HelloWorld"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -29,6 +29,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+        <CommandLineParams Value="--debug-enabled=+demo"/>
       </local>
     </RunParams>
     <RequiredPackages Count="1">
@@ -38,7 +39,7 @@
     </RequiredPackages>
     <Units Count="3">
       <Unit0>
-        <Filename Value="demo.lpr"/>
+        <Filename Value="HelloWorld.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
@@ -55,7 +56,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="demo"/>
+      <Filename Value="HelloWorld"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

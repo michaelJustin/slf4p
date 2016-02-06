@@ -1,7 +1,8 @@
-program demo;
+program HelloWorld;
 
 uses
-  djLogOverLazLogger, djLogAPI, djLoggerFactory;
+  djLogOverLazLogger, djLogAPI, djLoggerFactory,
+  LazLogger;
 
 var
   Logger: ILogger;
