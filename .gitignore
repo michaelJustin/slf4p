@@ -73,6 +73,7 @@ Unittests.dproj
 *.compiled
 *.ico
 *.res
+*.rst
 lib
 
 # Free Pascal history and backups
