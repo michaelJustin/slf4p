@@ -23,13 +23,15 @@ interface
 uses
   djLogAPI, SysUtils;
 
+{$HINTS OFF}
+
 type
   TNOPLogger = class(TInterfacedObject, ILogger)
   private
     FName: string;
 
   public
-    constructor Create(AName: string);
+    constructor Create(const AName: string);
 
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
@@ -70,7 +72,7 @@ implementation
 
 { TNOPLogger }
 
-constructor TNOPLogger.Create(AName: string);
+constructor TNOPLogger.Create(const AName: string);
 begin
   FName := AName;
 end;
