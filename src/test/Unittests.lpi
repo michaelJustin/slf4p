@@ -52,7 +52,7 @@
         <IsPartOfProject Value="True"/>
       </Unit2>
       <Unit3>
-        <Filename Value="..\main\djLoggerFactory.pas"/>
+        <Filename Value="LazLoggerTests.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
     </Units>
@@ -64,6 +64,12 @@
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="..\main;..\..\..\log4d\src"/>
     </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="Delphi"/>
+        <UseAnsiStrings Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
     <Linking>
       <Debugging>
         <UseHeaptrc Value="True"/>

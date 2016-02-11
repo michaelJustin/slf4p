@@ -4,11 +4,11 @@ program Unittests;
 
 uses
   djLogAPI,
-  djLogOverNOPLogger, djLoggerFactory,
+  djLogOverNOPLogger,
   LoggerFactoryTests,
-  NOPLoggerTests,
-  SimpleLoggerTests,
   Log4DLoggerTests,
+  NOPLoggerTests,
+  SimpleLoggerTests, LazLoggerTests,
   Log4D,
   Interfaces, Forms,
   fpcunit, testutils, testregistry, GuiTestRunner,
@@ -26,9 +26,12 @@ begin
   Tests := TTestSuite.Create('Library Tests');
 
   Tests.AddTest(TdjLoggerFactoryTests.Suite);
+
+  Tests.AddTest(TLazLoggerTests.Suite);
+  Tests.AddTest(TLog4DLoggerTests.Suite);
+
   Tests.AddTest(TNOPLoggerTests.Suite);
   Tests.AddTest(TSimpleLoggerTests.Suite);
-  Tests.AddTest(TLog4DLoggerTests.Suite);
 
   RegisterTest('', Tests);
 
