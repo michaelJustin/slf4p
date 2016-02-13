@@ -21,14 +21,21 @@ uses
   Log4D;
 
 var
+  LogLayout: ILogLayout;
   ConsoleAppender: ILogAppender;
+  FileAppender: ILogAppender;
   Logger: ILogger;
 
 begin
-  // Log4D configuration
+  // Log4D configuration: configure console and file logging
+  LogLayout := TLogPatternLayout.Create(TTCCPattern);
   ConsoleAppender := TLogConsoleAppender.Create('console');
-  ConsoleAppender.Layout := TLogPatternLayout.Create(TTCCPattern);
+  ConsoleAppender.Layout := LogLayout;
   TLogBasicConfigurator.Configure(ConsoleAppender);
+  FileAppender := TLogFileAppender.Create('file', 'log4d.log');
+  FileAppender.Layout := LogLayout;
+  TLogBasicConfigurator.Configure(FileAppender);
+
   TLogLogger.GetRootLogger.Level := Info;
   WriteLn('Logging with Log4D version ' + Log4DVersion);
 
