@@ -30,9 +30,13 @@ type
 
   TSimpleLogger = class(TInterfacedObject, ILogger)
   private
+    FDateTimeFormat: string;
     FLevel: TSimpleLogLevel;
     FName: string;
+    FShowDateTime: Boolean;
 
+    function GetElapsedTime: LongInt; inline;
+    function DateTimeStr: string;
     function LevelAsString(const ALogLevel: TSimpleLogLevel): string;
 
     function IsEnabledFor(ALogLevel: TSimpleLogLevel): Boolean;
@@ -75,7 +79,9 @@ type
     function IsWarnEnabled: Boolean;
     function IsTraceEnabled: Boolean;
 
+    property DateTimeFormat: string read FDateTimeFormat write FDateTimeFormat;
     property Level: TSimpleLogLevel read FLevel write SetLevel;
+    property ShowDateTime: Boolean read FShowDateTime write FShowDateTime;
   end;
 
   { TSimpleLoggerFactory }
@@ -99,7 +105,9 @@ type
   { TSimpleLoggerConfiguration }
   TSimpleLoggerConfiguration = class(TObject)
   private
+    FDateTimeFormat: string;
     FLevel: TSimpleLogLevel;
+    FShowDateTime: Boolean;
   public
     constructor Create;
 
@@ -107,7 +115,9 @@ type
 
     procedure Configure(const AKey, AValue: string); overload;
 
+    property DateTimeFormat: string read FDateTimeFormat;
     property Level: TSimpleLogLevel read FLevel;
+    property ShowDateTime: Boolean read FShowDateTime;
   end;
 
 resourcestring
@@ -123,12 +133,6 @@ var
 
   { Start time for the logging process - to compute elapsed time. }
   StartTime: TDateTime;
-
-  { The elapsed time since package start up (in milliseconds). }
-  function GetElapsedTime: LongInt;
-  begin
-    Result := Round((Now - StartTime) * MilliSecsPerDay);
-  end;
 
 procedure Configure(const AStrings: TStrings);
 begin
@@ -162,7 +166,25 @@ begin
   else if Line = 'info' then FLevel := Info
   else if Line = 'warn' then FLevel := Warn
   else if Line = 'error' then FLevel := Error
-  else WriteLn('unknown log level ' + Line);
+  else if Line <> '' then WriteLn('unknown log level ' + Line);
+
+  Line := LowerCase(AStrings.Values['showDateTime']);
+  if Line <> '' then FShowDateTime := (Line = 'true');
+
+  Line := LowerCase(AStrings.Values['dateTimeFormat']);
+  if Line <> '' then
+  begin
+    try
+      FormatDateTime(Line, Now);
+      FDateTimeFormat := Line;
+    except
+      on E: Exception do
+      begin
+        WriteLn(E.Message);
+        FDateTimeFormat := '';
+      end;
+    end;
+  end;
 end;
 
 procedure TSimpleLoggerConfiguration.Configure(const AKey, AValue: string);
@@ -203,10 +225,24 @@ end;
 
 procedure TSimpleLogger.WriteMsg(const ALogLevel: TSimpleLogLevel; const AMsg: string);
 begin
-  WriteLn(IntToStr(GetElapsedTime) + ' '
+  WriteLn(DateTimeStr + ' '
     + LevelAsString(ALogLevel) + ' '
     + Name + ' - '
     + AMsg);
+end;
+
+function TSimpleLogger.DateTimeStr: string;
+begin
+  if ShowDateTime and (DateTimeFormat <> '') then
+    Result := FormatDateTime(DateTimeFormat, Now)
+  else
+    Result := IntToStr(GetElapsedTime);
+end;
+
+{ The elapsed time since package start up (in milliseconds). }
+function TSimpleLogger.GetElapsedTime: LongInt; inline;
+begin
+  Result := Round((Now - StartTime) * MilliSecsPerDay);
 end;
 
 procedure TSimpleLogger.WriteMsg(const ALogLevel: TSimpleLogLevel; const AMsg: string;
@@ -355,26 +391,32 @@ constructor TSimpleLoggerFactory.Create;
 begin
   inherited Create;
 
-  Config := TSimpleLoggerConfiguration.Create;
 end;
 
 destructor TSimpleLoggerFactory.Destroy;
 begin
-  Config.Free;
 
   inherited;
 end;
 
 function TSimpleLoggerFactory.GetLogger(const AName: string): ILogger;
 var
-  L: TSimpleLogger;
+  Logger: TSimpleLogger;
 begin
-  L := TSimpleLogger.Create(AName);
-  L.Level := Config.Level;
-  Result := L;
+  Logger := TSimpleLogger.Create(AName);
+
+  Logger.DateTimeFormat := Config.DateTimeFormat;
+  Logger.Level := Config.Level;
+  Logger.ShowDateTime := Config.ShowDateTime;
+
+  Result := Logger;
 end;
 
 initialization
   StartTime := Now;
+  Config := TSimpleLoggerConfiguration.Create;
+
+finalization
+  Config.Free;
 
 end.

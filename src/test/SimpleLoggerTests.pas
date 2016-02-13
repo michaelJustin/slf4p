@@ -28,10 +28,15 @@ uses
   {$ENDIF};
 
 type
+
+  { TSimpleLoggerTests }
+
   TSimpleLoggerTests = class(TTestCase)
   published
     procedure CreateLogger;
     procedure TestConfig;
+    procedure TestConfigShowDateTime;
+
     procedure TestDebug;
     procedure TestInfo;
   end;
@@ -86,6 +91,25 @@ begin
   CheckTrue(Logger.IsInfoEnabled, 'info 2');
   CheckTrue(Logger.IsWarnEnabled, 'warn 2');
   CheckTrue(Logger.IsErrorEnabled, 'error 2');
+end;
+
+procedure TSimpleLoggerTests.TestConfigShowDateTime;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+begin
+  SimpleLogger.Configure('showDateTime', 'true');
+  SimpleLogger.Configure('dateTimeFormat', 'hh:nn:ss.zzz');
+
+  LoggerFactory := TSimpleLoggerFactory.Create;
+
+  Logger := LoggerFactory.GetLogger('dateTime on');
+  Logger.Info('testShowDateTime 1');
+
+  SimpleLogger.Configure('showDateTime', 'false');
+
+  Logger := LoggerFactory.GetLogger('dateTime off');
+  Logger.Info('testShowDateTime 2');
 end;
 
 procedure TSimpleLoggerTests.TestDebug;
