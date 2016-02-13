@@ -35,7 +35,7 @@ type
     FName: string;
     FShowDateTime: Boolean;
 
-    function GetElapsedTime: LongInt; inline;
+    function GetElapsedTime: LongInt;
     function DateTimeStr: string;
     function LevelAsString(const ALogLevel: TSimpleLogLevel): string;
 
@@ -180,7 +180,6 @@ begin
     except
       on E: Exception do
       begin
-        WriteLn(E.Message);
         FDateTimeFormat := '';
       end;
     end;
@@ -240,7 +239,7 @@ begin
 end;
 
 { The elapsed time since package start up (in milliseconds). }
-function TSimpleLogger.GetElapsedTime: LongInt; inline;
+function TSimpleLogger.GetElapsedTime: LongInt;
 begin
   Result := Round((Now - StartTime) * MilliSecsPerDay);
 end;
