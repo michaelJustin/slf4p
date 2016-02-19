@@ -160,16 +160,21 @@ var
   Line: string;
 begin
   Line := LowerCase(AStrings.Values['defaultLogLevel']);
-
-  if Line = 'trace' then FLevel := Trace
-  else if Line = 'debug' then FLevel := Debug
-  else if Line = 'info' then FLevel := Info
-  else if Line = 'warn' then FLevel := Warn
-  else if Line = 'error' then FLevel := Error
-  else if Line <> '' then WriteLn('unknown log level ' + Line);
+  if Line <> '' then
+  begin
+    if Line = 'trace' then FLevel := Trace
+    else if Line = 'debug' then FLevel := Debug
+    else if Line = 'info' then FLevel := Info
+    else if Line = 'warn' then FLevel := Warn
+    else if Line = 'error' then FLevel := Error;
+  end;
 
   Line := LowerCase(AStrings.Values['showDateTime']);
-  if Line <> '' then FShowDateTime := (Line = 'true');
+  if Line <> '' then
+  begin
+    FShowDateTime := (Line = 'true');
+    FDateTimeFormat := 'hh:nn:ss.zzz';
+  end;
 
   Line := LowerCase(AStrings.Values['dateTimeFormat']);
   if Line <> '' then
