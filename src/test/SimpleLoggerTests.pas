@@ -99,7 +99,7 @@ var
   Logger: ILogger;
 begin
   SimpleLogger.Configure('showDateTime', 'true');
-  SimpleLogger.Configure('dateTimeFormat', 'hh:nn:ss.zzz');
+  // SimpleLogger.Configure('dateTimeFormat', 'hh:nn:ss.zzz');
 
   LoggerFactory := TSimpleLoggerFactory.Create;
 
