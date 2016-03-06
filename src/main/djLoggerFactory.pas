@@ -34,6 +34,12 @@ procedure RegisterFactory(const AFactory: ILoggerFactory);
 
 implementation
 
+uses
+  SysUtils;
+
+resourcestring
+  NoLoggerFactoryAvailable = 'Logger factory is not assigned';
+
 var
   LoggerFactory: ILoggerFactory;
 
@@ -58,7 +64,9 @@ end;
 
 class function TdjLoggerFactory.GetLogger(const AName: string): ILogger;
 begin
-  Assert(Assigned(LoggerFactory));
+  if not Assigned(LoggerFactory) then
+    raise Exception.Create(NoLoggerFactoryAvailable);
+
   Result := LoggerFactory.GetLogger(AName);
 end;
 
