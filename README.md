@@ -5,8 +5,8 @@ To register a specific logging framework, just add one of the `djLogOver...` uni
 
 Available binding units: 
 
-* `djLogOverLog4D` for logging over [[Log4D|http://sourceforge.net/projects/log4d/]] 
-* `djLogOverLazLogger` for logging over [[LazLogger|http://wiki.lazarus.freepascal.org/LazLogger]]
+* `djLogOverLog4D` for logging over [Log4D](http://sourceforge.net/projects/log4d/)
+* `djLogOverLazLogger` for logging over [LazLogger](http://wiki.lazarus.freepascal.org/LazLogger)
 * `djLogOverSimpleLogger` for logging over SimpleLogger (included)
 * `djLogOverNOPLogger` for logging over NOPLogger (included)
 
