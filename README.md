@@ -9,4 +9,6 @@ Available binding units:
 * `djLogOverLazLogger` for logging over [[LazLogger|http://wiki.lazarus.freepascal.org/LazLogger]]
 * `djLogOverSimpleLogger` for logging over SimpleLogger (included)
 * `djLogOverNOPLogger` for logging over NOPLogger (included)
-* 
+
+Visit the Wiki for additional information. 
+
