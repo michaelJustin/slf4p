@@ -35,10 +35,14 @@ procedure RegisterFactory(const AFactory: ILoggerFactory);
 implementation
 
 uses
+  NOPLogger,
   SysUtils;
 
 resourcestring
+  SLF4PTag = 'SLF4P: ';
   NoLoggerFactoryAvailable = 'Logger factory is not assigned';
+  UseNOPLogger = 'Defaulting to no-operation (NOP) logger implementation';
+  WarnOverwrite = 'Warning: overwriting logger factory!';
 
 var
   LoggerFactory: ILoggerFactory;
@@ -49,7 +53,7 @@ begin
 
   if Assigned(LoggerFactory) then
   begin
-    WriteLn('Warning: overwriting logger factory!');
+    WriteLn(SLF4PTag + WarnOverwrite);
   end;
 
   LoggerFactory := AFactory;
@@ -65,7 +69,11 @@ end;
 class function TdjLoggerFactory.GetLogger(const AName: string): ILogger;
 begin
   if not Assigned(LoggerFactory) then
-    raise Exception.Create(NoLoggerFactoryAvailable);
+  begin
+    WriteLn(SLF4PTag + NoLoggerFactoryAvailable);
+    WriteLn(SLF4PTag + UseNOPLogger);
+    RegisterFactory(TNOPLoggerFactory.Create);
+  end;
 
   Result := LoggerFactory.GetLogger(AName);
 end;

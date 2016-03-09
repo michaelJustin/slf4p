@@ -28,9 +28,13 @@ uses
   {$ENDIF};
 
 type
+
+  { TdjLoggerFactoryTests }
+
   TdjLoggerFactoryTests = class(TTestCase)
   published
-    procedure TestDebug;
+    procedure TestNoFactoryAssigned;
+
   end;
 
 implementation
@@ -40,20 +44,14 @@ uses
 
 { TLoggerFactoryTests }
 
-procedure TdjLoggerFactoryTests.TestDebug;
+procedure TdjLoggerFactoryTests.TestNoFactoryAssigned;
 var
   Logger: ILogger;
-  E: EAbort;
 begin
+  // ExpectException(Exception);
   Logger := TdjLoggerFactory.GetLogger('djLoggerFactory');
-
-  Logger.Debug('djLoggerFactory msg');
-  Logger.Debug('djLoggerFactory msg', ['a', 2, Date]);
-
-  E := EAbort.Create('djLoggerFactory example exception');
-  Logger.Debug('djLoggerFactory msg', E);
-  E.Free;
-
+  Logger.Info('logging with NOP logger');
 end;
+
 
 end.
