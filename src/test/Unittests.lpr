@@ -4,7 +4,6 @@ program Unittests;
 
 uses
   djLogAPI,
-  djLogOverNOPLogger,
   LoggerFactoryTests,
   Log4DLoggerTests,
   NOPLoggerTests,
@@ -20,18 +19,16 @@ var
   Tests: TTestSuite;
 
 begin
-  // Log4D specific initialization: create a default logger
-  TLogBasicConfigurator.Configure;
-
   Tests := TTestSuite.Create('Library Tests');
 
   Tests.AddTest(TdjLoggerFactoryTests.Suite);
-
   Tests.AddTest(TLazLoggerTests.Suite);
-  Tests.AddTest(TLog4DLoggerTests.Suite);
-
   Tests.AddTest(TNOPLoggerTests.Suite);
   Tests.AddTest(TSimpleLoggerTests.Suite);
+
+  // Log4D specific initialization: create a default logger
+  TLogBasicConfigurator.Configure;
+  Tests.AddTest(TLog4DLoggerTests.Suite);
 
   RegisterTest('', Tests);
 
