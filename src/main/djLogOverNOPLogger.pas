@@ -16,8 +16,6 @@
 
 unit djLogOverNOPLogger;
 
-{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
-
 interface
 
 implementation

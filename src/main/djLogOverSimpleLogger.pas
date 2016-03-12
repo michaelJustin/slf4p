@@ -16,8 +16,6 @@
 
 unit djLogOverSimpleLogger;
 
-{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
-
 interface
 
 implementation

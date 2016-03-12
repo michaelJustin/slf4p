@@ -16,8 +16,6 @@
 
 unit SimpleLogger;
 
-{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
-
 interface
 
 uses
