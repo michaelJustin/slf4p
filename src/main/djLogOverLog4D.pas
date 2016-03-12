@@ -16,8 +16,6 @@
 
 unit djLogOverLog4D;
 
-{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
-
 interface
 
 implementation

@@ -16,8 +16,6 @@
 
 unit SimpleLoggerTests;
 
-{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
-
 interface
 
 uses

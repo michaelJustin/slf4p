@@ -16,8 +16,6 @@
 
 unit Log4DLoggerTests;
 
-{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
-
 interface
 
 uses

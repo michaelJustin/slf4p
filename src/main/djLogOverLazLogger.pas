@@ -16,8 +16,6 @@
 
 unit djLogOverLazLogger;
 
-{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
-
 interface
 
 implementation
