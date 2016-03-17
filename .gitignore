@@ -71,9 +71,7 @@ Unittests.dproj
 # Free Pascal compiler-generated binaries (safe to delete)
 *.ppu
 *.compiled
-*.ico
-*.res
-*.rst
+*.obj
 lib
 
 # Free Pascal history and backups
@@ -84,7 +82,17 @@ backup
 # Free Pascal local files (user-specific info)
 *.lps
 
+# Free Pascal (other)
+*.rsj
+*.ico
+*.res
+*.rst
+
 # Heaptrace
 heaptrace.log
 /src/test/Unittests.fpcunit.ini
 /src/test/log4delphi.log
+
+# Other
+*.log
+
