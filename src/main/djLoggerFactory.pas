@@ -34,7 +34,7 @@ implementation
 
 uses
   NOPLogger,
-  SysUtils;
+  SysUtils, SyncObjs;
 
 resourcestring
   SLF4PTag = 'SLF4P: ';
@@ -44,17 +44,24 @@ resourcestring
 
 var
   LoggerFactory: ILoggerFactory;
+  CriticalSection: TCriticalSection;
 
 procedure RegisterFactory(const AFactory: ILoggerFactory);
 begin
   Assert(Assigned(AFactory));
 
-  if Assigned(LoggerFactory) then
-  begin
-    WriteLn(SLF4PTag + WarnOverwrite);
-  end;
+  CriticalSection.Enter;
+  try
+    if Assigned(LoggerFactory) then
+    begin
+      WriteLn(SLF4PTag + WarnOverwrite);
+    end;
 
-  LoggerFactory := AFactory;
+    LoggerFactory := AFactory;
+
+  finally
+    CriticalSection.Leave;
+  end;
 end;
 
 { TdjLoggerFactory }
@@ -75,5 +82,11 @@ begin
 
   Result := LoggerFactory.GetLogger(AName);
 end;
+
+initialization
+  CriticalSection := TCriticalSection.Create;
+
+finalization
+  CriticalSection.Free;
 
 end.
