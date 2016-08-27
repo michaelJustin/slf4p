@@ -52,7 +52,7 @@ begin
 
   CriticalSection.Enter;
   try
-    if Assigned(LoggerFactory) then
+    if Assigned(LoggerFactory) and IsConsole then
     begin
       WriteLn(SLF4PTag + WarnOverwrite);
     end;
@@ -75,8 +75,11 @@ class function TdjLoggerFactory.GetLogger(const AName: string): ILogger;
 begin
   if not Assigned(LoggerFactory) then
   begin
-    WriteLn(SLF4PTag + NoLoggerFactoryAvailable);
-    WriteLn(SLF4PTag + UseNOPLogger);
+    if IsConsole then
+    begin
+      WriteLn(SLF4PTag + NoLoggerFactoryAvailable);
+      WriteLn(SLF4PTag + UseNOPLogger);
+    end;
     RegisterFactory(TNOPLoggerFactory.Create);
   end;
 
