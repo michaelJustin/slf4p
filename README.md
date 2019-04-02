@@ -1,5 +1,5 @@
 # slf4p
-A simple logging facade for Object Pascal, developed and tested with Lazarus 1.4 and Free Pascal 2.6.4, FPCUnit, Delphi 2009 and DUnit.
+A simple logging facade for Object Pascal, developed with Dephi 2009 and Lazarus 2.0. Tested with DUnit and FPCUnit.
 
 To register a specific logging framework, just add one of the `djLogOver...` units to the project.
 
