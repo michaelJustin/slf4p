@@ -3,8 +3,6 @@ A simple logging facade for Object Pascal, developed and tested with Lazarus 1.4
 
 To register a specific logging framework, just add one of the `djLogOver...` units to the project.
 
-Available binding units: 
-
 * `djLogOverLog4D` for logging over [Log4D](http://sourceforge.net/projects/log4d/)
 * `djLogOverLazLogger` for logging over [LazLogger](http://wiki.lazarus.freepascal.org/LazLogger)
 * `djLogOverSimpleLogger` for logging over SimpleLogger (included)
