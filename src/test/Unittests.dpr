@@ -9,6 +9,7 @@ uses
   LoggerFactoryTests in 'LoggerFactoryTests.pas',
   NOPLoggerTests in 'NOPLoggerTests.pas',
   SimpleLoggerTests in 'SimpleLoggerTests.pas',
+  StringsLoggerTests in 'StringsLoggerTests.pas',
   Log4DLoggerTests in 'Log4DLoggerTests.pas',
   Log4D,
   TestFramework,
@@ -20,6 +21,7 @@ begin
   RegisterTests('TdjLoggerFactory Tests', [TdjLoggerFactoryTests.Suite]);
   RegisterTests('TNOPLogger Tests', [TNOPLoggerTests.Suite]);
   RegisterTests('TSimpleLogger Tests', [TSimpleLoggerTests.Suite]);
+  RegisterTests('TStringsLogger Tests', [TStringsLoggerTests.Suite]);
   RegisterTests('TLog4DLogger Tests', [TLog4DLoggerTests.Suite]);
 
   // Create a default ODS logger
