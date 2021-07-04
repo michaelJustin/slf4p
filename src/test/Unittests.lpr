@@ -3,14 +3,15 @@ program Unittests;
 {$mode DELPHI}{$H+}
 
 uses
-  djLogAPI,
   LoggerFactoryTests,
   Log4DLoggerTests,
   NOPLoggerTests,
-  SimpleLoggerTests, LazLoggerTests,
+  SimpleLoggerTests,
+  LazLoggerTests,
+  StringsLoggerTests,
   Log4D,
   Interfaces, Forms,
-  fpcunit, testutils, testregistry, GuiTestRunner,
+  fpcunit, testregistry, GuiTestRunner,
   SysUtils;
 
 {$R *.res}
@@ -25,6 +26,7 @@ begin
   Tests.AddTest(TLazLoggerTests.Suite);
   Tests.AddTest(TNOPLoggerTests.Suite);
   Tests.AddTest(TSimpleLoggerTests.Suite);
+  Tests.AddTest(TStringsLoggerTests.Suite);
 
   // Log4D specific initialization: create a default logger
   TLogBasicConfigurator.Configure;
