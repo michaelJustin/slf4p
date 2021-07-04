@@ -14,7 +14,7 @@
    limitations under the License.
 *)
 
-unit StringBuilderLogger;
+unit StringsLogger;
 
 interface
 
@@ -95,6 +95,11 @@ type
     function GetLogger(const AName: string): ILogger;
   end;
 
+
+procedure Configure(const AStrings: TStrings); overload;
+
+procedure Configure(const AKey, AValue: string); overload;
+
 implementation
 
 type
@@ -129,6 +134,20 @@ var
 
   { Start time for the logging process - to compute elapsed time. }
   StartTime: TDateTime;
+
+procedure Configure(const AStrings: TStrings);
+begin
+  Assert(Assigned(Config), SNoFactory);
+
+  Config.Configure(AStrings);
+end;
+
+procedure Configure(const AKey, AValue: string);
+begin
+  Assert(Assigned(Config), SNoFactory);
+
+  Config.Configure(AKey, AValue);
+end;
 
 { TSimpleLoggerConfiguration }
 
@@ -198,11 +217,11 @@ end;
 function TStringsLogger.LevelAsString(const ALogLevel: TLogLevel): string;
 begin
   case ALogLevel of
-    StringBuilderLogger.Trace: Result := 'TRACE';
-    StringBuilderLogger.Debug: Result := 'DEBUG';
-    StringBuilderLogger.Info: Result := 'INFO';
-    StringBuilderLogger.Warn: Result := 'WARN';
-    StringBuilderLogger.Error: Result := 'ERROR';
+    StringsLogger.Trace: Result := 'TRACE';
+    StringsLogger.Debug: Result := 'DEBUG';
+    StringsLogger.Info: Result := 'INFO';
+    StringsLogger.Warn: Result := 'WARN';
+    StringsLogger.Error: Result := 'ERROR';
   end;
 end;
 
@@ -213,7 +232,12 @@ end;
 
 procedure TStringsLogger.WriteMsg(const ALogLevel: TLogLevel; const AMsg: string);
 begin
-  FStrings.Append(LevelAsString(ALogLevel) + ' ' + Name + ' - ' + AMsg);
+  if Config.ShowDateTime then
+  begin
+    FStrings.Append(DateTimeStr + ' ');
+  end;
+
+  FStrings.Append(LevelAsString(ALogLevel) + ' ' + Name + ' - ' + AMsg + sLinebreak);
 end;
 
 function TStringsLogger.DateTimeStr: string;
@@ -249,25 +273,25 @@ end;
 procedure TStringsLogger.Debug(const AMsg: string);
 begin
   if IsDebugEnabled then
-    WriteMsg(StringBuilderLogger.Debug, AMsg);
+    WriteMsg(StringsLogger.Debug, AMsg);
 end;
 
 procedure TStringsLogger.Debug(const AFormat: string; const AArgs: array of const);
 begin
   if IsDebugEnabled then
-    WriteMsg(StringBuilderLogger.Debug, Format(AFormat, AArgs));
+    WriteMsg(StringsLogger.Debug, Format(AFormat, AArgs));
 end;
 
 procedure TStringsLogger.Debug(const AMsg: string; const AException: Exception);
 begin
   if IsDebugEnabled then
-    WriteMsg(StringBuilderLogger.Debug, AMsg, AException);
+    WriteMsg(StringsLogger.Debug, AMsg, AException);
 end;
 
 procedure TStringsLogger.Error(const AMsg: string; const AException: Exception);
 begin
   if IsErrorEnabled then
-    WriteMsg(StringBuilderLogger.Error, AMsg, AException);
+    WriteMsg(StringsLogger.Error, AMsg, AException);
 end;
 
 function TStringsLogger.Name: string;
@@ -279,95 +303,95 @@ procedure TStringsLogger.Error(const AFormat: string;
   const AArgs: array of const);
 begin
   if IsErrorEnabled then
-    WriteMsg(StringBuilderLogger.Error, Format(AFormat, AArgs));
+    WriteMsg(StringsLogger.Error, Format(AFormat, AArgs));
 end;
 
 procedure TStringsLogger.Error(const AMsg: string);
 begin
   if IsErrorEnabled then
-    WriteMsg(StringBuilderLogger.Error, AMsg);
+    WriteMsg(StringsLogger.Error, AMsg);
 end;
 
 function TStringsLogger.IsDebugEnabled: Boolean;
 begin
-  Result := IsEnabledFor(StringBuilderLogger.Debug);
+  Result := IsEnabledFor(StringsLogger.Debug);
 end;
 
 function TStringsLogger.IsErrorEnabled: Boolean;
 begin
-  Result := IsEnabledFor(StringBuilderLogger.Error);
+  Result := IsEnabledFor(StringsLogger.Error);
 end;
 
 function TStringsLogger.IsInfoEnabled: Boolean;
 begin
-  Result := IsEnabledFor(StringBuilderLogger.Info);
+  Result := IsEnabledFor(StringsLogger.Info);
 end;
 
 function TStringsLogger.IsTraceEnabled: Boolean;
 begin
-  Result := IsEnabledFor(StringBuilderLogger.Trace);
+  Result := IsEnabledFor(StringsLogger.Trace);
 end;
 
 function TStringsLogger.IsWarnEnabled: Boolean;
 begin
-  Result := IsEnabledFor(StringBuilderLogger.Warn);
+  Result := IsEnabledFor(StringsLogger.Warn);
 end;
 
 procedure TStringsLogger.Info(const AFormat: string;
   const AArgs: array of const);
 begin
   if IsInfoEnabled then
-    WriteMsg(StringBuilderLogger.Info, Format(AFormat, AArgs));
+    WriteMsg(StringsLogger.Info, Format(AFormat, AArgs));
 end;
 
 procedure TStringsLogger.Info(const AMsg: string);
 begin
   if IsInfoEnabled then
-    WriteMsg(StringBuilderLogger.Info, AMsg);
+    WriteMsg(StringsLogger.Info, AMsg);
 end;
 
 procedure TStringsLogger.Info(const AMsg: string; const AException: Exception);
 begin
   if IsInfoEnabled then
-    WriteMsg(StringBuilderLogger.Info, AMsg, AException);
+    WriteMsg(StringsLogger.Info, AMsg, AException);
 end;
 
 procedure TStringsLogger.Trace(const AMsg: string; const AException: Exception);
 begin
   if IsTraceEnabled then
-    WriteMsg(StringBuilderLogger.Trace, AMsg, AException);
+    WriteMsg(StringsLogger.Trace, AMsg, AException);
 end;
 
 procedure TStringsLogger.Trace(const AFormat: string;
   const AArgs: array of const);
 begin
   if IsTraceEnabled then
-    WriteMsg(StringBuilderLogger.Trace, Format(AFormat, AArgs));
+    WriteMsg(StringsLogger.Trace, Format(AFormat, AArgs));
 end;
 
 procedure TStringsLogger.Trace(const AMsg: string);
 begin
   if IsTraceEnabled then
-    WriteMsg(StringBuilderLogger.Trace, AMsg);
+    WriteMsg(StringsLogger.Trace, AMsg);
 end;
 
 procedure TStringsLogger.Warn(const AMsg: string; const AException: Exception);
 begin
   if IsWarnEnabled then
-    WriteMsg(StringBuilderLogger.Warn, AMsg, AException);
+    WriteMsg(StringsLogger.Warn, AMsg, AException);
 end;
 
 procedure TStringsLogger.Warn(const AFormat: string;
   const AArgs: array of const);
 begin
   if IsWarnEnabled then
-    WriteMsg(StringBuilderLogger.Warn, Format(AFormat, AArgs));
+    WriteMsg(StringsLogger.Warn, Format(AFormat, AArgs));
 end;
 
 procedure TStringsLogger.Warn(const AMsg: string);
 begin
   if IsWarnEnabled then
-    WriteMsg(StringBuilderLogger.Warn, AMsg);
+    WriteMsg(StringsLogger.Warn, AMsg);
 end;
 
 { TStringsLoggerFactory }

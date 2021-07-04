@@ -38,7 +38,7 @@ type
 implementation
 
 uses
-  djLogAPI, StringBuilderLogger, Classes, SysUtils;
+  djLogAPI, StringsLogger, Classes, SysUtils;
 
 { TStringsLoggerTests }
 
@@ -64,16 +64,37 @@ var
   LoggerFactory: ILoggerFactory;
   Logger: ILogger;
   SB: TStringBuilder;
+  SL: TStrings;
 begin
   SB := TStringBuilder.Create;
   try
     LoggerFactory := TStringsLoggerFactory.Create(SB);
+    StringsLogger.Configure('defaultLogLevel', 'debug');
 
-    Logger := LoggerFactory.GetLogger('sl');
-
+    Logger := LoggerFactory.GetLogger('test.stringslogger');
     Logger.Info('simple info msg');
+    Logger.Debug('simple debug msg');
+    try
+      raise Exception.Create('some exception occured');
+    except
+      on E: Exception do
+      begin
+        Logger.Error('exception', E);
+      end;
+    end;
 
-    CheckEquals('INFO sl - simple info msg', SB.ToString);
+    SL := TStringList.Create;
+    try
+      SL.Text := SB.ToString;
+
+      CheckEquals('INFO test.stringslogger - simple info msg', SL[0]);
+      CheckEquals('DEBUG test.stringslogger - simple debug msg', SL[1]);
+      CheckEquals('ERROR test.stringslogger - exception', SL[2]);
+      CheckEquals('  Exception', SL[3]);
+      CheckEquals('  some exception occured', SL[4]);
+    finally
+      SL.Free;
+    end;
   finally
     SB.Free;
   end;
