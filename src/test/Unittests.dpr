@@ -3,9 +3,15 @@ program Unittests;
 {$APPTYPE CONSOLE}
 
 uses
+  // API units
   djLogAPI in '..\main\djLogAPI.pas',
   djLoggerFactory in '..\main\djLoggerFactory.pas',
   djLogOverNOPLogger in '..\main\djLogOverNOPLogger.pas',
+  // Implementations
+  NOPLogger in '..\main\NOPLogger.pas',
+  SimpleLogger in '..\main\SimpleLogger.pas',
+  StringsLogger in '..\main\StringsLogger.pas',
+  // Test classes
   LoggerFactoryTests in 'LoggerFactoryTests.pas',
   NOPLoggerTests in 'NOPLoggerTests.pas',
   SimpleLoggerTests in 'SimpleLoggerTests.pas',

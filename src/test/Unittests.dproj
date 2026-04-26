@@ -46,6 +46,9 @@
 			<DCCReference Include="..\main\djLogAPI.pas"/>
 			<DCCReference Include="..\main\djLoggerFactory.pas"/>
 			<DCCReference Include="..\main\djLogOverNOPLogger.pas"/>
+			<DCCReference Include="..\main\NOPLogger.pas"/>
+			<DCCReference Include="..\main\SimpleLogger.pas"/>
+			<DCCReference Include="..\main\StringsLogger.pas"/>
 			<DCCReference Include="LoggerFactoryTests.pas"/>
 			<DCCReference Include="NOPLoggerTests.pas"/>
 			<DCCReference Include="SimpleLoggerTests.pas"/>
