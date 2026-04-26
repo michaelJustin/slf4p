@@ -45,3 +45,10 @@ begin
 end.
 ```
 
+### Program output
+
+```console
+09:58:46.491 DEBUG logger - Using slf4p 1.0.5
+09:58:46.491 INFO logger - Hello, World!
+09:58:46.491 DEBUG logger - Hit any key
+```
