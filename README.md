@@ -48,7 +48,7 @@ end.
 ### Program output
 
 ```console
-09:58:46.491 DEBUG - Using slf4p 1.0.5
-09:58:46.491 INFO - Hello, World!
-09:58:46.491 DEBUG - Hit any key
+[09:58:46.491] DEBUG - Using slf4p 1.0.5
+[09:58:46.491] INFO - Hello, World!
+[09:58:46.491] DEBUG - Hit any key
 ```
