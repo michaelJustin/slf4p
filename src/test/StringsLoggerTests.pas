@@ -92,6 +92,8 @@ begin
       CheckEquals('ERROR test.stringslogger - exception', SL[2]);
       CheckEquals('  Exception', SL[3]);
       CheckEquals('  some exception occured', SL[4]);
+
+      WriteLn(SL.Text);
     finally
       SL.Free;
     end;
