@@ -22,6 +22,33 @@ To register a specific logging framework, just add one of the `djLogOver...` uni
 
 ## Example
 
-This example uses the helper unit [slf4p](src/main/slf4p.pas), which located in the src/main folder.
+This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder. (New in 1.0.5)
 
-https://github.com/michaelJustin/slf4p/blob/4cc0b6899ebc0ddc83d6f9a9d9614279a99cd000/examples/simple/HelloWorld.dpr#L1-L18
+```pascal
+{$APPTYPE CONSOLE}
+
+program HelloWorld;
+
+uses
+  slf4p;
+
+procedure RunDemo;
+begin
+  Logger.Debug('Using slf4p ' + SLF4P_VERSION);
+  Logger.Info('Hello, World!');
+  Logger.Debug('Hit any key');
+  ReadLn;
+end;
+
+begin
+  RunDemo;
+end.
+```
+
+### Program output
+
+```console
+09:58:46.491 DEBUG logger - Using slf4p 1.0.5
+09:58:46.491 INFO logger - Hello, World!
+09:58:46.491 DEBUG logger - Hit any key
+```
