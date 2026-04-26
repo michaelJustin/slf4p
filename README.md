@@ -20,4 +20,3 @@ To register a specific logging framework, just add one of the `djLogOver...` uni
 * `djLogOverSimpleLogger` for logging over SimpleLogger (included)
 * `djLogOverNOPLogger` for logging over NOPLogger (included)
 
-Visit the Wiki for additional information.
