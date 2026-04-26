@@ -1,4 +1,4 @@
-# slf4p
+# slf4p - Simple Logging Facade for Pascal
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Pascal](https://img.shields.io/badge/language-Object%20Pascal-blue.svg)]()
@@ -11,7 +11,9 @@
 [![Log4D](https://img.shields.io/badge/Log4D-supported-brightgreen.svg)]()
 [![LazLogger](https://img.shields.io/badge/LazLogger-supported-brightgreen.svg)]()
 
-A simple logging facade for Object Pascal, developed with Dephi 2009 and Lazarus 2.0. Tested with DUnit and FPCUnit.
+The Simple Logging Facade for Pascal serves as a simple facade or abstraction for various logging frameworks (e.g. Log4D, LazLogger) allowing the end user to plug in the desired logging framework at build time.
+
+Developed with Dephi 2009 and Lazarus 2.0, tested with DUnit and FPCUnit.
 
 To register a specific logging framework, just add one of the `djLogOver...` units to the project.
 
