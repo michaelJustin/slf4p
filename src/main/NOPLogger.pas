@@ -25,7 +25,7 @@ uses
 
 type
   TNOPLogger = class(TInterfacedObject, ILogger)
-  private
+  strict private
     FName: string;
 
   public

@@ -27,7 +27,7 @@ type
   { TSimpleLogger }
 
   TSimpleLogger = class(TInterfacedObject, ILogger)
-  private
+  strict private
     FDateTimeFormat: string;
     FLevel: TSimpleLogLevel;
     FName: string;

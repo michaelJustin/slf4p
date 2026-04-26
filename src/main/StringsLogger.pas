@@ -27,7 +27,7 @@ type
   { TStringsLogger }
 
   TStringsLogger = class(TInterfacedObject, ILogger)
-  private
+  strict private
     FStrings: TStringBuilder;
     FDateTimeFormat: string;
     FLevel: TLogLevel;
@@ -86,7 +86,7 @@ type
   { TStringsLoggerFactory }
 
   TStringsLoggerFactory = class(TInterfacedObject, ILoggerFactory)
-  private
+  strict private
     FStrings: TStringBuilder;
   public
     constructor Create(const AStrings: TStringBuilder);
