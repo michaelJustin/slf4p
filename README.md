@@ -20,3 +20,8 @@ To register a specific logging framework, just add one of the `djLogOver...` uni
 * `djLogOverSimpleLogger` for logging over SimpleLogger (included)
 * `djLogOverNOPLogger` for logging over NOPLogger (included)
 
+## Example
+
+This example uses the helper unit [slf4p](src/main/slf4p.pas), which located in the src/main folder.
+
+https://github.com/michaelJustin/slf4p/blob/4cc0b6899ebc0ddc83d6f9a9d9614279a99cd000/examples/simple/HelloWorld.dpr#L1-L18
