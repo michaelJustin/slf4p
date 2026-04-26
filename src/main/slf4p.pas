@@ -34,6 +34,6 @@ uses
   djLoggerFactory;
 
 initialization
-  Logger := TdjLoggerFactory.GetLogger('logger');
+  Logger := TdjLoggerFactory.GetLogger('');
 
 end.
