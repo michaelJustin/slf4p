@@ -46,6 +46,8 @@ type
 
     procedure SetLevel(AValue: TSimpleLogLevel);
 
+    function NameOrDash: string;
+
   public
     constructor Create(const AName: string);
 
@@ -98,6 +100,9 @@ procedure Configure(const AStrings: TStrings); overload;
 procedure Configure(const AKey, AValue: string); overload;
 
 implementation
+
+const
+  LOG_DATETIME = '[hh:nn:ss.zzz]';
 
 type
   { TSimpleLoggerConfiguration }
@@ -152,7 +157,7 @@ constructor TSimpleLoggerConfiguration.Create;
 begin
   FLevel := Debug;
   FShowDateTime := True;
-  FDateTimeFormat := 'hh:nn:ss.zzz';
+  FDateTimeFormat := LOG_DATETIME;
 end;
 
 procedure TSimpleLoggerConfiguration.Configure(const AStrings: TStrings);
@@ -173,7 +178,7 @@ begin
   if Line <> '' then
   begin
     FShowDateTime := (Line = 'true');
-    FDateTimeFormat := 'hh:nn:ss.zzz';
+    FDateTimeFormat := LOG_DATETIME;
   end;
 
   Line := LowerCase(AStrings.Values['dateTimeFormat']);
@@ -231,7 +236,7 @@ procedure TSimpleLogger.WriteMsg(const ALogLevel: TSimpleLogLevel; const AMsg: s
 begin
   WriteLn(DateTimeStr + ' '
     + LevelAsString(ALogLevel) + ' '
-    + Name + ' - '
+    + NameOrDash
     + AMsg);
 end;
 
@@ -292,6 +297,14 @@ end;
 function TSimpleLogger.Name: string;
 begin
   Result := FName;
+end;
+
+function TSimpleLogger.NameOrDash: string;
+begin
+  if Name = '' then
+    Result := '- '
+  else
+    Result := Name + ' ';
 end;
 
 procedure TSimpleLogger.Error(const AFormat: string;
