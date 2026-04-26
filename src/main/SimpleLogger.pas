@@ -150,7 +150,9 @@ end;
 
 constructor TSimpleLoggerConfiguration.Create;
 begin
-  FLevel := Info;
+  FLevel := Debug;
+  FShowDateTime := True;
+  FDateTimeFormat := 'hh:nn:ss.zzz';
 end;
 
 procedure TSimpleLoggerConfiguration.Configure(const AStrings: TStrings);
