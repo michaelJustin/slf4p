@@ -34,9 +34,9 @@ uses
 
 procedure RunDemo;
 begin
-  Logger.Debug('Using slf4p ' + SLF4P_VERSION);
-  Logger.Info('Hello, World!');
-  Logger.Debug('Hit any key');
+  LOGGER.Debug('Using slf4p ' + SLF4P_VERSION);
+  LOGGER.Info('Hello, World!');
+  LOGGER.Debug('Hit any key');
   ReadLn;
 end;
 
