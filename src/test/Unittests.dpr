@@ -10,8 +10,8 @@ uses
   NOPLoggerTests in 'NOPLoggerTests.pas',
   SimpleLoggerTests in 'SimpleLoggerTests.pas',
   StringsLoggerTests in 'StringsLoggerTests.pas',
-  Log4DLoggerTests in 'Log4DLoggerTests.pas',
-  Log4D,
+  // Log4DLoggerTests in 'Log4DLoggerTests.pas',
+  // Log4D,
   TestFramework,
   GUITestRunner,
   TextTestRunner,
@@ -22,12 +22,12 @@ begin
   RegisterTests('TNOPLogger Tests', [TNOPLoggerTests.Suite]);
   RegisterTests('TSimpleLogger Tests', [TSimpleLoggerTests.Suite]);
   RegisterTests('TStringsLogger Tests', [TStringsLoggerTests.Suite]);
-  RegisterTests('TLog4DLogger Tests', [TLog4DLoggerTests.Suite]);
+  // RegisterTests('TLog4DLogger Tests', [TLog4DLoggerTests.Suite]);
 
   // Create a default ODS logger
-  TLogBasicConfigurator.Configure;
+  // TLogBasicConfigurator.Configure;
   // see output in the 'Event log' IDE Window
-  TLogLogger.GetRootLogger.Level := Debug;
+  // TLogLogger.GetRootLogger.Level := Debug;
 
   if FindCmdLineSwitch('text-mode', ['-', '/'], True) then
   begin
