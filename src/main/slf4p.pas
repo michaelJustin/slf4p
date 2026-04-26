@@ -24,8 +24,7 @@ uses
 const
   SLF4P_VERSION = '1.0.5';
 
-var
-  Logger: ILogger;
+function LOGGER: ILogger;
 
 implementation
 
@@ -33,7 +32,15 @@ uses
   djLogOverSimpleLogger,
   djLoggerFactory;
 
+var
+  LoggerImpl: ILogger;
+
+function LOGGER: ILogger;
+begin
+  Result := LoggerImpl;
+end;
+
 initialization
-  Logger := TdjLoggerFactory.GetLogger('');
+  LoggerImpl := TdjLoggerFactory.GetLogger('');
 
 end.
