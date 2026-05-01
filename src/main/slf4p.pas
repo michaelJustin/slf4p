@@ -22,14 +22,13 @@ uses
   djLogAPI;
 
 const
-  SLF4P_VERSION = '1.0.5';
+  SLF4P_VERSION = '1.0.6-SNAPSHOT';
 
 function LOGGER: ILogger;
 
 implementation
 
 uses
-  djLogOverSimpleLogger,
   djLoggerFactory;
 
 var

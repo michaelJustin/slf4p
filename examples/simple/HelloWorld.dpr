@@ -3,6 +3,7 @@
 program HelloWorld;
 
 uses
+  djLogOverSimpleLogger,
   slf4p;
 
 procedure RunDemo;

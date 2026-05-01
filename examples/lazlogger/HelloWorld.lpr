@@ -17,16 +17,13 @@
 program HelloWorld;
 
 uses
-  djLogOverLazLogger, djLogAPI, djLoggerFactory;
-
-var
-  Logger: ILogger;
+  djLogOverLazLogger,
+  slf4p;
 
 begin
-  Logger := TdjLoggerFactory.GetLogger('demo');
-  Logger.Info('Hello World');
-
-  WriteLn('hit any key');
+  LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
+  LOGGER.Info('Hello, World!');
+  LOGGER.Debug('Hit any key');
   ReadLn;
 end.
 

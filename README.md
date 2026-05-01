@@ -32,6 +32,7 @@ This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located 
 program HelloWorld;
 
 uses
+  djLogOverSimpleLogger,
   slf4p;
 
 procedure RunDemo;
