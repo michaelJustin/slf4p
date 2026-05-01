@@ -21,8 +21,8 @@ jobs:
     - name: Verify FPC installation
       run: fpc
        
-    - name: Compile lazlogger example
+    - name: Compile simple example
       run: |
-        cd examples/lazlogger
+        cd examples/simple
         fpc -FUlib HelloWorld.lpi
     
