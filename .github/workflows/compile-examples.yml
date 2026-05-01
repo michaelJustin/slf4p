@@ -17,12 +17,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y fpc
-    
-    - name: Verify FPC installation
-      run: fpc
        
     - name: Compile simple example
       run: |
         cd examples/simple
-        fpc -FUlib HelloWorld.lpi
+        fpc -FU..\..\src\main HelloWorld.lpi
     
