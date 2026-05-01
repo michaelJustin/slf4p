@@ -63,7 +63,6 @@ SLF4P: Defaulting to no-operation (NOP) logger implementation
 
 ### SimpleLogger
 
-This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
 The first unit used, djLogOverSimpleLogger, registers a factory for console loggers.
 
 ```pascal
@@ -96,7 +95,6 @@ end.
 
 ### Log4D
 
-This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
 The first unit used, djLogOverLog4D, registers a logger factory which created Log4D loggers.
 
 ```pascal
@@ -141,7 +139,6 @@ Logging with Log4D version 1.2.12
 
 ### LazLogger
 
-This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
 The first unit used, djLogOverLazLogger, registers a logger factory which created LazLogger loggers.
 
 ```pascal
