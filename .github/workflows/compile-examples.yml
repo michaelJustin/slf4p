@@ -16,7 +16,7 @@ jobs:
     - name: Install Free Pascal
       run: |
         sudo apt-get -qq update
-        sudo apt-get -qq install -y fpc
+        sudo apt-get -yq install fpc
        
     - name: Compile simple example
       run: |
