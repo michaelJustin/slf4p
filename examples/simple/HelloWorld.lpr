@@ -1,5 +1,3 @@
-{$APPTYPE CONSOLE}
-
 program HelloWorld;
 
 uses
