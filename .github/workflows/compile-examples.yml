@@ -24,6 +24,6 @@ jobs:
         fpc -Sd -Fu../../src/main HelloWorld.lpr
 
     - name: Run simple example
-      run: examples/simple/HelloWorld.exe
+      run: examples/simple/HelloWorld
       
     
