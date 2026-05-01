@@ -14,8 +14,6 @@
    limitations under the License.
 *)
 
-{$APPTYPE CONSOLE}
-
 program HelloWorld;
 
 uses

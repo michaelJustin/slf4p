@@ -1,7 +1,5 @@
 program Unittests;
 
-{$APPTYPE CONSOLE}
-
 uses
   // API units
   djLogAPI in '..\main\djLogAPI.pas',
