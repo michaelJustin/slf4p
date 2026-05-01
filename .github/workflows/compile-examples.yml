@@ -21,5 +21,5 @@ jobs:
     - name: Compile simple example
       run: |
         cd examples/simple
-        fpc-Sd -Fu../../src/main HelloWorld.lpr
+        fpc -Sd -Fu../../src/main HelloWorld.lpr
     
