@@ -19,24 +19,21 @@
 program HelloWorld;
 
 uses
-  djLogOverLog4D, Log4DLogger, LogConsoleAppender, Log4d,
+  djLogOverLog4D, LogConsoleAppender, Log4d,
   slf4p;
 
+procedure RunDemo;
 var
   LogLayout: ILogLayout;
   ConsoleAppender: ILogAppender;
-  FileAppender: ILogAppender;
-
-procedure RunDemo;
 begin
   LogLayout := TLogPatternLayout.Create(TTCCPattern);
   ConsoleAppender := TLogConsoleAppender.Create('console');
   ConsoleAppender.Layout := LogLayout;
   TLogBasicConfigurator.Configure(ConsoleAppender);
 
-  TLogLogger.GetRootLogger.Level := Info;
+  TLogLogger.GetRootLogger.Level := Debug;
   WriteLn('Logging with Log4D version ' + Log4DVersion);
-
 
   LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
   LOGGER.Info('Hello, World!');
