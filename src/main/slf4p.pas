@@ -22,7 +22,7 @@ uses
   djLogAPI;
 
 const
-  SLF4P_VERSION = '1.0.6-SNAPSHOT';
+  SLF4P_VERSION = '1.0.6';
 
 function LOGGER: ILogger;
 
