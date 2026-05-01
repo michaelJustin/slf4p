@@ -22,10 +22,14 @@ uses
   djLogAPI;
 
 type
+
+  { TdjLoggerFactory }
+
   TdjLoggerFactory = class(TObject)
   public
     class function GetILoggerFactory: ILoggerFactory;
     class function GetLogger(const AName: string): ILogger;
+    class function IsRegistered: boolean;
   end;
 
 procedure RegisterFactory(const AFactory: ILoggerFactory);
@@ -52,7 +56,7 @@ begin
 
   CriticalSection.Enter;
   try
-    if Assigned(LoggerFactory) and IsConsole then
+    if TdjLoggerFactory.IsRegistered and IsConsole then
     begin
       WriteLn(SLF4PTag + WarnOverwrite);
     end;
@@ -73,7 +77,7 @@ end;
 
 class function TdjLoggerFactory.GetLogger(const AName: string): ILogger;
 begin
-  if not Assigned(LoggerFactory) then
+  if not IsRegistered then
   begin
     if IsConsole then
     begin
@@ -84,6 +88,11 @@ begin
   end;
 
   Result := LoggerFactory.GetLogger(AName);
+end;
+
+class function TdjLoggerFactory.IsRegistered: boolean;
+begin
+  Result := Assigned(LoggerFactory);
 end;
 
 initialization
