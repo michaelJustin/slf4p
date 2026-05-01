@@ -289,6 +289,6 @@ end;
 
 initialization
   StartTime := Now;
-  DefaultLevel:= Info;
+  DefaultLevel:= Debug;
 
 end.
