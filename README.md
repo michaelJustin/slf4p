@@ -25,9 +25,14 @@ To register a specific logging framework, just add one of the `djLogOver...` uni
 
 ## Examples
 
+The examples use the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
+Note: 
+* the unit which specifies (registers) a logger factory must appear in the uses list before unit slf4p.
+* when no unit is added, a NOPLogger factory will be used as fallback, and a message indicating the fallback will be printed.
+* the last logger factory unit found will be used to create logger instances.
+
 ### NOPLogger
 
-This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
 Since no unit for registering a logger factory is used, a factory for NOP loggers will be registered.
 
 ```pascal
