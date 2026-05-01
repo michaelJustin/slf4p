@@ -15,11 +15,15 @@ jobs:
     
     - name: Install Free Pascal
       run: |
-        sudo apt-get update
+        sudo apt-get update -qq
         sudo apt-get install -qq -y fpc
        
     - name: Compile simple example
       run: |
         cd examples/simple
         fpc -Sd -Fu../../src/main HelloWorld.lpr
+
+    - name: Run simple example
+      run: ./HelloWorld.exe
+      
     
