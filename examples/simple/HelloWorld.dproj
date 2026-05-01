@@ -20,6 +20,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_ConsoleTarget>true</DCC_ConsoleTarget>
 			<DCC_DependencyCheckOutputName>HelloWorld.exe</DCC_DependencyCheckOutputName>
 			<DCC_UnitSearchPath>..\..\src\main;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_K>false</DCC_K>
