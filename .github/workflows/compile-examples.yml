@@ -19,7 +19,7 @@ jobs:
         sudo apt-get install -y fpc
     
     - name: Verify FPC installation
-      run: fpc -v
+      run: fpc
     
     - name: Compile simple example
       run: |
