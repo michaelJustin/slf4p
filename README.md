@@ -10,6 +10,7 @@
 [![FPC](https://img.shields.io/badge/FPC-supported-brightgreen.svg)]()
 [![Log4D](https://img.shields.io/badge/Log4D-supported-brightgreen.svg)]()
 [![LazLogger](https://img.shields.io/badge/LazLogger-supported-brightgreen.svg)]()
+[![Workflow Status](https://github.com/michaelJustin/slf4p/actions/workflows/compile-examples.yml/badge.svg)](https://github.com/michaelJustin/slf4p/actions/workflows/compile-examples.yml)
 
 The Simple Logging Facade for Pascal serves as a simple facade or abstraction for various logging frameworks (e.g. Log4D, LazLogger) allowing the end user to plug in the desired logging framework at build time.
 
