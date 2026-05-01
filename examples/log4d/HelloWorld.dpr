@@ -14,16 +14,37 @@
    limitations under the License.
 *)
 
+{$APPTYPE CONSOLE}
+
 program HelloWorld;
 
 uses
-  djLogOverLazLogger,
+  djLogOverLog4D, Log4DLogger, LogConsoleAppender, Log4d,
   slf4p;
 
+var
+  LogLayout: ILogLayout;
+  ConsoleAppender: ILogAppender;
+  FileAppender: ILogAppender;
+
+procedure RunDemo;
 begin
+  LogLayout := TLogPatternLayout.Create(TTCCPattern);
+  ConsoleAppender := TLogConsoleAppender.Create('console');
+  ConsoleAppender.Layout := LogLayout;
+  TLogBasicConfigurator.Configure(ConsoleAppender);
+
+  TLogLogger.GetRootLogger.Level := Info;
+  WriteLn('Logging with Log4D version ' + Log4DVersion);
+
+
   LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
   LOGGER.Info('Hello, World!');
   LOGGER.Debug('Hit any key');
   ReadLn;
+end;
+
+begin
+  RunDemo;
 end.
 
