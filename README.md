@@ -23,9 +23,45 @@ To register a specific logging framework, just add one of the `djLogOver...` uni
 * `djLogOverSimpleLogger` for logging over SimpleLogger (included)
 * `djLogOverNOPLogger` for logging over NOPLogger (included)
 
-## Example
+## Examples
 
-This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder. (New in 1.0.5)
+### NOPLogger
+
+This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
+If no unit for specifying a logging framework is used, a NOPLogger will be registered.
+
+```pascal
+{$APPTYPE CONSOLE}
+
+program HelloWorld;
+
+uses
+  slf4p;
+
+procedure RunDemo;
+begin
+  LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
+  LOGGER.Info('Hello, World!');
+  LOGGER.Debug('Hit any key');
+  ReadLn;
+end;
+
+begin
+  RunDemo;
+end.
+```
+
+#### Program output
+
+```console
+
+```
+
+
+### SimpleLogger
+
+This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
+The first unit used, djLogOverSimpleLogger, registers a console logger.
 
 ```pascal
 {$APPTYPE CONSOLE}
@@ -49,10 +85,10 @@ begin
 end.
 ```
 
-### Program output
+#### Program output
 
 ```console
-[09:58:46.491] DEBUG - Using slf4p 1.0.5
+[09:58:46.491] DEBUG - Using slf4p 1.0.6
 [09:58:46.491] INFO - Hello, World!
 [09:58:46.491] DEBUG - Hit any key
 ```
