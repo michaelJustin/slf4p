@@ -28,7 +28,7 @@ To register a specific logging framework, just add one of the `djLogOver...` uni
 ### NOPLogger
 
 This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
-If no unit for specifying a logging framework is used, a NOPLogger will be registered.
+Since no unit for registering a logger factory is used, a factory for NOP loggers will be registered.
 
 ```pascal
 program HelloWorld;
@@ -59,7 +59,7 @@ SLF4P: Defaulting to no-operation (NOP) logger implementation
 ### SimpleLogger
 
 This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
-The first unit used, djLogOverSimpleLogger, registers a console logger.
+The first unit used, djLogOverSimpleLogger, registers a factory for console loggers.
 
 ```pascal
 program HelloWorld;
@@ -89,10 +89,55 @@ end.
 [09:58:46.491] DEBUG - Hit any key
 ```
 
+### Log4D
+
+This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
+The first unit used, djLogOverLog4D, registers a logger factory which created Log4D loggers.
+
+```pascal
+program HelloWorld;
+
+uses
+  djLogOverLog4D, LogConsoleAppender, Log4d,
+  slf4p;
+
+procedure RunDemo;
+var
+  LogLayout: ILogLayout;
+  ConsoleAppender: ILogAppender;
+begin
+  LogLayout := TLogPatternLayout.Create(TTCCPattern);
+  ConsoleAppender := TLogConsoleAppender.Create('console');
+  ConsoleAppender.Layout := LogLayout;
+  TLogBasicConfigurator.Configure(ConsoleAppender);
+
+  TLogLogger.GetRootLogger.Level := Debug;
+  WriteLn('Logging with Log4D version ' + Log4DVersion);
+
+  LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
+  LOGGER.Info('Hello, World!');
+  LOGGER.Debug('Hit any key');
+  ReadLn;
+end;
+
+begin
+  RunDemo;
+end.
+```
+
+#### Program output
+
+```console
+Logging with Log4D version 1.2.12
+0 [13620] debug   - Using slf4p 1.0.6-SNAPSHOT
+0 [13620] info   - Hello, World!
+0 [13620] debug   - Hit any key
+```
+
 ### LazLogger
 
 This example uses the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
-The first unit used, djLogOverLazLogger, registers a LazLogger.
+The first unit used, djLogOverLazLogger, registers a logger factory which created LazLogger loggers.
 
 ```pascal
 program HelloWorld;
