@@ -172,6 +172,26 @@ end.
 ## Named loggers
 
 ```pascal
+program HelloWorld;
+
+uses
+  djLogOverSimpleLogger, SimpleLogger,
+  slf4p;
+
+resourcestring
+  StrLog = '[demo]';
+
+type
+  TFirstClass = class
+    constructor Create;
+    destructor Destroy; override;
+  end;
+
+  TSecondClass = class(TFirstClass)
+    constructor Create;
+    destructor Destroy; override;
+  end;
+
 procedure RunDemo;
 var
   Obj1: TFirstClass;
@@ -180,30 +200,34 @@ begin
   SimpleLogger.Configure('defaultLogLevel', 'trace');
   SimpleLogger.Configure('showDateTime', 'false');
 
-  LOGGER.Info('Using slf4p %s', [SLF4P_VERSION]);
+  LOGGER(StrLog).Info('Using slf4p %s', [SLF4P_VERSION]);
 
   Obj1 := TFirstClass.Create;
   Obj2 := TSecondClass.Create;
   try
-    LOGGER.Info(Obj1.ToString + ' ' + Obj2.ToString);
+    LOGGER(StrLog).Info(Obj1.ToString + ' ' + Obj2.ToString);
   finally
     Obj2.Free;
     Obj1.Free;
   end;
 
-  LOGGER.Info('Hit any key');
+  LOGGER(StrLog).Info('Hit any key');
   ReadLn;
 end;
 
+{ TExampleClass }
+
 constructor TFirstClass.Create;
 begin
-  LOGGER(ClassName).Info('in constructor');
+  LOGGER(ClassName).Debug('in constructor');
 end;
 
 destructor TFirstClass.Destroy;
 begin
-  LOGGER(ClassName).Info('in destructor');
+  LOGGER(ClassName).Debug('in destructor');
 end;
+
+{ TSecondClass }
 
 constructor TSecondClass.Create;
 begin
@@ -223,20 +247,24 @@ begin
     LOGGER(ClassName).Trace('leaving destructor');
 end;
 
+begin
+  RunDemo;
+end.
+
 ```
 
 #### Program output
 
 ```console
-0 INFO - Using slf4p 1.0.7
-0 INFO TFirstClass in constructor
+0 INFO [demo] Using slf4p 1.0.7-SNAPSHOT
+0 DEBUG TFirstClass in constructor
 0 TRACE TSecondClass entering constructor
-0 INFO TSecondClass in constructor
+0 DEBUG TSecondClass in constructor
 0 TRACE TSecondClass leaving constructor
-0 INFO - TFirstClass TSecondClass
+0 INFO [demo] TFirstClass TSecondClass
 0 TRACE TSecondClass entering destructor
-0 INFO TSecondClass in destructor
+0 DEBUG TSecondClass in destructor
 0 TRACE TSecondClass leaving destructor
-0 INFO TFirstClass in destructor
-0 INFO - Hit any key
+0 DEBUG TFirstClass in destructor
+0 INFO [demo] Hit any key
 ```

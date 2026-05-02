@@ -22,6 +22,9 @@ uses
   djLogOverSimpleLogger, SimpleLogger,
   slf4p;
 
+resourcestring
+  StrLog = '[demo]';
+
 type
   TFirstClass = class
     constructor Create;
@@ -41,18 +44,18 @@ begin
   SimpleLogger.Configure('defaultLogLevel', 'trace');
   SimpleLogger.Configure('showDateTime', 'false');
 
-  LOGGER.Info('Using slf4p %s', [SLF4P_VERSION]);
+  LOGGER(StrLog).Info('Using slf4p %s', [SLF4P_VERSION]);
 
   Obj1 := TFirstClass.Create;
   Obj2 := TSecondClass.Create;
   try
-    LOGGER.Info(Obj1.ToString + ' ' + Obj2.ToString);
+    LOGGER(StrLog).Info(Obj1.ToString + ' ' + Obj2.ToString);
   finally
     Obj2.Free;
     Obj1.Free;
   end;
 
-  LOGGER.Info('Hit any key');
+  LOGGER(StrLog).Info('Hit any key');
   ReadLn;
 end;
 
@@ -60,12 +63,12 @@ end;
 
 constructor TFirstClass.Create;
 begin
-  LOGGER(ClassName).Info('in constructor');
+  LOGGER(ClassName).Debug('in constructor');
 end;
 
 destructor TFirstClass.Destroy;
 begin
-  LOGGER(ClassName).Info('in destructor');
+  LOGGER(ClassName).Debug('in destructor');
 end;
 
 { TSecondClass }
