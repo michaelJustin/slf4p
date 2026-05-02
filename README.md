@@ -23,6 +23,13 @@ To register a specific logging framework, just add one of the `djLogOver...` uni
 * `djLogOverLog4D` for logging over [Log4D](http://sourceforge.net/projects/log4d/)
 * `djLogOverLazLogger` for logging over [LazLogger](http://wiki.lazarus.freepascal.org/LazLogger)
 
+## Choosing Between SLF4P and Log4D
+Before deciding which logging tool to use, it’s important to understand what each one does.
+
+SLF4P is not a logging implementation on its own. It’s an abstraction layer that lets you plug in a logging framework at runtime, such as Log4D or LazLogger. You write your code against the SLF4P API and then link it to a logging backend via the source path.
+
+Log4D, by contrast, is a complete logging implementation. It provides its own APIs, configuration mechanisms for generating logs, and powerful built-in features, including filtering, custom appenders, and advanced formatting.
+
 ## Examples
 
 The examples use the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
