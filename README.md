@@ -14,12 +14,12 @@
 
 The Simple Logging Facade for Pascal serves as a simple facade or abstraction for various logging frameworks (e.g. Log4D, LazLogger) allowing the end user to plug in the desired logging framework at build time.
 
-Developed with Dephi 2009 and Lazarus 2.0, tested with DUnit and FPCUnit.
+Developed with Dephi 2009 and Lazarus 4.4, tested with DUnit and FPCUnit.
 
 To register a specific logging framework, just add one of the `djLogOver...` units to the project.
 
-* `djLogOverNOPLogger` for logging over NOPLogger (included)
-* `djLogOverSimpleLogger` for logging over SimpleLogger (included)
+* `djLogOverNOPLogger` for logging over NOPLogger
+* `djLogOverSimpleLogger` for logging over SimpleLogger
 * `djLogOverLog4D` for logging over [Log4D](http://sourceforge.net/projects/log4d/)
 * `djLogOverLazLogger` for logging over [LazLogger](http://wiki.lazarus.freepascal.org/LazLogger)
 
@@ -132,7 +132,7 @@ end.
 
 ```console
 Logging with Log4D version 1.2.12
-0 [13620] debug   - Using slf4p 1.0.6-SNAPSHOT
+0 [13620] debug   - Using slf4p 1.0.6
 0 [13620] info   - Hello, World!
 0 [13620] debug   - Hit any key
 ```
@@ -167,4 +167,72 @@ end.
 3 DEBUG  - Using slf4p 1.0.6
 3 INFO  - Hello, World!
 3 DEBUG  - Hit any key
+```
+
+## Named loggers
+
+```pascal
+procedure RunDemo;
+var
+  Obj1: TFirstClass;
+  Obj2: TSecondClass;
+begin
+  SimpleLogger.Configure('defaultLogLevel', 'trace');
+  SimpleLogger.Configure('showDateTime', 'false');
+
+  LOGGER.Info('Using slf4p %s', [SLF4P_VERSION]);
+
+  Obj1 := TFirstClass.Create;
+  Obj2 := TSecondClass.Create;
+  try
+    LOGGER.Info(Obj1.ToString + ' ' + Obj2.ToString);
+  finally
+    Obj2.Free;
+    Obj1.Free;
+  end;
+
+  LOGGER.Info('Hit any key');
+  ReadLn;
+end;
+
+constructor TFirstClass.Create;
+begin
+  LOGGER(ClassName).Info('in constructor');
+end;
+
+destructor TFirstClass.Destroy;
+begin
+  LOGGER(ClassName).Info('in destructor');
+end;
+
+constructor TSecondClass.Create;
+begin
+  LOGGER(ClassName).Trace('entering constructor');
+  inherited;
+  LOGGER(ClassName).Trace('leaving constructor');
+end;
+
+destructor TSecondClass.Destroy;
+begin
+  LOGGER(ClassName).Trace('entering destructor');
+  inherited;
+  LOGGER(ClassName).Trace('leaving destructor');
+end;
+
+```
+
+#### Program output
+
+```console
+0 INFO - Using slf4p 1.0.7
+0 INFO TFirstClass in constructor
+0 TRACE TSecondClass entering constructor
+0 INFO TSecondClass in constructor
+0 TRACE TSecondClass leaving constructor
+0 INFO - TFirstClass TSecondClass
+0 TRACE TSecondClass entering destructor
+0 INFO TSecondClass in destructor
+0 TRACE TSecondClass leaving destructor
+0 INFO TFirstClass in destructor
+0 INFO - Hit any key
 ```
