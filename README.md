@@ -171,26 +171,17 @@ end.
 
 ## Named loggers
 
+The example uses a logger named ```[demo]``` in the method RunDemo:
+
 ```pascal
 program HelloWorld;
 
 uses
-  djLogOverSimpleLogger, SimpleLogger,
-  slf4p;
+  djLogOverSimpleLogger, SimpleLogger, slf4p,
+  MyClasses in 'MyClasses.pas';
 
 resourcestring
   StrLog = '[demo]';
-
-type
-  TFirstClass = class
-    constructor Create;
-    destructor Destroy; override;
-  end;
-
-  TSecondClass = class(TFirstClass)
-    constructor Create;
-    destructor Destroy; override;
-  end;
 
 procedure RunDemo;
 var
@@ -215,16 +206,46 @@ begin
   ReadLn;
 end;
 
+begin
+  RunDemo;
+end.
+```
+
+With help of classic published RTTI, the example classes write their unit name and class name to the log.
+
+```pascal
+unit MyClasses;
+
+interface
+
+type
+  {$TYPEINFO ON}
+  TFirstClass = class(TObject)
+    constructor Create;
+    destructor Destroy; override;
+  end;
+
+  TSecondClass = class(TFirstClass)
+    constructor Create; virtual;
+    destructor Destroy; override;
+  end;
+  {$TYPEINFO OFF}
+
+implementation
+
+uses
+  slf4p;
+
 { TExampleClass }
 
 constructor TFirstClass.Create;
 begin
-  LOGGER(ClassName).Debug('in constructor');
+  LOGGER(Self).Debug('in constructor');
 end;
 
 destructor TFirstClass.Destroy;
 begin
-  LOGGER(ClassName).Debug('in destructor');
+  LOGGER(Self).Debug('in destructor');
 end;
 
 { TSecondClass }
@@ -232,39 +253,36 @@ end;
 constructor TSecondClass.Create;
 begin
   if LOGGER.IsTraceEnabled then
-    LOGGER(ClassName).Trace('entering constructor');
+    LOGGER(Self).Trace('entering constructor');
   inherited;
   if LOGGER.IsTraceEnabled then
-    LOGGER(ClassName).Trace('leaving constructor');
+    LOGGER(Self).Trace('leaving constructor');
 end;
 
 destructor TSecondClass.Destroy;
 begin
   if LOGGER.IsTraceEnabled then
-    LOGGER(ClassName).Trace('entering destructor');
+    LOGGER(Self).Trace('entering destructor');
   inherited;
   if LOGGER.IsTraceEnabled then
-    LOGGER(ClassName).Trace('leaving destructor');
+    LOGGER(Self).Trace('leaving destructor');
 end;
 
-begin
-  RunDemo;
 end.
-
 ```
 
 #### Program output
 
 ```console
 0 INFO [demo] Using slf4p 1.0.7-SNAPSHOT
-0 DEBUG TFirstClass in constructor
-0 TRACE TSecondClass entering constructor
-0 DEBUG TSecondClass in constructor
-0 TRACE TSecondClass leaving constructor
+0 DEBUG MyClasses.TFirstClass in constructor
+0 TRACE MyClasses.TSecondClass entering constructor
+0 DEBUG MyClasses.TSecondClass in constructor
+0 TRACE MyClasses.TSecondClass leaving constructor
 0 INFO [demo] TFirstClass TSecondClass
-0 TRACE TSecondClass entering destructor
-0 DEBUG TSecondClass in destructor
-0 TRACE TSecondClass leaving destructor
-0 DEBUG TFirstClass in destructor
+0 TRACE MyClasses.TSecondClass entering destructor
+0 DEBUG MyClasses.TSecondClass in destructor
+0 TRACE MyClasses.TSecondClass leaving destructor
+0 DEBUG MyClasses.TFirstClass in destructor
 0 INFO [demo] Hit any key
 ```

@@ -19,22 +19,11 @@
 program HelloWorld;
 
 uses
-  djLogOverSimpleLogger, SimpleLogger,
-  slf4p;
+  djLogOverSimpleLogger, SimpleLogger, slf4p,
+  MyClasses in 'MyClasses.pas';
 
 resourcestring
   StrLog = '[demo]';
-
-type
-  TFirstClass = class
-    constructor Create;
-    destructor Destroy; override;
-  end;
-
-  TSecondClass = class(TFirstClass)
-    constructor Create;
-    destructor Destroy; override;
-  end;
 
 procedure RunDemo;
 var
@@ -57,38 +46,6 @@ begin
 
   LOGGER(StrLog).Info('Hit any key');
   ReadLn;
-end;
-
-{ TExampleClass }
-
-constructor TFirstClass.Create;
-begin
-  LOGGER(ClassName).Debug('in constructor');
-end;
-
-destructor TFirstClass.Destroy;
-begin
-  LOGGER(ClassName).Debug('in destructor');
-end;
-
-{ TSecondClass }
-
-constructor TSecondClass.Create;
-begin
-  if LOGGER.IsTraceEnabled then
-    LOGGER(ClassName).Trace('entering constructor');
-  inherited;
-  if LOGGER.IsTraceEnabled then
-    LOGGER(ClassName).Trace('leaving constructor');
-end;
-
-destructor TSecondClass.Destroy;
-begin
-  if LOGGER.IsTraceEnabled then
-    LOGGER(ClassName).Trace('entering destructor');
-  inherited;
-  if LOGGER.IsTraceEnabled then
-    LOGGER(ClassName).Trace('leaving destructor');
 end;
 
 begin

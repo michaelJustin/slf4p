@@ -29,7 +29,6 @@
 			<DCC_Platform>x86</DCC_Platform>
 			<DCC_N>false</DCC_N>
 			<DCC_E>false</DCC_E>
-			<DCC_ConsoleTarget>true</DCC_ConsoleTarget>
 			<DCC_S>false</DCC_S>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -45,6 +44,7 @@
 			<DelphiCompile Include="HelloWorld.dpr">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
+			<DCCReference Include="MyClasses.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
