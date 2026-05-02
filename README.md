@@ -207,16 +207,20 @@ end;
 
 constructor TSecondClass.Create;
 begin
-  LOGGER(ClassName).Trace('entering constructor');
+  if LOGGER.IsTraceEnabled then
+    LOGGER(ClassName).Trace('entering constructor');
   inherited;
-  LOGGER(ClassName).Trace('leaving constructor');
+  if LOGGER.IsTraceEnabled then
+    LOGGER(ClassName).Trace('leaving constructor');
 end;
 
 destructor TSecondClass.Destroy;
 begin
-  LOGGER(ClassName).Trace('entering destructor');
+  if LOGGER.IsTraceEnabled then
+    LOGGER(ClassName).Trace('entering destructor');
   inherited;
-  LOGGER(ClassName).Trace('leaving destructor');
+  if LOGGER.IsTraceEnabled then
+    LOGGER(ClassName).Trace('leaving destructor');
 end;
 
 ```
