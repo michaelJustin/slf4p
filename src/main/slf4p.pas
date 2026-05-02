@@ -22,24 +22,18 @@ uses
   djLogAPI;
 
 const
-  SLF4P_VERSION = '1.0.6';
+  SLF4P_VERSION = '1.0.7-SNAPSHOT';
 
-function LOGGER: ILogger;
+function LOGGER(const AName: string = ''): ILogger;
 
 implementation
 
 uses
   djLoggerFactory;
 
-var
-  LoggerImpl: ILogger;
-
-function LOGGER: ILogger;
+function LOGGER(const AName: string): ILogger;
 begin
-  Result := LoggerImpl;
+  Result := TdjLoggerFactory.GetLogger(AName);
 end;
-
-initialization
-  LoggerImpl := TdjLoggerFactory.GetLogger('');
 
 end.
