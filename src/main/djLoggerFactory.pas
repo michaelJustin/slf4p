@@ -28,7 +28,8 @@ type
   TdjLoggerFactory = class(TObject)
   public
     class function GetILoggerFactory: ILoggerFactory;
-    class function GetLogger(const AName: string = ''): ILogger;
+    class function GetLogger(const AName: string = ''): ILogger; overload;
+    class function GetLogger(const AClass: TClass): ILogger; overload;
     class function IsRegistered: boolean;
   end;
 
@@ -38,7 +39,7 @@ implementation
 
 uses
   NOPLogger,
-  SysUtils, SyncObjs;
+  SyncObjs;
 
 resourcestring
   SLF4PTag = 'SLF4P: ';
@@ -88,6 +89,16 @@ begin
   end;
 
   Result := LoggerFactory.GetLogger(AName);
+end;
+
+class function TdjLoggerFactory.GetLogger(const AClass: TClass): ILogger;
+var
+  Name: string;
+begin
+  Name := AClass.UnitName;
+  if Name <> '' then Name := Name + '.';
+  Name := Name + AClass.ClassName;
+  Result := LoggerFactory.GetLogger(Name);
 end;
 
 class function TdjLoggerFactory.IsRegistered: boolean;

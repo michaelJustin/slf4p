@@ -19,27 +19,14 @@ unit slf4p;
 interface
 
 uses
-  djLogAPI, djLoggerFactory;
+  djLoggerFactory;
 
 const
   SLF4P_VERSION = '1.0.7-SNAPSHOT';
 
 type
-  TLoggerFactory = class(TdjLoggerFactory)
-  public
-    class function GetLogger(const AClass: TClass): ILogger; overload;
-  end;
+  TLoggerFactory = class(TdjLoggerFactory);
 
 implementation
-
-class function TLoggerFactory.GetLogger(const AClass: TClass): ILogger;
-var
-  Name: string;
-begin
-  Name := AClass.UnitName;
-  if Name <> '' then Name := Name + '.';
-  Name := Name + AClass.ClassName;
-  Result := GetLogger(Name);
-end;
 
 end.

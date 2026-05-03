@@ -12,11 +12,11 @@
 [![LazLogger](https://img.shields.io/badge/LazLogger-supported-brightgreen.svg)]()
 [![Workflow Status](https://github.com/michaelJustin/slf4p/actions/workflows/compile-examples.yml/badge.svg)](https://github.com/michaelJustin/slf4p/actions/workflows/compile-examples.yml)
 
-The Simple Logging Facade for Pascal serves as a simple facade or abstraction for various logging frameworks (e.g. Log4D, LazLogger) allowing the end user to plug in the desired logging framework at build time.
+The Simple Logging Facade for Pascal serves as a simple facade or abstraction for various logging frameworks (e.g. Log4D, LazLogger), allowing the end user to plug in the desired logging framework at build time.
 
-Developed with Dephi 2009 and Lazarus 4.4, tested with DUnit and FPCUnit.
+Developed with Delphi 2009 and Lazarus 4.4, tested with DUnit and FPCUnit.
 
-To register a specific logging framework, just add one of the `djLogOver...` units to the project.
+To register a specific logging framework, add one of the `djLogOver...` units to the project.
 
 * `djLogOverNOPLogger` for logging over NOPLogger
 * `djLogOverSimpleLogger` for logging over SimpleLogger
@@ -32,11 +32,9 @@ Log4D, by contrast, is a complete logging implementation. It provides its own AP
 
 ## Examples
 
-The examples use the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder, and provides the LOGGER method. (New in 1.0.5)
-Note: 
-* the unit which specifies (registers) a logger factory must appear in the uses list before unit slf4p.
-* when no unit is added, a NOPLogger factory will be used as fallback, and a message indicating the fallback will be printed.
-* the last logger factory unit found will be used to create logger instances.
+The examples use the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder and provides the TLoggerFactory class. (since v1.0.7)
+
+One of the LogOver... units must be added to the project. When no unit is added, a NOPLogger factory will be used as a fallback, and a message indicating the fallback will be printed.
 
 ### NOPLogger
 
@@ -185,7 +183,7 @@ end.
 
 ## Named loggers
 
-The example uses named loggers in the classes TFirstClass and TSecondClass. The logger is created in the constructor of each class, using the class type as parameter for the GetLogger method. With help of classic published RTTI, the example classes write their unit name and class name to the log.
+The example uses named loggers in the classes TFirstClass and TSecondClass. The logger is created in the constructor of each class, using the class type as a parameter for the GetLogger method. With the help of classic published RTTI, the example classes write their unit name and class name to the log.
 
 ```pascal
 program HelloWorld;
@@ -224,7 +222,7 @@ begin
 end.
 ```
 
-With help of classic published RTTI, the example classes write their unit name and class name to the log.
+With the help of classic published RTTI, the example classes write their unit name and class name to the log.
 
 ```pascal
 unit MyClasses;
