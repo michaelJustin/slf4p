@@ -19,7 +19,7 @@ unit MyClasses;
 interface
 
 uses
-  djLogApi;
+  djLogAPI;
 
 type
   {$TYPEINFO ON}
