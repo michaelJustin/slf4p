@@ -28,7 +28,7 @@ type
   TdjLoggerFactory = class(TObject)
   public
     class function GetILoggerFactory: ILoggerFactory;
-    class function GetLogger(const AName: string): ILogger;
+    class function GetLogger(const AName: string = ''): ILogger;
     class function IsRegistered: boolean;
   end;
 
