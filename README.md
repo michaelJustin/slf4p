@@ -46,13 +46,18 @@ Since no unit for registering a logger factory is used, a factory for NOP logger
 program HelloWorld;
 
 uses
-  slf4p;
+  slf4p, djLogApi;
 
 procedure RunDemo;
+var
+  Log: ILogger;
 begin
-  LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
-  LOGGER.Info('Hello, World!');
-  LOGGER.Debug('Hit any key');
+  Log := TLoggerFactory.GetLogger;
+
+  Log.Debug('Using slf4p %s', [SLF4P_VERSION]);
+  Log.Info('Hello, World!');
+  Log.Debug('Hit any key');
+
   ReadLn;
 end;
 
@@ -77,13 +82,18 @@ program HelloWorld;
 
 uses
   djLogOverSimpleLogger,
-  slf4p;
+  slf4p, djLogApi;
 
 procedure RunDemo;
+var
+  Log: ILogger;
 begin
-  LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
-  LOGGER.Info('Hello, World!');
-  LOGGER.Debug('Hit any key');
+  Log := TLoggerFactory.GetLogger;
+
+  Log.Debug('Using slf4p %s', [SLF4P_VERSION]);
+  Log.Info('Hello, World!');
+  Log.Debug('Hit any key');
+
   ReadLn;
 end;
 
@@ -95,9 +105,9 @@ end.
 #### Program output
 
 ```console
-[09:58:46.491] DEBUG - Using slf4p 1.0.6
-[09:58:46.491] INFO - Hello, World!
-[09:58:46.491] DEBUG - Hit any key
+[12:05:46.732] DEBUG - Using slf4p 1.0.7-SNAPSHOT
+[12:05:46.732] INFO - Hello, World!
+[12:05:46.733] DEBUG - Hit any key
 ```
 
 ### Log4D
@@ -139,77 +149,74 @@ end.
 
 ```console
 Logging with Log4D version 1.2.12
-0 [13620] debug   - Using slf4p 1.0.6
-0 [13620] info   - Hello, World!
-0 [13620] debug   - Hit any key
+debug - Using slf4p 1.0.7-SNAPSHOT
+info - Hello, World!
+debug - Hit any key
 ```
 
 ### LazLogger
 
-The first unit used, djLogOverLazLogger, registers a logger factory which created LazLogger loggers.
+The first unit used, djLogOverLazLogger, registers a logger factory which creates LazLogger loggers.
 
 ```pascal
 program HelloWorld;
 
 uses
   djLogOverLazLogger,
-  slf4p;
+  slf4p, djLogApi;
 
-procedure RunDemo;
+var
+  Log: ILogger;
 begin
-  LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
-  LOGGER.Info('Hello, World!');
-  LOGGER.Debug('Hit any key');
+  Log := TLoggerFactory.GetLogger;
+  Log.Debug('Using slf4p %s', [SLF4P_VERSION]);
+  Log.Info('Hello, World!');
+  Log.Debug('Hit any key');
   ReadLn;
-end;
-
-begin
-  RunDemo;
 end.
 ```
 
 #### Program output
 
 ```console
-3 DEBUG  - Using slf4p 1.0.6
-3 INFO  - Hello, World!
-3 DEBUG  - Hit any key
+0 DEBUG  - Using slf4p 1.0.7-SNAPSHOT
+0 INFO  - Hello, World!
+0 DEBUG  - Hit any key
 ```
 
 ## Named loggers
 
-The example uses a logger named ```[demo]``` in the method RunDemo:
+The example uses named loggers in the classes TFirstClass and TSecondClass. The logger is created in the constructor of each class, using the class type as parameter for the GetLogger method. With help of classic published RTTI, the example classes write their unit name and class name to the log.
 
 ```pascal
 program HelloWorld;
 
 uses
-  djLogOverSimpleLogger, SimpleLogger, slf4p,
+  djLogOverSimpleLogger, SimpleLogger, slf4p, djLogApi,
   MyClasses in 'MyClasses.pas';
-
-resourcestring
-  StrLog = '[demo]';
 
 procedure RunDemo;
 var
+  Log: ILogger;
   Obj1: TFirstClass;
   Obj2: TSecondClass;
 begin
   SimpleLogger.Configure('defaultLogLevel', 'trace');
   SimpleLogger.Configure('showDateTime', 'false');
 
-  LOGGER(StrLog).Info('Using slf4p %s', [SLF4P_VERSION]);
+  Log := TLoggerFactory.GetLogger;
+  Log.Info('Using slf4p %s', [SLF4P_VERSION]);
 
   Obj1 := TFirstClass.Create;
   Obj2 := TSecondClass.Create;
   try
-    LOGGER(StrLog).Info(Obj1.ToString + ' ' + Obj2.ToString);
+    Log.Info('Instances created');
   finally
     Obj2.Free;
     Obj1.Free;
   end;
 
-  LOGGER(StrLog).Info('Hit any key');
+  Log.Info('Hit any key');
   ReadLn;
 end;
 
@@ -232,7 +239,7 @@ type
   {$TYPEINFO ON}
   TFirstClass = class(TObject)
   private
-    LOG: ILogger;
+    Log: ILogger;
   public
     constructor Create;
     destructor Destroy; override;
@@ -240,7 +247,7 @@ type
 
   TSecondClass = class(TFirstClass)
   private
-    LOG: ILogger;
+    Log: ILogger;
   public
     constructor Create;
     destructor Destroy; override;
@@ -256,40 +263,40 @@ uses
 
 constructor TFirstClass.Create;
 begin
-  LOG := LOGGER(TFirstClass);
+  Log := TLoggerFactory.GetLogger(TFirstClass);
 
-  LOG.Debug('in constructor');
+  Log.Debug('in constructor');
 end;
 
 destructor TFirstClass.Destroy;
 begin
-  LOG.Debug('in destructor');
+  Log.Debug('in destructor');
 end;
 
 { TSecondClass }
 
 constructor TSecondClass.Create;
 begin
-  LOG := LOGGER(TSecondClass);
+  Log := TLoggerFactory.GetLogger(TSecondClass);
 
-  if LOG.IsTraceEnabled then
-    LOG.Trace('entering constructor');
+  if Log.IsTraceEnabled then
+    Log.Trace('entering constructor');
 
   inherited;
 
-  if LOG.IsTraceEnabled then
-    LOG.Trace('leaving constructor');
+  if Log.IsTraceEnabled then
+    Log.Trace('leaving constructor');
 end;
 
 destructor TSecondClass.Destroy;
 begin
-  if LOG.IsTraceEnabled then
-    LOG.Trace('entering destructor');
+  if Log.IsTraceEnabled then
+    Log.Trace('entering destructor');
 
   inherited;
 
-  if LOG.IsTraceEnabled then
-    LOG.Trace('leaving destructor');
+  if Log.IsTraceEnabled then
+    Log.Trace('leaving destructor');
 end;
 
 end.
@@ -298,15 +305,15 @@ end.
 #### Program output
 
 ```console
-0 INFO [demo] Using slf4p 1.0.7-SNAPSHOT
+0 INFO - Using slf4p 1.0.7-SNAPSHOT
 0 DEBUG MyClasses.TFirstClass in constructor
 0 TRACE MyClasses.TSecondClass entering constructor
 0 DEBUG MyClasses.TFirstClass in constructor
 0 TRACE MyClasses.TSecondClass leaving constructor
-0 INFO [demo] TFirstClass TSecondClass
+0 INFO - Instances created
 0 TRACE MyClasses.TSecondClass entering destructor
 0 DEBUG MyClasses.TFirstClass in destructor
 0 TRACE MyClasses.TSecondClass leaving destructor
 0 DEBUG MyClasses.TFirstClass in destructor
-0 INFO [demo] Hit any key
+0 INFO - Hit any key
 ```
