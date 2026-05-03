@@ -225,15 +225,24 @@ unit MyClasses;
 
 interface
 
+uses
+  djLogApi;
+
 type
   {$TYPEINFO ON}
   TFirstClass = class(TObject)
+  private
+    LOG: ILogger;
+  public
     constructor Create;
     destructor Destroy; override;
   end;
 
   TSecondClass = class(TFirstClass)
-    constructor Create; virtual;
+  private
+    LOG: ILogger;
+  public
+    constructor Create;
     destructor Destroy; override;
   end;
   {$TYPEINFO OFF}
@@ -243,36 +252,44 @@ implementation
 uses
   slf4p;
 
-{ TExampleClass }
+{ TFirstClass }
 
 constructor TFirstClass.Create;
 begin
-  LOGGER(Self).Debug('in constructor');
+  LOG := LOGGER(TFirstClass);
+
+  LOG.Debug('in constructor');
 end;
 
 destructor TFirstClass.Destroy;
 begin
-  LOGGER(Self).Debug('in destructor');
+  LOG.Debug('in destructor');
 end;
 
 { TSecondClass }
 
 constructor TSecondClass.Create;
 begin
-  if LOGGER.IsTraceEnabled then
-    LOGGER(Self).Trace('entering constructor');
+  LOG := LOGGER(TSecondClass);
+
+  if LOG.IsTraceEnabled then
+    LOG.Trace('entering constructor');
+
   inherited;
-  if LOGGER.IsTraceEnabled then
-    LOGGER(Self).Trace('leaving constructor');
+
+  if LOG.IsTraceEnabled then
+    LOG.Trace('leaving constructor');
 end;
 
 destructor TSecondClass.Destroy;
 begin
-  if LOGGER.IsTraceEnabled then
-    LOGGER(Self).Trace('entering destructor');
+  if LOG.IsTraceEnabled then
+    LOG.Trace('entering destructor');
+
   inherited;
-  if LOGGER.IsTraceEnabled then
-    LOGGER(Self).Trace('leaving destructor');
+
+  if LOG.IsTraceEnabled then
+    LOG.Trace('leaving destructor');
 end;
 
 end.
@@ -284,11 +301,11 @@ end.
 0 INFO [demo] Using slf4p 1.0.7-SNAPSHOT
 0 DEBUG MyClasses.TFirstClass in constructor
 0 TRACE MyClasses.TSecondClass entering constructor
-0 DEBUG MyClasses.TSecondClass in constructor
+0 DEBUG MyClasses.TFirstClass in constructor
 0 TRACE MyClasses.TSecondClass leaving constructor
 0 INFO [demo] TFirstClass TSecondClass
 0 TRACE MyClasses.TSecondClass entering destructor
-0 DEBUG MyClasses.TSecondClass in destructor
+0 DEBUG MyClasses.TFirstClass in destructor
 0 TRACE MyClasses.TSecondClass leaving destructor
 0 DEBUG MyClasses.TFirstClass in destructor
 0 INFO [demo] Hit any key
