@@ -17,25 +17,24 @@
 program HelloWorld;
 
 uses
-  djLogOverLog4D, LogConsoleAppender, Log4d,
-  slf4p;
+  djLogOverLog4D, djLogApi, slf4p,
+  LogConsoleAppender, Log4d;
 
 procedure RunDemo;
 var
-  LogLayout: ILogLayout;
+  Log: ILogger;
   ConsoleAppender: ILogAppender;
 begin
-  LogLayout := TLogPatternLayout.Create(TTCCPattern);
   ConsoleAppender := TLogConsoleAppender.Create('console');
-  ConsoleAppender.Layout := LogLayout;
   TLogBasicConfigurator.Configure(ConsoleAppender);
 
   TLogLogger.GetRootLogger.Level := Debug;
   WriteLn('Logging with Log4D version ' + Log4DVersion);
 
-  LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
-  LOGGER.Info('Hello, World!');
-  LOGGER.Debug('Hit any key');
+  Log := TLoggerFactory.GetLogger('slf4p/log4d');
+  Log.Debug('Using slf4p %s', [SLF4P_VERSION]);
+  Log.Info('Hello, World!');
+  Log.Debug('Hit any key');
   ReadLn;
 end;
 

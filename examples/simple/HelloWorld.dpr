@@ -18,13 +18,18 @@ program HelloWorld;
 
 uses
   djLogOverSimpleLogger,
-  slf4p;
+  slf4p, djLogApi;
 
 procedure RunDemo;
+var
+  Log: ILogger;
 begin
-  LOGGER.Debug('Using slf4p %s', [SLF4P_VERSION]);
-  LOGGER.Info('Hello, World!');
-  LOGGER.Debug('Hit any key');
+  Log := TLoggerFactory.GetLogger;
+
+  Log.Debug('Using slf4p %s', [SLF4P_VERSION]);
+  Log.Info('Hello, World!');
+  Log.Debug('Hit any key');
+
   ReadLn;
 end;
 
