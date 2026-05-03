@@ -19,7 +19,7 @@
 program HelloWorld;
 
 uses
-  djLogOverSimpleLogger, SimpleLogger, slf4p, djLogApi,
+  djLogOverSimpleLogger, SimpleLogger, slf4p, djLogAPI,
   MyClasses in 'MyClasses.pas';
 
 procedure RunDemo;
