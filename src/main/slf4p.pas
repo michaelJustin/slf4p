@@ -22,7 +22,7 @@ uses
   djLoggerFactory;
 
 const
-  SLF4P_VERSION = '1.0.7-SNAPSHOT';
+  SLF4P_VERSION = '1.0.7';
 
 type
   TLoggerFactory = class(TdjLoggerFactory);
