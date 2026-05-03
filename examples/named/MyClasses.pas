@@ -25,7 +25,7 @@ type
   {$TYPEINFO ON}
   TFirstClass = class(TObject)
   private
-    LOG: ILogger;
+    Log: ILogger;
   public
     constructor Create;
     destructor Destroy; override;
@@ -33,7 +33,7 @@ type
 
   TSecondClass = class(TFirstClass)
   private
-    LOG: ILogger;
+    Log: ILogger;
   public
     constructor Create;
     destructor Destroy; override;
@@ -49,40 +49,40 @@ uses
 
 constructor TFirstClass.Create;
 begin
-  LOG := LOGGER(TFirstClass);
+  Log := TLoggerFactory.GetLogger(TFirstClass);
 
-  LOG.Debug('in constructor');
+  Log.Debug('in constructor');
 end;
 
 destructor TFirstClass.Destroy;
 begin
-  LOG.Debug('in destructor');
+  Log.Debug('in destructor');
 end;
 
 { TSecondClass }
 
 constructor TSecondClass.Create;
 begin
-  LOG := LOGGER(TSecondClass);
+  Log := TLoggerFactory.GetLogger(TSecondClass);
 
-  if LOG.IsTraceEnabled then
-    LOG.Trace('entering constructor');
+  if Log.IsTraceEnabled then
+    Log.Trace('entering constructor');
 
   inherited;
 
-  if LOG.IsTraceEnabled then
-    LOG.Trace('leaving constructor');
+  if Log.IsTraceEnabled then
+    Log.Trace('leaving constructor');
 end;
 
 destructor TSecondClass.Destroy;
 begin
-  if LOG.IsTraceEnabled then
-    LOG.Trace('entering destructor');
+  if Log.IsTraceEnabled then
+    Log.Trace('entering destructor');
 
   inherited;
 
-  if LOG.IsTraceEnabled then
-    LOG.Trace('leaving destructor');
+  if Log.IsTraceEnabled then
+    Log.Trace('leaving destructor');
 end;
 
 end.

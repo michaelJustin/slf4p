@@ -19,32 +19,31 @@
 program HelloWorld;
 
 uses
-  djLogOverSimpleLogger, SimpleLogger, slf4p,
+  djLogOverSimpleLogger, SimpleLogger, slf4p, djLogApi,
   MyClasses in 'MyClasses.pas';
-
-resourcestring
-  StrLog = '[demo]';
 
 procedure RunDemo;
 var
+  Log: ILogger;
   Obj1: TFirstClass;
   Obj2: TSecondClass;
 begin
   SimpleLogger.Configure('defaultLogLevel', 'trace');
   SimpleLogger.Configure('showDateTime', 'false');
 
-  LOGGER(StrLog).Info('Using slf4p %s', [SLF4P_VERSION]);
+  Log := TLoggerFactory.GetLogger;
+  Log.Info('Using slf4p %s', [SLF4P_VERSION]);
 
   Obj1 := TFirstClass.Create;
   Obj2 := TSecondClass.Create;
   try
-    LOGGER(StrLog).Info(Obj1.ToString + ' ' + Obj2.ToString);
+    Log.Info('Instances created');
   finally
     Obj2.Free;
     Obj1.Free;
   end;
 
-  LOGGER(StrLog).Info('Hit any key');
+  Log.Info('Hit any key');
   ReadLn;
 end;
 
