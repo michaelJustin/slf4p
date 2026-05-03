@@ -25,5 +25,14 @@ jobs:
 
     - name: Run simple example
       run: examples/simple/HelloWorld
+
+             
+    - name: Compile named logger example
+      run: |
+        cd examples/named
+        fpc -Sd -Fu../../src/main HelloWorld.dpr
+
+    - name: Run example
+      run: examples/named/HelloWorld
       
     
