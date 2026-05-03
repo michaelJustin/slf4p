@@ -25,7 +25,7 @@ const
   SLF4P_VERSION = '1.0.7-SNAPSHOT';
 
 function LOGGER(const AName: string = ''): ILogger; overload;
-function LOGGER(const AObj: TObject): ILogger; overload;
+function LOGGER(const AClass: TClass): ILogger; overload;
 
 implementation
 
@@ -37,13 +37,13 @@ begin
   Result := TdjLoggerFactory.GetLogger(AName);
 end;
 
-function LOGGER(const AObj: TObject): ILogger;
+function LOGGER(const AClass: TClass): ILogger;
 var
   Name: string;
 begin
-  Name := AObj.UnitName;
+  Name := AClass.UnitName;
   if Name <> '' then Name := Name + '.';
-  Name := Name + AObj.ClassName;
+  Name := Name + AClass.ClassName;
   Result := TdjLoggerFactory.GetLogger(Name);
 end;
 
