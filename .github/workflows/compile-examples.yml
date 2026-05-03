@@ -18,13 +18,13 @@ jobs:
         sudo apt-get -qq update
         sudo apt-get -yq install fpc
        
-    #- name: Compile simple example
-    #  run: |
-    #    cd examples/simple
-    #    fpc -Sd -Fu../../src/main HelloWorld.dpr
+    - name: Compile simple example
+      run: |
+        cd examples/simple
+        fpc -Sd -Fu../../src/main HelloWorld.dpr
 
-    #- name: Run simple example
-    #  run: examples/simple/HelloWorld
+    - name: Run simple example
+      run: examples/simple/HelloWorld
 
     - name: Compile named logger example
       run: |
