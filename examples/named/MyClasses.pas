@@ -19,7 +19,7 @@ unit MyClasses;
 interface
 
 uses
-  djLogAPI;
+  djLoggerFactory, djLogAPI;
 
 type
   {$TYPEINFO ON}
@@ -41,9 +41,6 @@ type
   {$TYPEINFO OFF}
 
 implementation
-
-uses
-  slf4p;
 
 { TFirstClass }
 

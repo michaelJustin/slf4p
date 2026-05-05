@@ -17,7 +17,7 @@
 program HelloWorld;
 
 uses
-  slf4p, djLogAPI, djLogOverSimpleLogger;
+  djLoggerFactory, djLogAPI, djLogOverSimpleLogger;
 
 procedure RunDemo;
 var

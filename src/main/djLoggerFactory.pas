@@ -33,6 +33,10 @@ type
     class function IsRegistered: boolean;
   end;
 
+  TLoggerFactory = class(TdjLoggerFactory)
+
+  end;
+
 procedure RegisterFactory(const AFactory: ILoggerFactory);
 
 implementation

@@ -17,7 +17,8 @@
 program HelloWorld;
 
 uses
-  djLogOverLog4D, djLogAPI, slf4p,
+  djLogOverLog4D, 
+  djLoggerFactory, djLogAPI,
   LogConsoleAppender, Log4d;
 
 procedure RunDemo;

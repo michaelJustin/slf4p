@@ -18,6 +18,8 @@ To register a specific logging framework, add one of the `djLogOver...` units to
 * `djLogOverLog4D` for logging over [Log4D](http://sourceforge.net/projects/log4d/)
 * `djLogOverLazLogger` for logging over [LazLogger](http://wiki.lazarus.freepascal.org/LazLogger)
 
+One of the LogOver... units must be added to the project. When no unit is added, a NOPLogger factory will be used as a fallback, and a message indicating the fallback will be printed.
+
 ## Choosing Between SLF4P and Log4D
 Before deciding which logging tool to use, it’s important to understand what each one does.
 
@@ -27,10 +29,6 @@ Log4D, by contrast, is a complete logging implementation. It provides its own AP
 
 ## Examples
 
-The examples use the helper unit [slf4p](src/main/slf4p.pas), which is located in the src/main folder and provides the TLoggerFactory class. (since v1.0.7)
-
-One of the LogOver... units must be added to the project. When no unit is added, a NOPLogger factory will be used as a fallback, and a message indicating the fallback will be printed.
-
 ### NOPLogger
 
 Since no unit for registering a logger factory is used, a factory for NOP loggers will be registered.
@@ -39,7 +37,7 @@ Since no unit for registering a logger factory is used, a factory for NOP logger
 program HelloWorld;
 
 uses
-  slf4p, djLogApi;
+  djLoggerFactory, djLogAPI;
 
 procedure RunDemo;
 var
@@ -75,7 +73,7 @@ program HelloWorld;
 
 uses
   djLogOverSimpleLogger,
-  slf4p, djLogApi;
+  djLoggerFactory, djLogAPI;
 
 procedure RunDemo;
 var
@@ -98,7 +96,7 @@ end.
 #### Program output
 
 ```console
-[12:05:46.732] DEBUG - Using slf4p 1.0.7
+[12:05:46.732] DEBUG - Using slf4p 1.0.8
 [12:05:46.732] INFO - Hello, World!
 [12:05:46.733] DEBUG - Hit any key
 ```
@@ -111,7 +109,8 @@ The first unit used, djLogOverLog4D, registers a logger factory which created Lo
 program HelloWorld;
 
 uses
-  djLogOverLog4D, djLogApi, slf4p,
+  djLogOverLog4D, 
+  djLoggerFactory, djLogAPI,
   LogConsoleAppender, Log4d;
 
 procedure RunDemo;
@@ -141,7 +140,7 @@ end.
 
 ```console
 Logging with Log4D version 1.2.12
-debug - Using slf4p 1.0.7
+debug - Using slf4p 1.0.8
 info - Hello, World!
 debug - Hit any key
 ```
@@ -155,7 +154,7 @@ program HelloWorld;
 
 uses
   djLogOverLazLogger,
-  slf4p, djLogApi;
+  djLoggerFactory, djLogAPI;
 
 var
   Log: ILogger;
@@ -171,7 +170,7 @@ end.
 #### Program output
 
 ```console
-0 DEBUG  - Using slf4p 1.0.7
+0 DEBUG  - Using slf4p 1.0.8
 0 INFO  - Hello, World!
 0 DEBUG  - Hit any key
 ```
@@ -184,7 +183,8 @@ The example uses named loggers in the classes TFirstClass and TSecondClass. The 
 program HelloWorld;
 
 uses
-  djLogOverSimpleLogger, SimpleLogger, slf4p, djLogApi,
+  djLogOverSimpleLogger, SimpleLogger, 
+  djLoggerFactory, djLogAPI,
   MyClasses in 'MyClasses.pas';
 
 procedure RunDemo;
@@ -225,7 +225,7 @@ unit MyClasses;
 interface
 
 uses
-  djLogApi;
+  djLoggerFactory, djLogAPI;
 
 type
   {$TYPEINFO ON}
@@ -297,7 +297,7 @@ end.
 #### Program output
 
 ```console
-0 INFO - Using slf4p 1.0.7
+0 INFO - Using slf4p 1.0.8
 0 DEBUG MyClasses.TFirstClass in constructor
 0 TRACE MyClasses.TSecondClass entering constructor
 0 DEBUG MyClasses.TFirstClass in constructor
