@@ -19,7 +19,8 @@
 program HelloWorld;
 
 uses
-  djLogOverSimpleLogger, SimpleLogger, slf4p, djLogAPI,
+  djLogOverSimpleLogger, SimpleLogger, 
+  djLoggerFactory, djLogAPI,
   MyClasses in 'MyClasses.pas';
 
 procedure RunDemo;

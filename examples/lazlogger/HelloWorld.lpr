@@ -18,7 +18,7 @@ program HelloWorld;
 
 uses
   djLogOverLazLogger,
-  slf4p, djLogApi;
+  djLoggerFactory, djLogApi;
 
 var
   Log: ILogger;

@@ -21,6 +21,9 @@ interface
 uses
   SysUtils;
 
+const
+  SLF4P_VERSION = '1.0.8-SNAPSHOT';
+
 type
   ILogger = interface ['{58764670-2414-477F-8CE6-02A418D4CF09}']
     procedure Debug(const AMsg: string); overload;
