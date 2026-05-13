@@ -35,11 +35,11 @@ jobs:
           fetch-depth: 0       # full history helps Syft identify git-based packages
 
       # ── 2. Install Syft ─────────────────────────────────────────────────────
-      - name: Install Syft ${{ env.SYFT_VERSION }}
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh \
-            | sh -s -- -b /usr/local/bin "v${{ env.SYFT_VERSION }}"
-          syft version
+      #- name: Install Syft ${{ env.SYFT_VERSION }}
+      #  run: |
+      #    curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh \
+      #      | sh -s -- -b /usr/local/bin "v${{ env.SYFT_VERSION }}"
+      #    syft version
 
       # ── 3. Verify scan target exists ────────────────────────────────────────
       - name: Verify scan directory exists
@@ -74,7 +74,7 @@ jobs:
         uses: anchore/sbom-action@v0.15.11
         with:
           # A path to a directory on the filesystem to scan
-          path: ./src/main # optional, default is .
+          # path: ./src/main # optional, default is .
           # A file on the filesystem to scan
           # file: # optional
           # A container image to scan
