@@ -66,6 +66,9 @@ jobs:
       #      --source-version "${{ github.sha }}"
 
       - name: Anchore SBOM Action
+        env:
+          SYFT_FILE_METADATA_DIGESTS: sha256
+          SYFT_FILE_METADATA_SELECTION: all
         # You may pin to the exact commit or the version.
         # uses: anchore/sbom-action@7ccf588e3cf3cc2611714c2eeae48550fbc17552
         uses: anchore/sbom-action@v0.15.11
