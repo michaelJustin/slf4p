@@ -86,7 +86,7 @@ jobs:
 
       # ── 6. Upload SBOM as a build artifact ──────────────────────────────────
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: sbom-cyclonedx-1.5
           path: ${{ env.SBOM_OUTPUT_FILE }}
