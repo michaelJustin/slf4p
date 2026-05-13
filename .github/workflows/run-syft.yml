@@ -74,7 +74,7 @@ jobs:
         uses: anchore/sbom-action@v0.15.11
         with:
           # A path to a directory on the filesystem to scan
-          # path: ./src/main # optional, default is .
+          path: "${{ env.SCAN_DIR }}"
           # A file on the filesystem to scan
           # file: # optional
           # A container image to scan
