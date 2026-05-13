@@ -1,0 +1,10 @@
+source:
+  # set the name of the target being analyzed (env: SYFT_SOURCE_NAME)
+  name: ""
+
+  # set the version of the target being analyzed (env: SYFT_SOURCE_VERSION)
+  version: ""
+
+  # the organization that supplied the component, which often may be the manufacturer, distributor, or repackager (env: SYFT_SOURCE_SUPPLIER)
+  supplier: "Michael Justin"
+  
