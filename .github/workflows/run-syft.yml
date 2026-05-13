@@ -5,10 +5,9 @@ on:
     branches:
       - main
       - master
-  pull_request:
-    branches:
-      - main
-      - master
+    paths:
+      - 'src/**'
+
   workflow_dispatch:    # manual trigger with no inputs required
 
 env:
