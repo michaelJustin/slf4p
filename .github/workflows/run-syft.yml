@@ -103,7 +103,7 @@ jobs:
           # Upload release assets
           upload-release-assets: false # optional, default is true
           # Configuration file to use
-          # config: # optional
+          config: ./.syft.yaml # optional
           
       # ── 5. Validate the SBOM is well-formed JSON ────────────────────────────
       - name: Validate SBOM output
