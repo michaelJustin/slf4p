@@ -38,7 +38,7 @@ scope: "squashed"
 # Use `syft cataloger list` for a list of catalogers you can specify
 # DEPRECATED: please use default-catalogers and select-catalogers configuration options instead
 # SYFT_CATALOGERS env var / --catalogers flag
-catalogers:
+catalogers: directory
 
 # set the base set of catalogers to use (defaults to 'image' or 'directory' depending on the scan source)
 # SYFT_DEFAULT_CATALOGERS env var / --override-default-catalogers flag
