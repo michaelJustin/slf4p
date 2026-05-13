@@ -60,7 +60,7 @@ jobs:
           SYFT_FILE_METADATA_DIGESTS: sha256   # <-- scoped here only
           SYFT_FILE_METADATA_SELECTION: all
         run: |
-          syft scan dir:"${{ env.SCAN_DIR }}" \
+          syft dir:"${{ env.SCAN_DIR }}" \
             --output "cyclonedx-json@1.5=${{ env.SBOM_OUTPUT_FILE }}" \
             --source-name "${{ github.repository }}" \
             --source-version "${{ github.sha }}"
