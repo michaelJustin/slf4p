@@ -126,11 +126,11 @@ jobs:
 
       # ── 6. Upload SBOM as a build artifact ──────────────────────────────────
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: sbom-cyclonedx-1.5
           path: ${{ env.SBOM_OUTPUT_FILE }}
-          retention-days: 90
+          retention-days: 30
 
       # ── 7. Print a summary to the job log ───────────────────────────────────
       - name: Summarise SBOM
