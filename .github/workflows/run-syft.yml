@@ -14,6 +14,7 @@ on:
 env:
   SYFT_VERSION: "1.4.1"
   SCAN_DIR: ./src/main        # root-relative path to the directory being scanned
+  SYFT_FILE_METADATA_DIGESTS: "sha256"
   SBOM_OUTPUT_FILE: sbom.cdx.json
 
 jobs:
