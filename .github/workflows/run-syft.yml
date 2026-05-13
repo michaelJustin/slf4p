@@ -1,0 +1,123 @@
+name: SBOM Generation with Syft
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:    # manual trigger with no inputs required
+
+env:
+  SYFT_VERSION: "1.4.1"
+  SCAN_DIR: ./src/main        # root-relative path to the directory being scanned
+  SBOM_OUTPUT_FILE: sbom.cdx.json
+
+jobs:
+  generate-sbom:
+    name: Generate SBOM (CycloneDX 1.5)
+    runs-on: ubuntu-22.04      # <-- virtual machine image; swap for ubuntu-latest or windows-latest as needed
+
+    permissions:
+      contents: read           # checkout
+      actions: read
+      # If you want to upload the SBOM to GitHub's dependency graph, add:
+      # id-token: write
+
+    steps:
+      # ── 1. Checkout source ──────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0       # full history helps Syft identify git-based packages
+
+      # ── 2. Install Syft ─────────────────────────────────────────────────────
+      - name: Install Syft ${{ env.SYFT_VERSION }}
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh \
+            | sh -s -- -b /usr/local/bin "v${{ env.SYFT_VERSION }}"
+          syft version
+
+      # ── 3. Verify scan target exists ────────────────────────────────────────
+      - name: Verify scan directory exists
+        run: |
+          if [ ! -d "${{ env.SCAN_DIR }}" ]; then
+            echo "ERROR: Expected scan directory '${{ env.SCAN_DIR }}' not found."
+            echo "Repository tree (two levels):"
+            find . -maxdepth 2 -not -path './.git/*' | sort
+            exit 1
+          fi
+          echo "Scan target: $(realpath ${{ env.SCAN_DIR }})"
+          echo "Contents:"
+          ls -lah "${{ env.SCAN_DIR }}"
+
+      # ── 4. Run Syft scan ────────────────────────────────────────────────────
+      - name: Scan ./src/main and generate SBOM
+        run: |
+          syft scan dir:"${{ env.SCAN_DIR }}" \
+            --output "cyclonedx-json@1.5=${{ env.SBOM_OUTPUT_FILE }}" \
+            --source-name "${{ github.repository }}" \
+            --source-version "${{ github.sha }}"
+
+      # ── 5. Validate the SBOM is well-formed JSON ────────────────────────────
+      - name: Validate SBOM output
+        run: |
+          if [ ! -f "${{ env.SBOM_OUTPUT_FILE }}" ]; then
+            echo "ERROR: SBOM file was not created." && exit 1
+          fi
+          python3 -c "
+          import json, sys
+          with open('${{ env.SBOM_OUTPUT_FILE }}') as f:
+              sbom = json.load(f)
+          spec = sbom.get('specVersion', 'unknown')
+          comps = len(sbom.get('components', []))
+          print(f'SBOM spec version : {spec}')
+          print(f'Components found  : {comps}')
+          if spec != '1.5':
+              print('ERROR: unexpected specVersion'); sys.exit(1)
+          print('Validation passed.')
+          "
+
+      # ── 6. Upload SBOM as a build artifact ──────────────────────────────────
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-cyclonedx-1.5
+          path: ${{ env.SBOM_OUTPUT_FILE }}
+          retention-days: 90
+
+      # ── 7. Print a summary to the job log ───────────────────────────────────
+      - name: Summarise SBOM
+        run: |
+          echo "## SBOM Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'EOF'
+          import json, os
+
+          with open(os.environ["SBOM_OUTPUT_FILE"]) as f:
+              sbom = json.load(f)
+
+          comps  = sbom.get("components", [])
+          counts = {}
+          for c in comps:
+              t = c.get("type", "unknown")
+              counts[t] = counts.get(t, 0) + 1
+
+          lines = [
+              f"| Metric | Value |",
+              f"|--------|-------|",
+              f"| **Spec version** | {sbom.get('specVersion')} |",
+              f"| **Serial number** | {sbom.get('serialNumber', 'n/a')} |",
+              f"| **Total components** | {len(comps)} |",
+          ]
+          for t, n in sorted(counts.items()):
+              lines.append(f"| &nbsp;&nbsp;↳ {t} | {n} |")
+
+          print("\n".join(lines))
+          EOF
+
+        env:
+          SBOM_OUTPUT_FILE: ${{ env.SBOM_OUTPUT_FILE }}
