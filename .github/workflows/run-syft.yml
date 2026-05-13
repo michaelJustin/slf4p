@@ -92,7 +92,7 @@ jobs:
           # A file location to output the SBOM
           output-file: ${{ env.SBOM_OUTPUT_FILE }}
           # The version of Syft to use
-          # syft-version: # optional
+          syft-version: ${{ env.SYFT_VERSION }}
           # Upload to GitHub dependency snapshot API
           # dependency-snapshot: # optional, default is false
           # Upload artifact to workflow
