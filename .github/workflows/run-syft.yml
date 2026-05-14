@@ -64,6 +64,8 @@ jobs:
             --source-name "${{ github.repository }}" \
             --source-version "${{ github.sha }}"
 
+
+
       # - name: Anchore SBOM Action
       #  env:
       #    SYFT_FILE_METADATA_DIGESTS: sha256
@@ -122,7 +124,13 @@ jobs:
               print('ERROR: unexpected specVersion'); sys.exit(1)
           print('Validation passed.')
           "
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          git add -A
+          git commit -m "Update test.txt"
+          git push
+      
       # ── 6. Upload SBOM as a build artifact ──────────────────────────────────
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v7.0.1
