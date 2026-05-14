@@ -88,17 +88,9 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.SBOM_OUTPUT_FILE }}
-          tag: v1.0.7 # ${{ github.ref }}
+          tag: ${{ github.ref }}
           overwrite: true
       
-      # ── 6. Upload SBOM as a build artifact ──────────────────────────────────
-      #- name: Upload SBOM artifact
-      #  uses: actions/upload-artifact@v7.0.1
-      #  with:
-      #    name: sbom-cyclonedx-1.5
-      #    path: ${{ env.SBOM_OUTPUT_FILE }}
-      #    retention-days: 30
-
       # ── 7. Print a summary to the job log ───────────────────────────────────
       - name: Summarise SBOM
         run: | 
