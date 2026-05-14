@@ -129,7 +129,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.SBOM_OUTPUT_FILE }}
           # asset_name: sbom
-          # tag: v1.0.8 # ${{ github.ref }}
+          tag: v1.0.7 # ${{ github.ref }}
           # overwrite: true
       # body: "This is my release text
       
