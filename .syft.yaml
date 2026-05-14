@@ -122,7 +122,7 @@ file:
       #  - "owned-by-package": capture only files owned by packages
       #  - "none", "": do not capture any files
       # SYFT_FILE_METADATA_SELECTION env var
-      selection: "owned-by-package"
+      selection: "all"
 
       # the file digest algorithms to use when cataloging files (options: "md5", "sha1", "sha224", "sha256", "sha384", "sha512")
       # SYFT_FILE_METADATA_DIGESTS env var
@@ -244,7 +244,7 @@ source:
   # base directory for scanning, no links will be followed above this directory, and all paths will be 
   # reported relative to this directory
   # SYFT_SOURCE_BASE_PATH env var
-  base-path: './src/main'
+  base-path: '/home/runner/work/slf4p/'
 
    # options affecting the file source type
   file:
