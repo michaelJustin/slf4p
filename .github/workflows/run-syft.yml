@@ -24,7 +24,7 @@ jobs:
       contents: read           # checkout
       actions: read
       # If you want to upload the SBOM to GitHub's dependency graph, add:
-      # id-token: write
+      id-token: write
 
     steps:
       # ── 1. Checkout source ──────────────────────────────────────────────────
@@ -95,12 +95,12 @@ jobs:
           # Upload to GitHub dependency snapshot API
           # dependency-snapshot: # optional, default is false
           # Upload artifact to workflow
-          upload-artifact: false # optional, default is true
+          upload-artifact: # optional, default is true
           # Retention policy for uploaded artifact to workflow.
           # Minimum 1 day. Maximum 90 days unless changed from the repository settings page. An input of 0 assumes default retention value.
           # upload-artifact-retention: # optional, default is 0
           # Upload release assets
-          upload-release-assets: false # optional, default is true
+          upload-release-assets: # optional, default is true
           # Configuration file to use
           config: ./.syft.yaml # optional
           
