@@ -2,11 +2,8 @@ name: SBOM Generation with Syft
 
 on:
   push:
-    branches:
-      - main
-      - master
-    paths:
-      - 'src/**'
+    tags:
+      - '*'
 
   workflow_dispatch:    # manual trigger with no inputs required
 
@@ -18,14 +15,13 @@ env:
 jobs:
   generate-sbom:
     name: Generate SBOM (CycloneDX 1.5)
-    runs-on: ubuntu-22.04      # <-- virtual machine image; swap for ubuntu-latest or windows-latest as needed
+    runs-on: ubuntu-22.04      # <-- virtual machine image; swap for ubuntu-latest
 
     permissions:
       contents: write          
       actions: read
-      # If you want to upload the SBOM to GitHub's dependency graph, add:
       id-token: write
-      pull-requests: write
+      # pull-requests: write
       repository-projects: write
 
     steps:
@@ -86,23 +82,22 @@ jobs:
           print('Validation passed.')
           "
 
+      # ── 6. Upload sbom to release ────────────────────────────
       - name: Upload sbom to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.SBOM_OUTPUT_FILE }}
-          # asset_name: sbom
           tag: v1.0.7 # ${{ github.ref }}
-          # overwrite: true
-      # body: "This is my release text
+          overwrite: true
       
       # ── 6. Upload SBOM as a build artifact ──────────────────────────────────
-      - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: sbom-cyclonedx-1.5
-          path: ${{ env.SBOM_OUTPUT_FILE }}
-          retention-days: 30
+      #- name: Upload SBOM artifact
+      #  uses: actions/upload-artifact@v7.0.1
+      #  with:
+      #    name: sbom-cyclonedx-1.5
+      #    path: ${{ env.SBOM_OUTPUT_FILE }}
+      #    retention-days: 30
 
       # ── 7. Print a summary to the job log ───────────────────────────────────
       - name: Summarise SBOM
