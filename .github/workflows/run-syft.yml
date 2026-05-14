@@ -53,8 +53,6 @@ jobs:
 
       # ── 4. Run Syft scan ────────────────────────────────────────────────────
       - name: Scan ./src/main and generate SBOM
-        env:
-          SYFT_FILE_METADATA_SELECTION: all
         run: |
           syft  dir:"${{ env.SCAN_DIR }}" \
             --output "cyclonedx-json@1.5=${{ env.SBOM_OUTPUT_FILE }}" \
