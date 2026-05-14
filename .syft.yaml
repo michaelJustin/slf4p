@@ -128,7 +128,6 @@ file:
       # SYFT_FILE_METADATA_DIGESTS env var
       digests:
       - "sha256"
-      - "sha1"
 
    # capture the contents of select files in the SBOM
    content:
