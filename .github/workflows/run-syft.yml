@@ -128,9 +128,9 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.SBOM_OUTPUT_FILE }}
-          asset_name: sbom
-          tag: v1.0.8 # ${{ github.ref }}
-          overwrite: true
+          # asset_name: sbom
+          # tag: v1.0.8 # ${{ github.ref }}
+          # overwrite: true
       # body: "This is my release text
       
       # ── 6. Upload SBOM as a build artifact ──────────────────────────────────
