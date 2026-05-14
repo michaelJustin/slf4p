@@ -11,7 +11,7 @@ on:
   workflow_dispatch:    # manual trigger with no inputs required
 
 env:
-  SYFT_VERSION: "v1.44.0"
+  SYFT_VERSION: "1.44.0"
   SCAN_DIR: ./src/main        # root-relative path to the directory being scanned
   SBOM_OUTPUT_FILE: sbom.cdx.json
 
