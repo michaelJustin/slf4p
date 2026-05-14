@@ -21,10 +21,12 @@ jobs:
     runs-on: ubuntu-22.04      # <-- virtual machine image; swap for ubuntu-latest or windows-latest as needed
 
     permissions:
-      contents: read           # checkout
+      contents: write          
       actions: read
       # If you want to upload the SBOM to GitHub's dependency graph, add:
       id-token: write
+      pull-requests: write
+      repository-projects: write
 
     steps:
       # ── 1. Checkout source ──────────────────────────────────────────────────
