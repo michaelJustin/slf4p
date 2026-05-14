@@ -89,8 +89,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.SBOM_OUTPUT_FILE }}
           tag: ${{ github.ref }}
-          overwrite: true
-      
+
       # ── 7. Print a summary to the job log ───────────────────────────────────
       - name: Summarise SBOM
         run: | 
