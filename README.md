@@ -180,7 +180,7 @@ end.
 The example uses named loggers in the classes TFirstClass and TSecondClass. The logger is created in the constructor of each class, using the class type as a parameter for the GetLogger method. With the help of classic published RTTI, the example classes write their unit name and class name to the log.
 
 ```pascal
-program HelloWorld;
+program ClassAsLoggerName;
 
 uses
   djLogOverSimpleLogger, SimpleLogger, 
@@ -289,15 +289,15 @@ end.
 #### Program output
 
 ```console
-0 INFO - Using slf4p 1.0.8
-0 DEBUG MyClasses.TFirstClass in constructor
-0 TRACE MyClasses.TSecondClass entering constructor
-0 DEBUG MyClasses.TFirstClass in constructor
-0 TRACE MyClasses.TSecondClass leaving constructor
-0 INFO - Instances created
-0 TRACE MyClasses.TSecondClass entering destructor
-0 DEBUG MyClasses.TFirstClass in destructor
-0 TRACE MyClasses.TSecondClass leaving destructor
-0 DEBUG MyClasses.TFirstClass in destructor
-0 INFO - Hit any key
+[16:16:22.818] INFO - Using slf4p 1.0.8
+[16:16:22.818] DEBUG MyClasses.TFirstClass in constructor
+[16:16:22.818] TRACE MyClasses.TSecondClass entering constructor
+[16:16:22.818] DEBUG MyClasses.TFirstClass in constructor
+[16:16:22.818] TRACE MyClasses.TSecondClass leaving constructor
+[16:16:22.818] INFO - Instances created
+[16:16:22.818] TRACE MyClasses.TSecondClass entering destructor
+[16:16:22.818] DEBUG MyClasses.TFirstClass in destructor
+[16:16:22.818] TRACE MyClasses.TSecondClass leaving destructor
+[16:16:22.818] DEBUG MyClasses.TFirstClass in destructor
+[16:16:22.818] INFO - Hit any key
 ```
