@@ -194,7 +194,6 @@ var
   Obj2: TSecondClass;
 begin
   SimpleLogger.Configure('defaultLogLevel', 'trace');
-  SimpleLogger.Configure('showDateTime', 'false');
 
   Log := TLoggerFactory.GetLogger;
   Log.Info('Using slf4p %s', [SLF4P_VERSION]);
