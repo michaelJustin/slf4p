@@ -2,7 +2,7 @@
 		<PropertyGroup>
 			<ProjectGuid>{74E848AD-1CD9-4CB5-8164-1F5B281E7629}</ProjectGuid>
 			<ProjectVersion>12.0</ProjectVersion>
-			<MainSource>HelloWorld.dpr</MainSource>
+			<MainSource>ClassAsLoggerName.dpr</MainSource>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
 		</PropertyGroup>
@@ -20,7 +20,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<DCC_DependencyCheckOutputName>HelloWorld.exe</DCC_DependencyCheckOutputName>
+			<DCC_DependencyCheckOutputName>ClassAsLoggerName.exe</DCC_DependencyCheckOutputName>
 			<DCC_UnitSearchPath>..\..\src\main;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
 			<DCC_K>false</DCC_K>
@@ -41,7 +41,7 @@
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<ItemGroup>
-			<DelphiCompile Include="HelloWorld.dpr">
+			<DelphiCompile Include="ClassAsLoggerName.dpr">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="MyClasses.pas"/>
@@ -96,7 +96,7 @@
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
 					<Source>
-						<Source Name="MainSource">HelloWorld.dpr</Source>
+						<Source Name="MainSource">ClassAsLoggerName.dpr</Source>
 					</Source>
 				</Delphi.Personality>
 			</BorlandProject>
