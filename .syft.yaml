@@ -111,6 +111,14 @@ format:
      # SYFT_FORMAT_CYCLONEDX_XML_PRETTY env var
      pretty: true
 
+license:
+  # include the content of licenses in the SBOM for a given syft scan; valid values are: [all unknown none] (env: SYFT_LICENSE_CONTENT)
+  content: "all"
+
+  # adjust the percent as a fraction of the total text, in normalized words, that
+  # matches any valid license for the given inputs, expressed as a percentage across all of the licenses matched. (env: SYFT_LICENSE_COVERAGE)
+  coverage: 75
+  
 file:
 
    metadata: 
@@ -120,7 +128,7 @@ file:
       #  - "owned-by-package": capture only files owned by packages
       #  - "none", "": do not capture any files
       # SYFT_FILE_METADATA_SELECTION env var
-      selection: "none"
+      selection: "owned-by-package"
 
       # the file digest algorithms to use when cataloging files (options: "md5", "sha1", "sha224", "sha256", "sha384", "sha512")
       # SYFT_FILE_METADATA_DIGESTS env var
@@ -238,6 +246,12 @@ source:
   # SYFT_SOURCE_VERSION env var / --source-version flag
   version: ""
 
+  # the organization that supplied the component, which often may be the manufacturer, distributor, or repackager (env: SYFT_SOURCE_SUPPLIER)
+  supplier: "Michael Justin"
+
+  # (env: SYFT_SOURCE_SOURCE)
+  source: ""
+  
   # base directory for scanning, no links will be followed above this directory, and all paths will be 
   # reported relative to this directory
   # SYFT_SOURCE_BASE_PATH env var
