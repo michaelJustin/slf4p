@@ -9,7 +9,7 @@ on:
 
 env:
   SYFT_VERSION: "1.44.0"
-  SCAN_DIR: ./src/main        # root-relative path to the directory being scanned
+  SCAN_DIR: .        # root-relative path to the directory being scanned
   SBOM_OUTPUT_FILE: "${{ github.repository }}-${{ github.ref_name }}.cdx.json"
 
 jobs:
