@@ -256,7 +256,6 @@ uses
 constructor TFirstClass.Create;
 begin
   Log := TLoggerFactory.GetLogger(TFirstClass);
-
   Log.Debug('in constructor');
 end;
 
@@ -265,30 +264,23 @@ begin
   Log.Debug('in destructor');
 end;
 
-{ TSecondClass }
-
 constructor TSecondClass.Create;
 begin
   Log := TLoggerFactory.GetLogger(TSecondClass);
-
-  if Log.IsTraceEnabled then
-    Log.Trace('entering constructor');
+  Log.Trace('entering constructor');
 
   inherited;
 
-  if Log.IsTraceEnabled then
-    Log.Trace('leaving constructor');
+  Log.Trace('leaving constructor');
 end;
 
 destructor TSecondClass.Destroy;
 begin
-  if Log.IsTraceEnabled then
-    Log.Trace('entering destructor');
+  Log.Trace('entering destructor');
 
   inherited;
 
-  if Log.IsTraceEnabled then
-    Log.Trace('leaving destructor');
+  Log.Trace('leaving destructor');
 end;
 
 end.
