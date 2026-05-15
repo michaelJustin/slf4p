@@ -5,7 +5,6 @@
 #   - "spdx-json=<spdx-json-output-file>"
 # SYFT_OUTPUT env var / -o, --output flags
 output: 
-  - "syft-table"
 
 # suppress all output (except for the SBOM report)
 # SYFT_QUIET env var / -q flag
@@ -110,10 +109,7 @@ format:
      # include space indention
      # note: inherits default value from 'format.pretty' or 'false' if parent is unset
      # SYFT_FORMAT_CYCLONEDX_XML_PRETTY env var
-     pretty: false
-
-license:
-  content: 'Apache-2.0'
+     pretty: true
 
 file:
 
