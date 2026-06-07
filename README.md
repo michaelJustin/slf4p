@@ -1,7 +1,6 @@
 # slf4p - Simple Logging Facade for Pascal
 
 [![Pascal](https://img.shields.io/badge/language-Object%20Pascal-blue.svg)]()
-[![Stars](https://img.shields.io/github/stars/michaelJustin/slf4p.svg)](https://github.com/michaelJustin/slf4p/stargazers)
 [![Last Commit](https://img.shields.io/github/last-commit/michaelJustin/slf4p.svg)](https://github.com/michaelJustin/slf4p/commits)
 [![Delphi](https://img.shields.io/badge/Delphi-2009+-blue.svg)]()
 [![Lazarus](https://img.shields.io/badge/Lazarus-4.0+-blue.svg)]()
