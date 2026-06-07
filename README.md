@@ -4,7 +4,7 @@
 [![Stars](https://img.shields.io/github/stars/michaelJustin/slf4p.svg)](https://github.com/michaelJustin/slf4p/stargazers)
 [![Last Commit](https://img.shields.io/github/last-commit/michaelJustin/slf4p.svg)](https://github.com/michaelJustin/slf4p/commits)
 [![Delphi](https://img.shields.io/badge/Delphi-2009+-blue.svg)]()
-[![Lazarus](https://img.shields.io/badge/Lazarus-2.0+-blue.svg)]()
+[![Lazarus](https://img.shields.io/badge/Lazarus-4.0+-blue.svg)]()
 [![CycloneDX](https://github.com/michaelJustin/slf4p/actions/workflows/run-syft.yml/badge.svg)](https://github.com/michaelJustin/slf4p/actions/workflows/run-syft.yml)
 
 The Simple Logging Facade for Pascal serves as a simple facade or abstraction for various logging frameworks (e.g. Log4D, LazLogger), allowing the end user to plug in the desired logging framework at build time.
