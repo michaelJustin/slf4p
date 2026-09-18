@@ -44,7 +44,17 @@ type
     property Level: TLogLevel read GetLevel;
     property LoggerName: string read GetLoggerName;
     property Message: string read GetMessage;
+
+    { What's this good for? Message already holds the fully formatted
+      string; Args keeps the individual values alongside it so a future
+      appender can treat the call as structured data instead of an opaque
+      string - e.g. group/aggregate log calls by template regardless of
+      argument values, emit machine-parseable fields (JSON, ELK, ...), or
+      redact specific arguments. No built-in appender uses this yet
+      (decide later whether to keep it, or drop it and rely on Message
+      alone, once a real consumer exists). }
     property Args: TLogEventArgs read GetArgs;
+
     property TimeStamp: TDateTime read GetTimeStamp;
     property Exception: Exception read GetException;
   end;
