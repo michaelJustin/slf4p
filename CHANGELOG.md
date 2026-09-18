@@ -5,13 +5,18 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-### Added
+
+### Core library
+#### Added
 - `TLogLevel`, `ILogEvent`/`TLogEvent` and `ILogEventAppender` in `djLogAPI`, encapsulating a single log call (level, logger name, message, format args, timestamp, exception) for future structured/queryable logging backends. `ILogger`'s public API is unchanged.
+
+### Internal / toolchain
+#### Added
 - A headless **Console** FPCUnit build mode for `src/test/Unittests.lpi`, so the test suite can run unattended (`UnittestsConsole.exe --all --format=plain`).
 - A GitHub Actions workflow (`tests.yml`) that runs the FPCUnit suite headless on Windows and Linux for every push to `master` and every relevant pull request.
 - `UNIT-TESTS.md` and `examples/README.md`, documenting how to build/run the test suite and what each example project demonstrates.
 
-### Fixed
+#### Fixed
 - `Unittests.lpi`'s `log4d` unit search path was missing `\main` (`log4d`'s `Log4D.pas` lives in `src/main`), which broke a clean checkout even though it went unnoticed locally due to stale precompiled units.
 
 ## [1.0.8] - 2026-05-14
