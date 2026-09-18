@@ -12,7 +12,7 @@ feeds two project files:
 
 The Free Pascal build expects [`log4d`](https://sourceforge.net/projects/log4d/)
 checked out as a **sibling of the repository directory** (`Unittests.lpi`'s
-search path uses `..\..\..\log4d\src`), since `Log4DLoggerTests.pas` exercises
+search path uses `..\..\..\log4d\src\main`), since `Log4DLoggerTests.pas` exercises
 the `djLogOverLog4D` adapter against the real library. The Delphi project has
 no such dependency: `Log4D` and `Log4DLoggerTests` are commented out of
 `Unittests.dpr` and never registered.

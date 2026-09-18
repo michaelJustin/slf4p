@@ -24,7 +24,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="..\..\..\log4d\src;..\main"/>
+            <OtherUnitFiles Value="..\..\..\log4d\src\main;..\main"/>
             <UnitOutputDirectory Value="lib\console\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -114,7 +114,7 @@
     <PathDelim Value="\"/>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\..\..\log4d\src;..\main"/>
+      <OtherUnitFiles Value="..\..\..\log4d\src\main;..\main"/>
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>
