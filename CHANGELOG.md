@@ -6,10 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [1.0.8.1] - 2026-05-15
-### Changed
-- Maintenance release: updated CycloneDX SBOM generation workflow (`.syft.yaml`, `run-syft.yml`) and README.
-
 ## [1.0.8] - 2026-05-14
 ### Added
 - CycloneDX SBOM generation via a new `run-syft.yml` GitHub Actions workflow and `.syft.yaml` config.
@@ -61,8 +57,7 @@ Maintenance release; see the [full commit history](https://github.com/michaelJus
 ## [0.1.0] - 2016-02-13
 Initial releases. See the [full commit history](https://github.com/michaelJustin/slf4p/commits/1.0.2) for details.
 
-[Unreleased]: https://github.com/michaelJustin/slf4p/compare/v1.0.8.1...HEAD
-[1.0.8.1]: https://github.com/michaelJustin/slf4p/compare/v1.0.8...v1.0.8.1
+[Unreleased]: https://github.com/michaelJustin/slf4p/compare/v1.0.8...HEAD
 [1.0.8]: https://github.com/michaelJustin/slf4p/compare/v1.0.7...v1.0.8
 [1.0.7]: https://github.com/michaelJustin/slf4p/compare/v1.0.6...v1.0.7
 [1.0.6]: https://github.com/michaelJustin/slf4p/compare/v1.0.5...v1.0.6
