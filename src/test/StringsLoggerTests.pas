@@ -34,6 +34,7 @@ type
     procedure CreateLogger;
     procedure TestInfo;
     procedure TestObjectArg;
+    procedure TestTwoObjectArgs;
   end;
 
 implementation
@@ -133,6 +134,46 @@ begin
 
       CheckEquals('INFO test.stringslogger - found TStringList', SL[0]);
       CheckEquals('INFO test.stringslogger - found nil', SL[1]);
+    finally
+      SL.Free;
+    end;
+  finally
+    SB.Free;
+  end;
+end;
+
+procedure TStringsLoggerTests.TestTwoObjectArgs;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  SB: TStringBuilder;
+  SL: TStrings;
+  Obj1, Obj2: TStringList;
+begin
+  SB := TStringBuilder.Create;
+  try
+    LoggerFactory := TStringsLoggerFactory.Create(SB);
+    StringsLogger.Configure('defaultLogLevel', 'debug');
+
+    Logger := LoggerFactory.GetLogger('test.stringslogger');
+
+    Obj1 := TStringList.Create;
+    Obj2 := TStringList.Create;
+    try
+      Logger.Info('matched %s to %s', Obj1, Obj2);
+    finally
+      Obj2.Free;
+      Obj1.Free;
+    end;
+
+    Logger.Info('matched %s to %s', TObject(nil), TObject(nil));
+
+    SL := TStringList.Create;
+    try
+      SL.Text := SB.ToString;
+
+      CheckEquals('INFO test.stringslogger - matched TStringList to TStringList', SL[0]);
+      CheckEquals('INFO test.stringslogger - matched nil to nil', SL[1]);
     finally
       SL.Free;
     end;
