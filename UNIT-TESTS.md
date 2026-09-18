@@ -26,8 +26,24 @@ lazbuild -B Unittests.lpi
 Unittests.exe
 ```
 
-This opens the FPCUnit **GUI** test runner (`TGuiTestRunner`) — there is no
-headless/console build mode, so a run needs an interactive desktop.
+This opens the FPCUnit **GUI** test runner (`TGuiTestRunner`) — needs an
+interactive desktop.
+
+For a headless run, build the **Console** build mode instead, which produces
+a separate console-subsystem executable, and pass it any argument (e.g.
+`--all --format=plain`) so it dispatches to the FPCUnit **console** runner
+instead of the GUI one:
+
+```
+lazbuild -B --build-mode=Console Unittests.lpi
+UnittestsConsole.exe --all --format=plain
+```
+
+The exit code has bit 0 set on failures and bit 1 set on errors (FPCUnit's
+`TProgressWriter.GetExitCode`), so scripts/CI can detect a red run from the
+process exit status alone. `Unittests.lpr` picks GUI vs. console at runtime
+via `ParamCount > 0`, so running `UnittestsConsole.exe` with no arguments
+still opens the GUI.
 
 `lazbuild` is not on `PATH` on this machine; call it by full path, e.g.
 `C:\lazarus\lazbuild.exe`.
@@ -49,13 +65,12 @@ pass/fail report to the console; without that switch it opens the DUnit
 
 ## Running a subset
 
-Neither runner currently exposes a command-line filter for selecting a
-single test case:
-
+- FPCUnit console runner: `--suite=<TestCaseClass>` (e.g. `--suite=TLogEventTests`),
+  or `--list` to see the registered suite/test names.
 - FPCUnit GUI runner: pick the suite/test in the tree and run it manually.
-- DUnit text runner: runs everything that's registered in `Unittests.dpr`;
-  to narrow it, temporarily comment out the `RegisterTests(...)` calls you
-  don't want.
+- DUnit text runner: no command-line selection; runs everything registered
+  in `Unittests.dpr`. To narrow it, temporarily comment out the
+  `RegisterTests(...)` calls you don't want, or use the GUI runner.
 
 ## What each test file covers
 
