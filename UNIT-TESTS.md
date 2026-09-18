@@ -12,7 +12,7 @@ feeds two project files:
 
 The Free Pascal build expects [`log4d`](https://sourceforge.net/projects/log4d/)
 checked out as a **sibling of the repository directory** (`Unittests.lpi`'s
-search path uses `..\..\..\log4d\src`), since `Log4DLoggerTests.pas` exercises
+search path uses `..\..\..\log4d\src\main`), since `Log4DLoggerTests.pas` exercises
 the `djLogOverLog4D` adapter against the real library. The Delphi project has
 no such dependency: `Log4D` and `Log4DLoggerTests` are commented out of
 `Unittests.dpr` and never registered.
@@ -84,11 +84,23 @@ pass/fail report to the console; without that switch it opens the DUnit
 - `LazLoggerTests.pas`, `Log4DLoggerTests.pas` — FPC/Lazarus **only** (see
   Dependencies above); not part of the Delphi build.
 
+## Continuous integration
+
+[`.github/workflows/tests.yml`](.github/workflows/tests.yml) checks out
+`log4d` as a sibling and runs the **Console** build mode headless on both
+`windows-latest` and `ubuntu-latest`. It triggers on every push to `master`
+and every pull request that touches `src/main/`, `src/test/` or the workflow
+file itself, and can be started by hand (`workflow_dispatch`). Windows
+installs Lazarus via `setup-lazarus` (the `stable` version), with the
+installed tree cached (keyed on the Lazarus/FPC version) so the SourceForge
+download only happens on a cache miss; Linux installs it from the Ubuntu
+archive (the action's SourceForge download stalls on the hosted Linux
+runners) and runs the console runner under `xvfb` (the runner links the
+LCL). Delphi is not covered in CI — run `Unittests.dpr` locally before
+merging.
+
 ## Notes
 
-- There is no CI workflow that runs this suite (`.github/workflows/` only
-  has example-compilation and SBOM generation); treat a local run as the
-  gate before merging changes to `src/main/`.
 - A green run is not a memory-leak check by itself:
   - FPC — the project is built with heap tracing (`-gh`), and the runner
     calls `SetHeapTraceOutput('heaptrace.log')`, so every run rewrites
