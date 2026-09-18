@@ -246,9 +246,6 @@ type
 
 implementation
 
-uses
-  slf4p;
-
 { TFirstClass }
 
 constructor TFirstClass.Create;
