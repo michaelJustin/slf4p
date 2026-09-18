@@ -9,7 +9,7 @@
 
 The Simple Logging Facade for Pascal serves as a simple facade or abstraction for various logging frameworks (e.g. Log4D, LazLogger), allowing the end user to plug in the desired logging framework at build time.
 
-Developed with Delphi 2009 and Lazarus 4.4, tested with DUnit and FPCUnit.
+Developed with Delphi 2009 and Lazarus 4.8, tested with DUnit and FPCUnit.
 
 To register a specific logging framework, add one of the `djLogOver...` units to the project.
 
