@@ -89,22 +89,27 @@ type
   ILogger = interface ['{58764670-2414-477F-8CE6-02A418D4CF09}']
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
+    procedure Debug(const AFormat: string; const AArg: TObject); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
 
     procedure Error(const AMsg: string); overload;
     procedure Error(const AFormat: string; const AArgs: array of const); overload;
+    procedure Error(const AFormat: string; const AArg: TObject); overload;
     procedure Error(const AMsg: string; const AException: Exception); overload;
 
     procedure Info(const AMsg: string); overload;
     procedure Info(const AFormat: string; const AArgs: array of const); overload;
+    procedure Info(const AFormat: string; const AArg: TObject); overload;
     procedure Info(const AMsg: string; const AException: Exception); overload;
 
     procedure Warn(const AMsg: string); overload;
     procedure Warn(const AFormat: string; const AArgs: array of const); overload;
+    procedure Warn(const AFormat: string; const AArg: TObject); overload;
     procedure Warn(const AMsg: string; const AException: Exception); overload;
 
     procedure Trace(const AMsg: string); overload;
     procedure Trace(const AFormat: string; const AArgs: array of const); overload;
+    procedure Trace(const AFormat: string; const AArg: TObject); overload;
     procedure Trace(const AMsg: string; const AException: Exception); overload;
 
     function IsDebugEnabled: Boolean;
@@ -127,7 +132,20 @@ type
     function GetLogger(const AName: string): ILogger;
   end;
 
+{ AObj.ClassName, or 'nil' if AObj is not assigned. Used to turn the single-
+  object ILogger overloads into a plain string before formatting, since
+  SysUtils.Format itself does not support a "%s" argument of type TObject. }
+function ObjectToStr(AObj: TObject): string;
+
 implementation
+
+function ObjectToStr(AObj: TObject): string;
+begin
+  if Assigned(AObj) then
+    Result := AObj.ClassName
+  else
+    Result := 'nil';
+end;
 
 { Converts a single TVarRec, as produced by an "array of const" literal, to
   its string representation. }
@@ -146,10 +164,7 @@ begin
     vtAnsiString: Result := string(AnsiString(AValue.VAnsiString));
     vtWideString: Result := string(WideString(AValue.VWideString));
     vtUnicodeString: Result := string(AValue.VUnicodeString);
-    vtObject:     if Assigned(AValue.VObject) then
-                    Result := AValue.VObject.ClassName
-                  else
-                    Result := 'nil';
+    vtObject:     Result := ObjectToStr(AValue.VObject);
     vtPointer:    Result := IntToHex(NativeInt(AValue.VPointer), SizeOf(Pointer) * 2);
   else
     Result := '';

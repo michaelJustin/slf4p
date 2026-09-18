@@ -52,22 +52,27 @@ type
 
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
+    procedure Debug(const AFormat: string; const AArg: TObject); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
 
     procedure Error(const AMsg: string); overload;
     procedure Error(const AFormat: string; const AArgs: array of const); overload;
+    procedure Error(const AFormat: string; const AArg: TObject); overload;
     procedure Error(const AMsg: string; const AException: Exception); overload;
 
     procedure Info(const AMsg: string); overload;
     procedure Info(const AFormat: string; const AArgs: array of const); overload;
+    procedure Info(const AFormat: string; const AArg: TObject); overload;
     procedure Info(const AMsg: string; const AException: Exception); overload;
 
     procedure Warn(const AMsg: string); overload;
     procedure Warn(const AFormat: string; const AArgs: array of const); overload;
+    procedure Warn(const AFormat: string; const AArg: TObject); overload;
     procedure Warn(const AMsg: string; const AException: Exception); overload;
 
     procedure Trace(const AMsg: string); overload;
     procedure Trace(const AFormat: string; const AArgs: array of const); overload;
+    procedure Trace(const AFormat: string; const AArg: TObject); overload;
     procedure Trace(const AMsg: string; const AException: Exception); overload;
 
     function Name: string;
@@ -183,6 +188,11 @@ begin
   Log(djLogAPI.Debug, AFormat, AArgs);
 end;
 
+procedure TAbstractLogger.Debug(const AFormat: string; const AArg: TObject);
+begin
+  Log(djLogAPI.Debug, AFormat, [ObjectToStr(AArg)]);
+end;
+
 procedure TAbstractLogger.Debug(const AMsg: string; const AException: Exception);
 begin
   Log(djLogAPI.Debug, AMsg, AException);
@@ -196,6 +206,11 @@ end;
 procedure TAbstractLogger.Error(const AFormat: string; const AArgs: array of const);
 begin
   Log(djLogAPI.Error, AFormat, AArgs);
+end;
+
+procedure TAbstractLogger.Error(const AFormat: string; const AArg: TObject);
+begin
+  Log(djLogAPI.Error, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TAbstractLogger.Error(const AMsg: string; const AException: Exception);
@@ -213,6 +228,11 @@ begin
   Log(djLogAPI.Info, AFormat, AArgs);
 end;
 
+procedure TAbstractLogger.Info(const AFormat: string; const AArg: TObject);
+begin
+  Log(djLogAPI.Info, AFormat, [ObjectToStr(AArg)]);
+end;
+
 procedure TAbstractLogger.Info(const AMsg: string; const AException: Exception);
 begin
   Log(djLogAPI.Info, AMsg, AException);
@@ -228,6 +248,11 @@ begin
   Log(djLogAPI.Warn, AFormat, AArgs);
 end;
 
+procedure TAbstractLogger.Warn(const AFormat: string; const AArg: TObject);
+begin
+  Log(djLogAPI.Warn, AFormat, [ObjectToStr(AArg)]);
+end;
+
 procedure TAbstractLogger.Warn(const AMsg: string; const AException: Exception);
 begin
   Log(djLogAPI.Warn, AMsg, AException);
@@ -241,6 +266,11 @@ end;
 procedure TAbstractLogger.Trace(const AFormat: string; const AArgs: array of const);
 begin
   Log(djLogAPI.Trace, AFormat, AArgs);
+end;
+
+procedure TAbstractLogger.Trace(const AFormat: string; const AArg: TObject);
+begin
+  Log(djLogAPI.Trace, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TAbstractLogger.Trace(const AMsg: string; const AException: Exception);

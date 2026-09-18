@@ -33,6 +33,7 @@ type
   published
     procedure CreateLogger;
     procedure TestInfo;
+    procedure TestObjectArg;
   end;
 
 implementation
@@ -94,6 +95,44 @@ begin
       CheckEquals('  some exception occured', SL[4]);
 
       WriteLn(SL.Text);
+    finally
+      SL.Free;
+    end;
+  finally
+    SB.Free;
+  end;
+end;
+
+procedure TStringsLoggerTests.TestObjectArg;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  SB: TStringBuilder;
+  SL: TStrings;
+  Obj: TStringList;
+begin
+  SB := TStringBuilder.Create;
+  try
+    LoggerFactory := TStringsLoggerFactory.Create(SB);
+    StringsLogger.Configure('defaultLogLevel', 'debug');
+
+    Logger := LoggerFactory.GetLogger('test.stringslogger');
+
+    Obj := TStringList.Create;
+    try
+      Logger.Info('found %s', Obj);
+    finally
+      Obj.Free;
+    end;
+
+    Logger.Info('found %s', TObject(nil));
+
+    SL := TStringList.Create;
+    try
+      SL.Text := SB.ToString;
+
+      CheckEquals('INFO test.stringslogger - found TStringList', SL[0]);
+      CheckEquals('INFO test.stringslogger - found nil', SL[1]);
     finally
       SL.Free;
     end;
