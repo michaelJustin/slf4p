@@ -12,7 +12,7 @@ uses
   StringsLoggerTests,
   Log4D,
   Interfaces, Forms,
-  fpcunit, testregistry, GuiTestRunner,
+  fpcunit, testregistry, GuiTestRunner, consoletestrunner,
   SysUtils;
 
 {$R *.res}
@@ -21,6 +21,10 @@ var
   Tests: TTestSuite;
 
 begin
+  // Write the heap trace report to heaptrace.log next to the executable.
+  // Must run before any allocation. See UNIT-TESTS.md.
+  SetHeapTraceOutput('heaptrace.log');
+
   Tests := TTestSuite.Create('Library Tests');
 
   Tests.AddTest(TdjLoggerFactoryTests.Suite);
@@ -36,12 +40,21 @@ begin
 
   RegisterTest('', Tests);
 
-  Application.Initialize;
-  Application.CreateForm(TGuiTestRunner, TestRunner);
-  TestRunner.Caption := 'Logging Facade FPCUnit tests';
-  TestRunner.TestTree.Items[0].Text := 'Logging Facade FPCUnit tests';
-  Application.Run;
-
-  SetHeapTraceOutput('heaptrace.log');
+  if ParamCount > 0 then
+  begin
+    // Console Test Runner: headless, for scripted / CI runs, e.g.
+    // `UnittestsConsole --all --format=plain`. Exit code has bit 0 set on
+    // failures and bit 1 set on errors (FPCUnit TProgressWriter.GetExitCode),
+    // so scripts and CI can detect a red run from the process exit status.
+    consoletestrunner.TTestRunner.Create(nil).Run;
+  end
+  else
+  begin
+    Application.Initialize;
+    Application.CreateForm(TGuiTestRunner, TestRunner);
+    TestRunner.Caption := 'Logging Facade FPCUnit tests';
+    TestRunner.TestTree.Items[0].Text := 'Logging Facade FPCUnit tests';
+    Application.Run;
+  end;
 end.
 
