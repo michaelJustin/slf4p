@@ -34,6 +34,7 @@ type
     procedure CreateLogger;
     procedure TestInfo;
     procedure TestObjectArg;
+    procedure TestObjectArgWithCustomToString;
     procedure TestTwoObjectArgs;
   end;
 
@@ -41,6 +42,30 @@ implementation
 
 uses
   djLogAPI, StringsLogger, Classes, SysUtils;
+
+type
+  { A point whose ToString is overridden, to verify ObjectToStr prefers it
+    over ClassName. }
+  TPoint2D = class(TObject)
+  strict private
+    FX, FY: Integer;
+  public
+    constructor Create(AX, AY: Integer);
+    function ToString: string; override;
+  end;
+
+{ TPoint2D }
+
+constructor TPoint2D.Create(AX, AY: Integer);
+begin
+  FX := AX;
+  FY := AY;
+end;
+
+function TPoint2D.ToString: string;
+begin
+  Result := Format('(%d, %d)', [FX, FY]);
+end;
 
 { TStringsLoggerTests }
 
@@ -134,6 +159,41 @@ begin
 
       CheckEquals('INFO test.stringslogger - found TStringList', SL[0]);
       CheckEquals('INFO test.stringslogger - found nil', SL[1]);
+    finally
+      SL.Free;
+    end;
+  finally
+    SB.Free;
+  end;
+end;
+
+procedure TStringsLoggerTests.TestObjectArgWithCustomToString;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  SB: TStringBuilder;
+  SL: TStrings;
+  Obj: TPoint2D;
+begin
+  SB := TStringBuilder.Create;
+  try
+    LoggerFactory := TStringsLoggerFactory.Create(SB);
+    StringsLogger.Configure('defaultLogLevel', 'debug');
+
+    Logger := LoggerFactory.GetLogger('test.stringslogger');
+
+    Obj := TPoint2D.Create(3, 4);
+    try
+      Logger.Info('found %s', Obj);
+    finally
+      Obj.Free;
+    end;
+
+    SL := TStringList.Create;
+    try
+      SL.Text := SB.ToString;
+
+      CheckEquals('INFO test.stringslogger - found (3, 4)', SL[0]);
     finally
       SL.Free;
     end;
