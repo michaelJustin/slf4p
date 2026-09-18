@@ -33,17 +33,17 @@ type
   public
     constructor Create(const AName: string);
 
+    procedure Trace(const AMsg: string); overload;
+    procedure Trace(const AFormat: string; const AArgs: array of const); overload;
+    procedure Trace(const AFormat: string; const AArg: TObject); overload;
+    procedure Trace(const AFormat: string; const AArg1, AArg2: TObject); overload;
+    procedure Trace(const AMsg: string; const AException: Exception); overload;
+
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
     procedure Debug(const AFormat: string; const AArg: TObject); overload;
     procedure Debug(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
-
-    procedure Error(const AMsg: string); overload;
-    procedure Error(const AFormat: string; const AArgs: array of const); overload;
-    procedure Error(const AFormat: string; const AArg: TObject); overload;
-    procedure Error(const AFormat: string; const AArg1, AArg2: TObject); overload;
-    procedure Error(const AMsg: string; const AException: Exception); overload;
 
     procedure Info(const AMsg: string); overload;
     procedure Info(const AFormat: string; const AArgs: array of const); overload;
@@ -57,19 +57,19 @@ type
     procedure Warn(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Warn(const AMsg: string; const AException: Exception); overload;
 
-    procedure Trace(const AMsg: string); overload;
-    procedure Trace(const AFormat: string; const AArgs: array of const); overload;
-    procedure Trace(const AFormat: string; const AArg: TObject); overload;
-    procedure Trace(const AFormat: string; const AArg1, AArg2: TObject); overload;
-    procedure Trace(const AMsg: string; const AException: Exception); overload;
+    procedure Error(const AMsg: string); overload;
+    procedure Error(const AFormat: string; const AArgs: array of const); overload;
+    procedure Error(const AFormat: string; const AArg: TObject); overload;
+    procedure Error(const AFormat: string; const AArg1, AArg2: TObject); overload;
+    procedure Error(const AMsg: string; const AException: Exception); overload;
 
     function Name: string;
 
+    function IsTraceEnabled: Boolean;
     function IsDebugEnabled: Boolean;
-    function IsErrorEnabled: Boolean;
     function IsInfoEnabled: Boolean;
     function IsWarnEnabled: Boolean;
-    function IsTraceEnabled: Boolean;
+    function IsErrorEnabled: Boolean;
 
   end;
 
@@ -101,6 +101,32 @@ begin
     Delegate.Log(ALevel, Format(AFormat, AArgs));
 end;
 
+procedure TLog4DLogger.Trace(const AMsg: string);
+begin
+  Log(Log4D.Trace, AMsg);
+end;
+
+procedure TLog4DLogger.Trace(const AFormat: string;
+  const AArgs: array of const);
+begin
+  Log(Log4D.Trace, AFormat, AArgs);
+end;
+
+procedure TLog4DLogger.Trace(const AFormat: string; const AArg: TObject);
+begin
+  Log(Log4D.Trace, AFormat, [ObjectToStr(AArg)]);
+end;
+
+procedure TLog4DLogger.Trace(const AFormat: string; const AArg1, AArg2: TObject);
+begin
+  Log(Log4D.Trace, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+end;
+
+procedure TLog4DLogger.Trace(const AMsg: string; const AException: Exception);
+begin
+  Delegate.Trace(AMsg, AException);
+end;
+
 procedure TLog4DLogger.Debug(const AMsg: string);
 begin
   Log(Log4D.Debug, AMsg);
@@ -126,35 +152,34 @@ begin
   Delegate.Debug(AMsg, AException);
 end;
 
-procedure TLog4DLogger.Trace(const AMsg: string; const AException: Exception);
+procedure TLog4DLogger.Info(const AMsg: string);
 begin
-  Delegate.Trace(AMsg, AException);
+  Log(Log4D.Info, AMsg);
 end;
 
-procedure TLog4DLogger.Trace(const AFormat: string;
-  const AArgs: array of const);
+procedure TLog4DLogger.Info(const AFormat: string; const AArgs: array of const);
 begin
-  Log(Log4D.Trace, AFormat, AArgs);
+  Log(Log4D.Info, AFormat, AArgs);
 end;
 
-procedure TLog4DLogger.Trace(const AFormat: string; const AArg: TObject);
+procedure TLog4DLogger.Info(const AFormat: string; const AArg: TObject);
 begin
-  Log(Log4D.Trace, AFormat, [ObjectToStr(AArg)]);
+  Log(Log4D.Info, AFormat, [ObjectToStr(AArg)]);
 end;
 
-procedure TLog4DLogger.Trace(const AFormat: string; const AArg1, AArg2: TObject);
+procedure TLog4DLogger.Info(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(Log4D.Trace, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  Log(Log4D.Info, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
-procedure TLog4DLogger.Trace(const AMsg: string);
+procedure TLog4DLogger.Info(const AMsg: string; const AException: Exception);
 begin
-  Log(Log4D.Trace, AMsg);
+  Delegate.Info(AMsg, AException);
 end;
 
-procedure TLog4DLogger.Warn(const AMsg: string; const AException: Exception);
+procedure TLog4DLogger.Warn(const AMsg: string);
 begin
-  Delegate.Warn(AMsg, AException);
+  Log(Log4D.Warn, AMsg);
 end;
 
 procedure TLog4DLogger.Warn(const AFormat: string; const AArgs: array of const);
@@ -172,9 +197,14 @@ begin
   Log(Log4D.Warn, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
-procedure TLog4DLogger.Warn(const AMsg: string);
+procedure TLog4DLogger.Warn(const AMsg: string; const AException: Exception);
 begin
-  Log(Log4D.Warn, AMsg);
+  Delegate.Warn(AMsg, AException);
+end;
+
+procedure TLog4DLogger.Error(const AMsg: string);
+begin
+  Log(Log4D.Error, AMsg);
 end;
 
 procedure TLog4DLogger.Error(const AFormat: string;
@@ -193,11 +223,6 @@ begin
   Log(Log4D.Error, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
-procedure TLog4DLogger.Error(const AMsg: string);
-begin
-  Log(Log4D.Error, AMsg);
-end;
-
 procedure TLog4DLogger.Error(const AMsg: string; const AException: Exception);
 begin
   Delegate.Error(AMsg, AException);
@@ -208,9 +233,9 @@ begin
   Result := Delegate.Name;
 end;
 
-procedure TLog4DLogger.Info(const AMsg: string; const AException: Exception);
+function TLog4DLogger.IsTraceEnabled: Boolean;
 begin
-  Delegate.Info(AMsg, AException);
+  Result := Delegate.IsTraceEnabled;
 end;
 
 function TLog4DLogger.IsDebugEnabled: Boolean;
@@ -218,19 +243,9 @@ begin
   Result := Delegate.IsDebugEnabled;
 end;
 
-function TLog4DLogger.IsErrorEnabled: Boolean;
-begin
-  Result := Delegate.IsErrorEnabled;
-end;
-
 function TLog4DLogger.IsInfoEnabled: Boolean;
 begin
   Result := Delegate.IsInfoEnabled;
-end;
-
-function TLog4DLogger.IsTraceEnabled: Boolean;
-begin
-  Result := Delegate.IsTraceEnabled;
 end;
 
 function TLog4DLogger.IsWarnEnabled: Boolean;
@@ -238,24 +253,9 @@ begin
   Result := Delegate.IsWarnEnabled;
 end;
 
-procedure TLog4DLogger.Info(const AFormat: string; const AArgs: array of const);
+function TLog4DLogger.IsErrorEnabled: Boolean;
 begin
-  Log(Log4D.Info, AFormat, AArgs);
-end;
-
-procedure TLog4DLogger.Info(const AFormat: string; const AArg: TObject);
-begin
-  Log(Log4D.Info, AFormat, [ObjectToStr(AArg)]);
-end;
-
-procedure TLog4DLogger.Info(const AFormat: string; const AArg1, AArg2: TObject);
-begin
-  Log(Log4D.Info, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
-end;
-
-procedure TLog4DLogger.Info(const AMsg: string);
-begin
-  Log(Log4D.Info, AMsg);
+  Result := Delegate.IsErrorEnabled;
 end;
 
 { TLog4DLoggerFactory }
