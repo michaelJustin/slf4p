@@ -9,10 +9,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Core library
 #### Added
 - `TLogLevel`, `ILogEvent`/`TLogEvent` and `ILogEventAppender` in `djLogAPI`, encapsulating a single log call (level, logger name, message, format args, timestamp, exception) for future structured/queryable logging backends. `ILogger`'s public API is unchanged.
-- `TAbstractLogger` in a new `djAbstractLogger` unit: implements `ILogger` (and `ILogEventAppender`) once, owning the level check and `TLogEvent` construction for every call, and exposes a single `Append(const AEvent: ILogEvent)` for subclasses to override. `TSimpleLogger`, `TLazLoggerLogger` and `TStringsLogger` now derive from it instead of each re-implementing the full fifteen-overload `ILogger` surface and its own private level enum; `TNOPLogger` and `TLog4DLogger` are unchanged for now (see the unit's header comment/issue #69 for why).
-
-#### Changed
-- `SimpleLogger`, `LazLoggerLogger` and `StringsLogger` no longer declare their own `Trace`/`Debug`/`Info`/`Warn`/`Error` level enum; they use `djLogAPI.TLogLevel` via `TAbstractLogger`. Logged output is unchanged.
 
 ### Internal / toolchain
 #### Added
