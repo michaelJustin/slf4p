@@ -27,8 +27,8 @@ type
   private
     Delegate: TLogLogger;
 
-    procedure Log(const ALevel: TLogLevel; const AMsg: string); overload;
-    procedure Log(const ALevel: TLogLevel; const AFormat: string; const AArgs: array of const); overload;
+    procedure Log(const ALevel: Log4D.TLogLevel; const AMsg: string); overload;
+    procedure Log(const ALevel: Log4D.TLogLevel; const AFormat: string; const AArgs: array of const); overload;
 
   public
     constructor Create(const AName: string);
@@ -79,12 +79,12 @@ begin
   Delegate := TLogLogger.GetLogger(AName);
 end;
 
-procedure TLog4DLogger.Log(const ALevel: TLogLevel; const AMsg: string);
+procedure TLog4DLogger.Log(const ALevel: Log4D.TLogLevel; const AMsg: string);
 begin
   Delegate.Log(ALevel, AMsg);
 end;
 
-procedure TLog4DLogger.Log(const ALevel: TLogLevel; const AFormat: string;
+procedure TLog4DLogger.Log(const ALevel: Log4D.TLogLevel; const AFormat: string;
   const AArgs: array of const);
 begin
   if Delegate.IsEnabledFor(ALevel) then

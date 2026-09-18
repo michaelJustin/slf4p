@@ -27,6 +27,7 @@ uses
   StringsLogger in '..\main\StringsLogger.pas',
   // Test classes
   LoggerFactoryTests in 'LoggerFactoryTests.pas',
+  LogEventTests in 'LogEventTests.pas',
   NOPLoggerTests in 'NOPLoggerTests.pas',
   SimpleLoggerTests in 'SimpleLoggerTests.pas',
   StringsLoggerTests in 'StringsLoggerTests.pas',
@@ -39,6 +40,7 @@ uses
 
 begin
   RegisterTests('TdjLoggerFactory Tests', [TdjLoggerFactoryTests.Suite]);
+  RegisterTests('TLogEvent Tests', [TLogEventTests.Suite]);
   RegisterTests('TNOPLogger Tests', [TNOPLoggerTests.Suite]);
   RegisterTests('TSimpleLogger Tests', [TSimpleLoggerTests.Suite]);
   RegisterTests('TStringsLogger Tests', [TStringsLoggerTests.Suite]);

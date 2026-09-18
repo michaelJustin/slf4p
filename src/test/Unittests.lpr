@@ -4,6 +4,7 @@ program Unittests;
 
 uses
   LoggerFactoryTests,
+  LogEventTests,
   Log4DLoggerTests,
   NOPLoggerTests,
   SimpleLoggerTests,
@@ -23,6 +24,7 @@ begin
   Tests := TTestSuite.Create('Library Tests');
 
   Tests.AddTest(TdjLoggerFactoryTests.Suite);
+  Tests.AddTest(TLogEventTests.Suite);
   Tests.AddTest(TLazLoggerTests.Suite);
   Tests.AddTest(TNOPLoggerTests.Suite);
   Tests.AddTest(TSimpleLoggerTests.Suite);

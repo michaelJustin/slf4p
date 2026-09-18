@@ -25,6 +25,57 @@ const
   SLF4P_VERSION = '1.0.9-SNAPSHOT';
 
 type
+  TLogLevel = (Trace, Debug, Info, Warn, Error);
+
+  { An array of the format arguments passed to a log call, captured as
+    strings so they outlive the caller's stack frame. }
+  TLogEventArgs = array of string;
+
+  { A single log call, encapsulating its level, logger name, formatted
+    message, format arguments and exception (if any). }
+  ILogEvent = interface ['{9B2A5E10-6C3D-4B8E-9A1F-3D2C7E4A8F01}']
+    function GetLevel: TLogLevel;
+    function GetLoggerName: string;
+    function GetMessage: string;
+    function GetArgs: TLogEventArgs;
+    function GetTimeStamp: TDateTime;
+    function GetException: Exception;
+
+    property Level: TLogLevel read GetLevel;
+    property LoggerName: string read GetLoggerName;
+    property Message: string read GetMessage;
+    property Args: TLogEventArgs read GetArgs;
+    property TimeStamp: TDateTime read GetTimeStamp;
+    property Exception: Exception read GetException;
+  end;
+
+  TLogEvent = class(TInterfacedObject, ILogEvent)
+  strict private
+    FLevel: TLogLevel;
+    FLoggerName: string;
+    FMessage: string;
+    FArgs: TLogEventArgs;
+    FTimeStamp: TDateTime;
+    FException: Exception;
+  protected
+    function GetLevel: TLogLevel;
+    function GetLoggerName: string;
+    function GetMessage: string;
+    function GetArgs: TLogEventArgs;
+    function GetTimeStamp: TDateTime;
+    function GetException: Exception;
+  public
+    { Message-only / exception constructor (no format args) }
+    constructor Create(const ALoggerName: string; ALevel: TLogLevel;
+      const AMsg: string; const AException: Exception = nil); overload;
+
+    { Format-args constructor: message is formatted eagerly, args are
+      captured as strings so they outlive the caller's stack frame }
+    constructor Create(const ALoggerName: string; ALevel: TLogLevel;
+      const AFormat: string; const AArgs: array of const;
+      const AException: Exception = nil); overload;
+  end;
+
   ILogger = interface ['{58764670-2414-477F-8CE6-02A418D4CF09}']
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
@@ -56,10 +107,103 @@ type
 
   end;
 
+  { Optional extension point for appenders that want the raw log event,
+    e.g. backends that support structured/contextual logging. }
+  ILogEventAppender = interface ['{4F1E9C22-7B6A-4D5E-9C3A-1B2D6E7F9A02}']
+    procedure Append(const AEvent: ILogEvent);
+  end;
+
   ILoggerFactory = interface ['{B5EC64AC-85D6-40F1-88CC-EC045D9ED653}']
     function GetLogger(const AName: string): ILogger;
   end;
 
 implementation
+
+{ Converts a single TVarRec, as produced by an "array of const" literal, to
+  its string representation. }
+function VarRecToStr(const AValue: TVarRec): string;
+begin
+  case AValue.VType of
+    vtInteger:    Result := IntToStr(AValue.VInteger);
+    vtInt64:      Result := IntToStr(AValue.VInt64^);
+    vtBoolean:    Result := BoolToStr(AValue.VBoolean, True);
+    vtChar:       Result := string(AValue.VChar);
+    vtWideChar:   Result := AValue.VWideChar;
+    vtExtended:   Result := FloatToStr(AValue.VExtended^);
+    vtCurrency:   Result := CurrToStr(AValue.VCurrency^);
+    vtString:     Result := string(AValue.VString^);
+    vtPChar:      Result := string(AValue.VPChar);
+    vtAnsiString: Result := string(AnsiString(AValue.VAnsiString));
+    vtWideString: Result := string(WideString(AValue.VWideString));
+    vtUnicodeString: Result := string(AValue.VUnicodeString);
+    vtObject:     if Assigned(AValue.VObject) then
+                    Result := AValue.VObject.ClassName
+                  else
+                    Result := 'nil';
+    vtPointer:    Result := IntToHex(NativeInt(AValue.VPointer), SizeOf(Pointer) * 2);
+  else
+    Result := '';
+  end;
+end;
+
+constructor TLogEvent.Create(const ALoggerName: string; ALevel: TLogLevel;
+  const AMsg: string; const AException: Exception = nil);
+begin
+  inherited Create;
+  FLoggerName := ALoggerName;
+  FLevel := ALevel;
+  FMessage := AMsg;
+  FTimeStamp := Now;
+  FException := AException;
+end;
+
+constructor TLogEvent.Create(const ALoggerName: string; ALevel: TLogLevel;
+  const AFormat: string; const AArgs: array of const;
+  const AException: Exception = nil);
+var
+  I: Integer;
+begin
+  inherited Create;
+  FLoggerName := ALoggerName;
+  FLevel := ALevel;
+  FTimeStamp := Now;
+  FException := AException;
+
+  SetLength(FArgs, Length(AArgs));
+  for I := 0 to High(AArgs) do
+    FArgs[I] := VarRecToStr(AArgs[I]);
+
+  FMessage := Format(AFormat, AArgs);
+end;
+
+function TLogEvent.GetLevel: TLogLevel;
+begin
+  Result := FLevel;
+end;
+
+function TLogEvent.GetLoggerName: string;
+begin
+  Result := FLoggerName;
+end;
+
+function TLogEvent.GetMessage: string;
+begin
+  Result := FMessage;
+end;
+
+function TLogEvent.GetArgs: TLogEventArgs;
+begin
+  Result := FArgs;
+end;
+
+function TLogEvent.GetTimeStamp: TDateTime;
+begin
+  Result := FTimeStamp;
+end;
+
+function TLogEvent.GetException: Exception;
+begin
+  Result := FException;
+end;
 
 end.
