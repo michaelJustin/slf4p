@@ -31,17 +31,17 @@ type
   public
     constructor Create(const AName: string);
 
+    procedure Trace(const AMsg: string); overload;
+    procedure Trace(const AFormat: string; const AArgs: array of const); overload;
+    procedure Trace(const AFormat: string; const AArg: TObject); overload;
+    procedure Trace(const AFormat: string; const AArg1, AArg2: TObject); overload;
+    procedure Trace(const AMsg: string; const AException: Exception); overload;
+
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
     procedure Debug(const AFormat: string; const AArg: TObject); overload;
     procedure Debug(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
-
-    procedure Error(const AMsg: string); overload;
-    procedure Error(const AFormat: string; const AArgs: array of const); overload;
-    procedure Error(const AFormat: string; const AArg: TObject); overload;
-    procedure Error(const AFormat: string; const AArg1, AArg2: TObject); overload;
-    procedure Error(const AMsg: string; const AException: Exception); overload;
 
     procedure Info(const AMsg: string); overload;
     procedure Info(const AFormat: string; const AArgs: array of const); overload;
@@ -55,19 +55,19 @@ type
     procedure Warn(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Warn(const AMsg: string; const AException: Exception); overload;
 
-    procedure Trace(const AMsg: string); overload;
-    procedure Trace(const AFormat: string; const AArgs: array of const); overload;
-    procedure Trace(const AFormat: string; const AArg: TObject); overload;
-    procedure Trace(const AFormat: string; const AArg1, AArg2: TObject); overload;
-    procedure Trace(const AMsg: string; const AException: Exception); overload;
+    procedure Error(const AMsg: string); overload;
+    procedure Error(const AFormat: string; const AArgs: array of const); overload;
+    procedure Error(const AFormat: string; const AArg: TObject); overload;
+    procedure Error(const AFormat: string; const AArg1, AArg2: TObject); overload;
+    procedure Error(const AMsg: string; const AException: Exception); overload;
 
     function Name: string;
 
+    function IsTraceEnabled: Boolean;
     function IsDebugEnabled: Boolean;
-    function IsErrorEnabled: Boolean;
     function IsInfoEnabled: Boolean;
     function IsWarnEnabled: Boolean;
-    function IsTraceEnabled: Boolean;
+    function IsErrorEnabled: Boolean;
 
   end;
 
@@ -83,6 +83,31 @@ implementation
 constructor TNOPLogger.Create(const AName: string);
 begin
   FName := AName;
+end;
+
+procedure TNOPLogger.Trace(const AMsg: string);
+begin
+
+end;
+
+procedure TNOPLogger.Trace(const AFormat: string; const AArgs: array of const);
+begin
+
+end;
+
+procedure TNOPLogger.Trace(const AFormat: string; const AArg: TObject);
+begin
+
+end;
+
+procedure TNOPLogger.Trace(const AFormat: string; const AArg1, AArg2: TObject);
+begin
+
+end;
+
+procedure TNOPLogger.Trace(const AMsg: string; const AException: Exception);
+begin
+
 end;
 
 procedure TNOPLogger.Debug(const AMsg: string);
@@ -110,64 +135,9 @@ begin
 
 end;
 
-procedure TNOPLogger.Error(const AMsg: string; const AException: Exception);
+procedure TNOPLogger.Info(const AMsg: string);
 begin
 
-end;
-
-function TNOPLogger.Name: string;
-begin
-  Result := FName;
-end;
-
-procedure TNOPLogger.Error(const AFormat: string; const AArgs: array of const);
-begin
-
-end;
-
-procedure TNOPLogger.Error(const AFormat: string; const AArg: TObject);
-begin
-
-end;
-
-procedure TNOPLogger.Error(const AFormat: string; const AArg1, AArg2: TObject);
-begin
-
-end;
-
-procedure TNOPLogger.Error(const AMsg: string);
-begin
-
-end;
-
-procedure TNOPLogger.Info(const AMsg: string; const AException: Exception);
-begin
-
-end;
-
-function TNOPLogger.IsDebugEnabled: Boolean;
-begin
-  Result := False;
-end;
-
-function TNOPLogger.IsErrorEnabled: Boolean;
-begin
-  Result := False;
-end;
-
-function TNOPLogger.IsInfoEnabled: Boolean;
-begin
-  Result := False;
-end;
-
-function TNOPLogger.IsTraceEnabled: Boolean;
-begin
-  Result := False;
-end;
-
-function TNOPLogger.IsWarnEnabled: Boolean;
-begin
-  Result := False;
 end;
 
 procedure TNOPLogger.Info(const AFormat: string; const AArgs: array of const);
@@ -185,37 +155,12 @@ begin
 
 end;
 
-procedure TNOPLogger.Info(const AMsg: string);
+procedure TNOPLogger.Info(const AMsg: string; const AException: Exception);
 begin
 
 end;
 
-procedure TNOPLogger.Trace(const AMsg: string; const AException: Exception);
-begin
-
-end;
-
-procedure TNOPLogger.Trace(const AFormat: string; const AArgs: array of const);
-begin
-
-end;
-
-procedure TNOPLogger.Trace(const AFormat: string; const AArg: TObject);
-begin
-
-end;
-
-procedure TNOPLogger.Trace(const AFormat: string; const AArg1, AArg2: TObject);
-begin
-
-end;
-
-procedure TNOPLogger.Trace(const AMsg: string);
-begin
-
-end;
-
-procedure TNOPLogger.Warn(const AMsg: string; const AException: Exception);
+procedure TNOPLogger.Warn(const AMsg: string);
 begin
 
 end;
@@ -235,9 +180,64 @@ begin
 
 end;
 
-procedure TNOPLogger.Warn(const AMsg: string);
+procedure TNOPLogger.Warn(const AMsg: string; const AException: Exception);
 begin
 
+end;
+
+procedure TNOPLogger.Error(const AMsg: string);
+begin
+
+end;
+
+procedure TNOPLogger.Error(const AFormat: string; const AArgs: array of const);
+begin
+
+end;
+
+procedure TNOPLogger.Error(const AFormat: string; const AArg: TObject);
+begin
+
+end;
+
+procedure TNOPLogger.Error(const AFormat: string; const AArg1, AArg2: TObject);
+begin
+
+end;
+
+procedure TNOPLogger.Error(const AMsg: string; const AException: Exception);
+begin
+
+end;
+
+function TNOPLogger.Name: string;
+begin
+  Result := FName;
+end;
+
+function TNOPLogger.IsTraceEnabled: Boolean;
+begin
+  Result := False;
+end;
+
+function TNOPLogger.IsDebugEnabled: Boolean;
+begin
+  Result := False;
+end;
+
+function TNOPLogger.IsInfoEnabled: Boolean;
+begin
+  Result := False;
+end;
+
+function TNOPLogger.IsWarnEnabled: Boolean;
+begin
+  Result := False;
+end;
+
+function TNOPLogger.IsErrorEnabled: Boolean;
+begin
+  Result := False;
 end;
 
 { TNOPLoggerFactory }
