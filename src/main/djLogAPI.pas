@@ -132,9 +132,12 @@ type
     function GetLogger(const AName: string): ILogger;
   end;
 
-{ AObj.ClassName, or 'nil' if AObj is not assigned. Used to turn the single-
+{ AObj.ToString, or 'nil' if AObj is not assigned. Used to turn the single-
   object ILogger overloads into a plain string before formatting, since
-  SysUtils.Format itself does not support a "%s" argument of type TObject. }
+  SysUtils.Format itself does not support a "%s" argument of type TObject.
+  TObject.ToString defaults to the class name but can be overridden, so
+  callers get a more meaningful representation than ClassName alone when
+  their class provides one. }
 function ObjectToStr(AObj: TObject): string;
 
 implementation
@@ -142,7 +145,7 @@ implementation
 function ObjectToStr(AObj: TObject): string;
 begin
   if Assigned(AObj) then
-    Result := AObj.ClassName
+    Result := AObj.ToString
   else
     Result := 'nil';
 end;
