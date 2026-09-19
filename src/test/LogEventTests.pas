@@ -35,6 +35,7 @@ type
     procedure TestMessageWithException;
     procedure TestFormattedMessage;
     procedure TestNoException;
+    procedure TestBadFormatDoesNotRaise;
   end;
 
 implementation
@@ -93,6 +94,17 @@ begin
   Event := TLogEvent.Create('root', Warn, 'no exception here');
 
   CheckFalse(Assigned(Event.Exception));
+end;
+
+procedure TLogEventTests.TestBadFormatDoesNotRaise;
+var
+  Event: ILogEvent;
+begin
+  { '%d' given a non-numeric argument: SysUtils.Format would raise
+    EConvertError; the constructor must not let that propagate. }
+  Event := TLogEvent.Create('root', Error, 'value is %d', ['not a number']);
+
+  CheckTrue(Pos('value is %d', Event.Message) = 1);
 end;
 
 end.

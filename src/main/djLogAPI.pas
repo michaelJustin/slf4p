@@ -145,6 +145,12 @@ type
   their class provides one. }
 function ObjectToStr(AObj: TObject): string;
 
+{ Format(AFormat, AArgs), or - if the format string and arguments don't
+  match (wrong placeholder count/type etc.) - AFormat with the resulting
+  exception's message appended, so a malformed log call never propagates
+  an exception into the caller. }
+function SafeFormat(const AFormat: string; const AArgs: array of const): string;
+
 implementation
 
 function ObjectToStr(AObj: TObject): string;
@@ -153,6 +159,16 @@ begin
     Result := AObj.ToString
   else
     Result := 'nil';
+end;
+
+function SafeFormat(const AFormat: string; const AArgs: array of const): string;
+begin
+  try
+    Result := Format(AFormat, AArgs);
+  except
+    on E: Exception do
+      Result := AFormat + ' [FORMAT ERROR: ' + E.Message + ']';
+  end;
 end;
 
 { Converts a single TVarRec, as produced by an "array of const" literal, to
@@ -206,7 +222,7 @@ begin
   for I := 0 to High(AArgs) do
     FArgs[I] := VarRecToStr(AArgs[I]);
 
-  FMessage := Format(AFormat, AArgs);
+  FMessage := SafeFormat(AFormat, AArgs);
 end;
 
 function TLogEvent.GetLevel: TLogLevel;

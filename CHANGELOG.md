@@ -16,6 +16,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 #### Changed
 - `SimpleLogger`, `LazLoggerLogger` and `StringsLogger` no longer declare their own `Trace`/`Debug`/`Info`/`Warn`/`Error` level enum; they use `djLogAPI.TLogLevel` via `TAbstractLogger`. Logged output is unchanged.
 
+#### Fixed
+- A log call whose format string and arguments don't match (e.g. too few/many placeholders, a `%d` given a non-numeric argument) no longer raises `EConvertError` out of `Log.Debug`/`Info`/`Warn`/`Error`/`Trace`. `TLogEvent`'s format-args constructor (`djLogAPI.pas`, used by every backend derived from `TAbstractLogger`) and `TLog4DLogger.Log` (`Log4DLogger.pas`, which formats independently) now go through a new `djLogAPI.SafeFormat`, which falls back to the raw format string plus the formatting exception's message so the mistake stays visible in the log output instead of propagating to the caller.
+
 ### Internal / toolchain
 #### Added
 - A headless **Console** FPCUnit build mode for `src/test/Unittests.lpi`, so the test suite can run unattended (`UnittestsConsole.exe --all --format=plain`).

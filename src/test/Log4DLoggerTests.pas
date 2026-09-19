@@ -31,6 +31,7 @@ type
     procedure CreateLogger;
     procedure TestDebug;
     procedure TestInfo;
+    procedure TestBadFormatDoesNotRaise;
   end;
 
 implementation
@@ -85,6 +86,19 @@ begin
   E := EAbort.Create('simple example exception');
   Logger.Info('simple msg', E);
   E.Free;
+end;
+
+procedure TLog4DLoggerTests.TestBadFormatDoesNotRaise;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+begin
+  LoggerFactory := TLog4DLoggerFactory.Create;
+  Logger := LoggerFactory.GetLogger('log4d');
+
+  { '%d' given a non-numeric argument: SysUtils.Format would raise
+    EConvertError; TLog4DLogger.Log must not let that propagate. }
+  Logger.Debug('value is %d', ['not a number']);
 end;
 
 end.

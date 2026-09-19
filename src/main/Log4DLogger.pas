@@ -98,7 +98,7 @@ procedure TLog4DLogger.Log(const ALevel: Log4D.TLogLevel; const AFormat: string;
   const AArgs: array of const);
 begin
   if Delegate.IsEnabledFor(ALevel) then
-    Delegate.Log(ALevel, Format(AFormat, AArgs));
+    Delegate.Log(ALevel, SafeFormat(AFormat, AArgs));
 end;
 
 procedure TLog4DLogger.Trace(const AMsg: string);
