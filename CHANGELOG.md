@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Core library
+#### Fixed
+- `ILogger.Debug/Info/Warn/Error/Trace(const AFormat: string; const AArg(1, AArg2): TObject)` evaluated the object argument's `ToString` (via `djLogAPI.ObjectToStr`) before checking whether the level was enabled, so a disabled-level call still paid for however expensive that `ToString` was. `TAbstractLogger` (`djAbstractLogger.pas`) and `TLog4DLogger` (`Log4DLogger.pas`, which gates independently) now check the level first and skip the conversion entirely when the call would be discarded.
+
 ## [1.1.0] - 2026-09-19
 
 ### Core library

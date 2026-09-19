@@ -114,12 +114,14 @@ end;
 
 procedure TLog4DLogger.Trace(const AFormat: string; const AArg: TObject);
 begin
-  Log(Log4D.Trace, AFormat, [ObjectToStr(AArg)]);
+  if Delegate.IsEnabledFor(Log4D.Trace) then
+    Log(Log4D.Trace, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TLog4DLogger.Trace(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(Log4D.Trace, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if Delegate.IsEnabledFor(Log4D.Trace) then
+    Log(Log4D.Trace, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TLog4DLogger.Trace(const AMsg: string; const AException: Exception);
@@ -139,12 +141,14 @@ end;
 
 procedure TLog4DLogger.Debug(const AFormat: string; const AArg: TObject);
 begin
-  Log(Log4D.Debug, AFormat, [ObjectToStr(AArg)]);
+  if Delegate.IsEnabledFor(Log4D.Debug) then
+    Log(Log4D.Debug, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TLog4DLogger.Debug(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(Log4D.Debug, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if Delegate.IsEnabledFor(Log4D.Debug) then
+    Log(Log4D.Debug, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TLog4DLogger.Debug(const AMsg: string; const AException: Exception);
@@ -164,12 +168,14 @@ end;
 
 procedure TLog4DLogger.Info(const AFormat: string; const AArg: TObject);
 begin
-  Log(Log4D.Info, AFormat, [ObjectToStr(AArg)]);
+  if Delegate.IsEnabledFor(Log4D.Info) then
+    Log(Log4D.Info, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TLog4DLogger.Info(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(Log4D.Info, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if Delegate.IsEnabledFor(Log4D.Info) then
+    Log(Log4D.Info, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TLog4DLogger.Info(const AMsg: string; const AException: Exception);
@@ -189,12 +195,14 @@ end;
 
 procedure TLog4DLogger.Warn(const AFormat: string; const AArg: TObject);
 begin
-  Log(Log4D.Warn, AFormat, [ObjectToStr(AArg)]);
+  if Delegate.IsEnabledFor(Log4D.Warn) then
+    Log(Log4D.Warn, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TLog4DLogger.Warn(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(Log4D.Warn, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if Delegate.IsEnabledFor(Log4D.Warn) then
+    Log(Log4D.Warn, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TLog4DLogger.Warn(const AMsg: string; const AException: Exception);
@@ -215,12 +223,14 @@ end;
 
 procedure TLog4DLogger.Error(const AFormat: string; const AArg: TObject);
 begin
-  Log(Log4D.Error, AFormat, [ObjectToStr(AArg)]);
+  if Delegate.IsEnabledFor(Log4D.Error) then
+    Log(Log4D.Error, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TLog4DLogger.Error(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(Log4D.Error, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if Delegate.IsEnabledFor(Log4D.Error) then
+    Log(Log4D.Error, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TLog4DLogger.Error(const AMsg: string; const AException: Exception);

@@ -32,12 +32,34 @@ type
     procedure TestDebug;
     procedure TestInfo;
     procedure TestBadFormatDoesNotRaise;
+    procedure TestObjectArgNotEvaluatedWhenLevelDisabled;
   end;
 
 implementation
 
 uses
-  djLogAPI, Log4DLogger, SysUtils;
+  djLogAPI, Log4DLogger, Log4D, SysUtils;
+
+var
+  { Counts TCountingToString.ToString invocations; reset by the test that
+    uses it. }
+  GToStringCallCount: Integer;
+
+type
+  { A ToString that counts its own invocations, to verify a disabled-level
+    log call never evaluates the object argument's ToString. }
+  TCountingToString = class(TObject)
+  public
+    function ToString: string; override;
+  end;
+
+{ TCountingToString }
+
+function TCountingToString.ToString: string;
+begin
+  Inc(GToStringCallCount);
+  Result := 'counted';
+end;
 
 { TLog4DLoggerTests }
 
@@ -99,6 +121,30 @@ begin
   { '%d' given a non-numeric argument: SysUtils.Format would raise
     EConvertError; TLog4DLogger.Log must not let that propagate. }
   Logger.Debug('value is %d', ['not a number']);
+end;
+
+procedure TLog4DLoggerTests.TestObjectArgNotEvaluatedWhenLevelDisabled;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  Obj: TCountingToString;
+begin
+  TLogLogger.GetLogger('log4d-disabled-test').Level := Log4D.Error;
+
+  LoggerFactory := TLog4DLoggerFactory.Create;
+  Logger := LoggerFactory.GetLogger('log4d-disabled-test');
+
+  GToStringCallCount := 0;
+  Obj := TCountingToString.Create;
+  try
+    { Debug is disabled (level is Error): ToString must never run. }
+    Logger.Debug('found %s', Obj);
+    Logger.Debug('matched %s to %s', Obj, Obj);
+  finally
+    Obj.Free;
+  end;
+
+  CheckEquals(0, GToStringCallCount);
 end;
 
 end.

@@ -36,12 +36,18 @@ type
     procedure TestObjectArg;
     procedure TestObjectArgWithCustomToString;
     procedure TestTwoObjectArgs;
+    procedure TestObjectArgNotEvaluatedWhenLevelDisabled;
   end;
 
 implementation
 
 uses
   djLogAPI, StringsLogger, Classes, SysUtils;
+
+var
+  { Counts TCountingToString.ToString invocations; reset by each test that
+    uses it. }
+  GToStringCallCount: Integer;
 
 type
   { A point whose ToString is overridden, to verify ObjectToStr prefers it
@@ -51,6 +57,13 @@ type
     FX, FY: Integer;
   public
     constructor Create(AX, AY: Integer);
+    function ToString: string; override;
+  end;
+
+  { A ToString that counts its own invocations, to verify a disabled-level
+    log call never evaluates the object argument's ToString. }
+  TCountingToString = class(TObject)
+  public
     function ToString: string; override;
   end;
 
@@ -65,6 +78,14 @@ end;
 function TPoint2D.ToString: string;
 begin
   Result := Format('(%d, %d)', [FX, FY]);
+end;
+
+{ TCountingToString }
+
+function TCountingToString.ToString: string;
+begin
+  Inc(GToStringCallCount);
+  Result := 'counted';
 end;
 
 { TStringsLoggerTests }
@@ -237,6 +258,39 @@ begin
     finally
       SL.Free;
     end;
+  finally
+    SB.Free;
+  end;
+end;
+
+procedure TStringsLoggerTests.TestObjectArgNotEvaluatedWhenLevelDisabled;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  SB: TStringBuilder;
+  Obj: TCountingToString;
+begin
+  SB := TStringBuilder.Create;
+  try
+    LoggerFactory := TStringsLoggerFactory.Create(SB);
+    StringsLogger.Configure('defaultLogLevel', 'error');
+
+    Logger := LoggerFactory.GetLogger('test.stringslogger');
+
+    GToStringCallCount := 0;
+    Obj := TCountingToString.Create;
+    try
+      { Debug is disabled (level is Error): ToString must never run. }
+      Logger.Debug('found %s', Obj);
+      Logger.Debug('matched %s to %s', Obj, Obj);
+    finally
+      Obj.Free;
+    end;
+
+    CheckEquals(0, GToStringCallCount);
+
+    { restore the default used by the other tests in this suite }
+    StringsLogger.Configure('defaultLogLevel', 'debug');
   finally
     SB.Free;
   end;

@@ -195,12 +195,14 @@ end;
 
 procedure TAbstractLogger.Trace(const AFormat: string; const AArg: TObject);
 begin
-  Log(djLogAPI.Trace, AFormat, [ObjectToStr(AArg)]);
+  if IsEnabledFor(djLogAPI.Trace) then
+    Log(djLogAPI.Trace, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TAbstractLogger.Trace(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(djLogAPI.Trace, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if IsEnabledFor(djLogAPI.Trace) then
+    Log(djLogAPI.Trace, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TAbstractLogger.Trace(const AMsg: string; const AException: Exception);
@@ -220,12 +222,14 @@ end;
 
 procedure TAbstractLogger.Debug(const AFormat: string; const AArg: TObject);
 begin
-  Log(djLogAPI.Debug, AFormat, [ObjectToStr(AArg)]);
+  if IsEnabledFor(djLogAPI.Debug) then
+    Log(djLogAPI.Debug, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TAbstractLogger.Debug(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(djLogAPI.Debug, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if IsEnabledFor(djLogAPI.Debug) then
+    Log(djLogAPI.Debug, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TAbstractLogger.Debug(const AMsg: string; const AException: Exception);
@@ -245,12 +249,14 @@ end;
 
 procedure TAbstractLogger.Info(const AFormat: string; const AArg: TObject);
 begin
-  Log(djLogAPI.Info, AFormat, [ObjectToStr(AArg)]);
+  if IsEnabledFor(djLogAPI.Info) then
+    Log(djLogAPI.Info, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TAbstractLogger.Info(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(djLogAPI.Info, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if IsEnabledFor(djLogAPI.Info) then
+    Log(djLogAPI.Info, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TAbstractLogger.Info(const AMsg: string; const AException: Exception);
@@ -270,12 +276,14 @@ end;
 
 procedure TAbstractLogger.Warn(const AFormat: string; const AArg: TObject);
 begin
-  Log(djLogAPI.Warn, AFormat, [ObjectToStr(AArg)]);
+  if IsEnabledFor(djLogAPI.Warn) then
+    Log(djLogAPI.Warn, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TAbstractLogger.Warn(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(djLogAPI.Warn, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if IsEnabledFor(djLogAPI.Warn) then
+    Log(djLogAPI.Warn, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TAbstractLogger.Warn(const AMsg: string; const AException: Exception);
@@ -295,12 +303,14 @@ end;
 
 procedure TAbstractLogger.Error(const AFormat: string; const AArg: TObject);
 begin
-  Log(djLogAPI.Error, AFormat, [ObjectToStr(AArg)]);
+  if IsEnabledFor(djLogAPI.Error) then
+    Log(djLogAPI.Error, AFormat, [ObjectToStr(AArg)]);
 end;
 
 procedure TAbstractLogger.Error(const AFormat: string; const AArg1, AArg2: TObject);
 begin
-  Log(djLogAPI.Error, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
+  if IsEnabledFor(djLogAPI.Error) then
+    Log(djLogAPI.Error, AFormat, [ObjectToStr(AArg1), ObjectToStr(AArg2)]);
 end;
 
 procedure TAbstractLogger.Error(const AMsg: string; const AException: Exception);
