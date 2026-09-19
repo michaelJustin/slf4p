@@ -43,9 +43,6 @@ type
 
   TSimpleLoggerFactory = class(TInterfacedObject, ILoggerFactory)
   public
-    constructor Create;
-    destructor Destroy; override;
-
     function GetLogger(const AName: string): ILogger;
   end;
 
@@ -184,18 +181,6 @@ begin
 end;
 
 { TSimpleLoggerFactory }
-
-constructor TSimpleLoggerFactory.Create;
-begin
-  inherited Create;
-
-end;
-
-destructor TSimpleLoggerFactory.Destroy;
-begin
-
-  inherited;
-end;
 
 function TSimpleLoggerFactory.GetLogger(const AName: string): ILogger;
 var
