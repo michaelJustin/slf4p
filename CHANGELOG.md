@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-19
+
 ### Core library
 #### Added
 - `TLogLevel`, `ILogEvent`/`TLogEvent` and `ILogEventAppender` in `djLogAPI`, encapsulating a single log call (level, logger name, message, format args, timestamp, exception) for future structured/queryable logging backends. `ILogger`'s public API is unchanged.
@@ -79,7 +81,8 @@ Maintenance release; see the [full commit history](https://github.com/michaelJus
 ## [0.1.0] - 2016-02-13
 Initial releases. See the [full commit history](https://github.com/michaelJustin/slf4p/commits/1.0.2) for details.
 
-[Unreleased]: https://github.com/michaelJustin/slf4p/compare/v1.0.8...HEAD
+[Unreleased]: https://github.com/michaelJustin/slf4p/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/michaelJustin/slf4p/compare/v1.0.8...v1.1.0
 [1.0.8]: https://github.com/michaelJustin/slf4p/compare/v1.0.7...v1.0.8
 [1.0.7]: https://github.com/michaelJustin/slf4p/compare/v1.0.6...v1.0.7
 [1.0.6]: https://github.com/michaelJustin/slf4p/compare/v1.0.5...v1.0.6
