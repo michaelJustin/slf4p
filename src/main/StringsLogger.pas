@@ -48,7 +48,6 @@ type
     FStrings: TStringBuilder;
   public
     constructor Create(const AStrings: TStringBuilder);
-    destructor Destroy; override;
 
     function GetLogger(const AName: string): ILogger;
   end;
@@ -100,7 +99,7 @@ begin
   Config.Configure(AKey, AValue);
 end;
 
-{ TSimpleLoggerConfiguration }
+{ TStringsLoggerConfiguration }
 
 constructor TStringsLoggerConfiguration.Create;
 begin
@@ -190,12 +189,6 @@ begin
   inherited Create;
 
   FStrings := AStrings;
-end;
-
-destructor TStringsLoggerFactory.Destroy;
-begin
-
-  inherited;
 end;
 
 function TStringsLoggerFactory.GetLogger(const AName: string): ILogger;

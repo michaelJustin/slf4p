@@ -52,7 +52,6 @@ begin
   inherited Create(AName);
 
   LogGroup := DebugLogger.RegisterLogGroup(AName, True); // always on
-  // DebugLogger.ParamForEnabledLogGroups := '--debug-enabled=';
 end;
 
 procedure TLazLoggerLogger.Append(const AEvent: ILogEvent);
