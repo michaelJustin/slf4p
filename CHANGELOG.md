@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Internal / toolchain
 #### Removed
 - CycloneDX SBOM generation: the `run-syft.yml` GitHub Actions workflow, `.syft.yaml` config, and the corresponding README badge.
+- Dead code in `src/main`: a commented-out `LazLoggerLogger` line, `TSimpleLoggerFactory`'s and `TStringsLoggerFactory`'s no-op `Create`/`Destroy` overrides (bodies that only called `inherited`), and a stale copy-pasted section comment in `StringsLogger.pas` that mislabeled `TStringsLoggerConfiguration`'s implementation. No behavior change.
 
 ## [1.1.0] - 2026-09-19
 
