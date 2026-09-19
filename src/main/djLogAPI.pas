@@ -22,7 +22,7 @@ uses
   SysUtils;
 
 const
-  SLF4P_VERSION = '1.0.9-SNAPSHOT';
+  SLF4P_VERSION = '1.1.0-SNAPSHOT';
 
 type
   TLogLevel = (Trace, Debug, Info, Warn, Error);
