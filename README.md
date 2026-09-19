@@ -96,7 +96,7 @@ end.
 #### Program output
 
 ```console
-[12:05:46.732] DEBUG - Using slf4p 1.0.8
+[12:05:46.732] DEBUG - Using slf4p 1.1.0
 [12:05:46.732] INFO - Hello, World!
 [12:05:46.733] DEBUG - Hit any key
 ```
@@ -140,7 +140,7 @@ end.
 
 ```console
 Logging with Log4D version 1.2.12
-debug - Using slf4p 1.0.8
+debug - Using slf4p 1.1.0
 info - Hello, World!
 debug - Hit any key
 ```
@@ -170,7 +170,7 @@ end.
 #### Program output
 
 ```console
-0 DEBUG  - Using slf4p 1.0.8
+0 DEBUG  - Using slf4p 1.1.0
 0 INFO  - Hello, World!
 0 DEBUG  - Hit any key
 ```
@@ -285,7 +285,7 @@ end.
 #### Program output
 
 ```console
-[16:16:22.818] INFO - Using slf4p 1.0.8
+[16:16:22.818] INFO - Using slf4p 1.1.0
 [16:16:22.818] DEBUG MyClasses.TFirstClass in constructor
 [16:16:22.818] TRACE MyClasses.TSecondClass entering constructor
 [16:16:22.818] DEBUG MyClasses.TFirstClass in constructor
