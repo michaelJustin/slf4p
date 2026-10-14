@@ -39,8 +39,14 @@ begin
     DestroyFilter;
   except
     on E: Exception do
+    begin
       // format arguments and the exception in one call
       Log.Warn('TdjWebFilterHolder.Stop: %s', [E.Message], E);
+
+      // a plain message and the exception: its class and message still
+      // appear, below the message
+      Log.Warn('TdjWebFilterHolder.Stop:', E);
+    end;
   end;
 
   Log.Info('Hit any key');

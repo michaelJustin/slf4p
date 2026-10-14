@@ -38,14 +38,27 @@ fails to stop:
 Log.Warn('TdjWebFilterHolder.Stop: %s', [E.Message], E);
 ```
 
-`SimpleLogger` writes the formatted message, then the exception's class and
-message on two indented lines:
+For comparison, it then logs the same exception with a plain message:
+
+```pascal
+Log.Warn('TdjWebFilterHolder.Stop:', E);
+```
+
+In both cases `SimpleLogger` writes the message, then the exception's class
+and message on two indented lines:
 
 ```
-[20:40:36.950] WARN TdjWebFilterHolder TdjWebFilterHolder.Stop: error in destroy
+[20:44:46.069] WARN TdjWebFilterHolder TdjWebFilterHolder.Stop: error in destroy
+  EDestroyFailed
+  error in destroy
+[20:44:46.069] WARN TdjWebFilterHolder TdjWebFilterHolder.Stop:
   EDestroyFailed
   error in destroy
 ```
+
+With an exception attached, putting `E.Message` into the message as well
+shows it twice. That helps only where the backend's line layout doesn't
+include the exception (or a log viewer shows just the first line).
 
 The program also compiles with Free Pascal
 (`fpc -Mdelphi -Fu../../src/main LogException.dpr`).
