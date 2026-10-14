@@ -27,7 +27,6 @@ type
 
   TdjLoggerFactory = class(TObject)
   public
-    class function GetILoggerFactory: ILoggerFactory;
     class function GetLogger(const AName: string = ''): ILogger; overload;
     class function GetLogger(const AClass: TClass): ILogger; overload;
     class function IsRegistered: boolean;
@@ -74,11 +73,6 @@ begin
 end;
 
 { TdjLoggerFactory }
-
-class function TdjLoggerFactory.GetILoggerFactory: ILoggerFactory;
-begin
-  Result := LoggerFactory;
-end;
 
 class function TdjLoggerFactory.GetLogger(const AName: string): ILogger;
 begin
