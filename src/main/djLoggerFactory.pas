@@ -102,7 +102,8 @@ begin
   Name := AClass.UnitName;
   if Name <> '' then Name := Name + '.';
   Name := Name + AClass.ClassName;
-  Result := LoggerFactory.GetLogger(Name);
+  // the string overload, so a missing factory falls back to NOP here too
+  Result := GetLogger(Name);
 end;
 
 class function TdjLoggerFactory.IsRegistered: boolean;

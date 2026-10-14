@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 #### Fixed
 - `ILogger.Debug/Info/Warn/Error/Trace(const AFormat: string; const AArg(1, AArg2): TObject)` evaluated the object argument's `ToString` (via `djLogAPI.ObjectToStr`) before checking whether the level was enabled, so a disabled-level call still paid for however expensive that `ToString` was. `TAbstractLogger` (`djAbstractLogger.pas`) and `TLog4DLogger` (`Log4DLogger.pas`, which gates independently) now check the level first and skip the conversion entirely when the call would be discarded.
+- `TLoggerFactory.GetLogger(AClass: TClass)` raised an access violation when no backend was registered (no `djLogOver...` unit in the project). It now falls back to the NOP logger with the console warning, as `GetLogger(AName: string)` always did (#94).
 
 ### Internal / toolchain
 #### Added
