@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Core library
+#### Added
+- `ILogger.Debug/Info/Warn/Error/Trace(const AFormat: string; const AArgs: array of const; const AException: Exception)`: a sixth overload per level for logging format arguments together with an exception, e.g. `Logger.Error('%s failed', [JobName], E)`. Until now a caller had to format the message itself and use the `(AMsg, AException)` overload. The level is checked before formatting, and a mismatched format string doesn't raise (`SafeFormat`, as for the other format overloads). Implemented in `TAbstractLogger` (and so in `TSimpleLogger`, `TStringsLogger` and `TLazLoggerLogger`), `TLog4DLogger` and `TNOPLogger` (#97).
+  **Breaking for custom `ILogger` implementations:** a class that implements `ILogger` directly must add these five methods. Classes derived from `TAbstractLogger` get them automatically.
+
 #### Fixed
 - `ILogger.Debug/Info/Warn/Error/Trace(const AFormat: string; const AArg(1, AArg2): TObject)` evaluated the object argument's `ToString` (via `djLogAPI.ObjectToStr`) before checking whether the level was enabled, so a disabled-level call still paid for however expensive that `ToString` was. `TAbstractLogger` (`djAbstractLogger.pas`) and `TLog4DLogger` (`Log4DLogger.pas`, which gates independently) now check the level first and skip the conversion entirely when the call would be discarded.
 

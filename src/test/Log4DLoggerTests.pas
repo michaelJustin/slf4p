@@ -33,6 +33,7 @@ type
     procedure TestInfo;
     procedure TestBadFormatDoesNotRaise;
     procedure TestObjectArgNotEvaluatedWhenLevelDisabled;
+    procedure TestFormatArgsWithException;
   end;
 
 implementation
@@ -145,6 +146,30 @@ begin
   end;
 
   CheckEquals(0, GToStringCallCount);
+end;
+
+procedure TLog4DLoggerTests.TestFormatArgsWithException;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  E: EAbort;
+begin
+  LoggerFactory := TLog4DLoggerFactory.Create;
+  Logger := LoggerFactory.GetLogger('log4d');
+
+  E := EAbort.Create('log4d example exception');
+  try
+    Logger.Trace('%s failed %d times', ['job', 1], E);
+    Logger.Debug('%s failed %d times', ['job', 2], E);
+    Logger.Info('%s failed %d times', ['job', 3], E);
+    Logger.Warn('%s failed %d times', ['job', 4], E);
+    Logger.Error('%s failed %d times', ['job', 5], E);
+
+    { '%d' given a non-numeric argument: must not raise. }
+    Logger.Error('value is %d', ['not a number'], E);
+  finally
+    E.Free;
+  end;
 end;
 
 end.
