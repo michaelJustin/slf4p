@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `ILogger.Debug/Info/Warn/Error/Trace(const AFormat: string; const AArg(1, AArg2): TObject)` evaluated the object argument's `ToString` (via `djLogAPI.ObjectToStr`) before checking whether the level was enabled, so a disabled-level call still paid for however expensive that `ToString` was. `TAbstractLogger` (`djAbstractLogger.pas`) and `TLog4DLogger` (`Log4DLogger.pas`, which gates independently) now check the level first and skip the conversion entirely when the call would be discarded.
 
 ### Internal / toolchain
+#### Added
+- `examples/exception/`: a console program that logs format arguments together with an exception through the new overload, and shows the resulting output.
+
 #### Removed
 - CycloneDX SBOM generation: the `run-syft.yml` GitHub Actions workflow, `.syft.yaml` config, and the corresponding README badge.
 - Dead code in `src/main`: a commented-out `LazLoggerLogger` line, `TSimpleLoggerFactory`'s and `TStringsLoggerFactory`'s no-op `Create`/`Destroy` overrides (bodies that only called `inherited`), and a stale copy-pasted section comment in `StringsLogger.pas` that mislabeled `TStringsLoggerConfiguration`'s implementation. No behavior change.

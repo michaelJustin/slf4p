@@ -9,6 +9,7 @@ how the logger is obtained.
 |---------|---------|---------|
 | [`simple/`](simple/) | `SimpleLogger` | Delphi (`.dpr`) |
 | [`named/`](named/) | `SimpleLogger` | Delphi (`.dpr`) |
+| [`exception/`](exception/) | `SimpleLogger` | Delphi (`.dpr`) |
 | [`log4d/`](log4d/) | [Log4D](http://sourceforge.net/projects/log4d/) | Delphi (`.dpr`) |
 | [`lazlogger/`](lazlogger/) | [LazLogger](http://wiki.lazarus.freepascal.org/LazLogger) | Free Pascal / Lazarus (`.lpr`) |
 
@@ -25,6 +26,42 @@ using a class as the logger name. `MyClasses.pas` defines `TFirstClass` and a
 subclass `TSecondClass`, each fetching its own logger named after itself in
 its constructor/destructor, so the log output shows which class produced each
 line, including both constructors running when a `TSecondClass` is created.
+
+## `exception/`
+
+Logs format arguments and an exception in one call, the
+`(AFormat, AArgs, AException)` overload added in 1.2.0. It catches an
+exception and logs it the way the Daraja framework logs a Web Filter that
+fails to stop:
+
+```pascal
+Log.Warn('TdjWebFilterHolder.Stop: %s', [E.Message], E);
+```
+
+For comparison, it then logs the same exception with a plain message:
+
+```pascal
+Log.Warn('TdjWebFilterHolder.Stop:', E);
+```
+
+In both cases `SimpleLogger` writes the message, then the exception's class
+and message on two indented lines:
+
+```
+[20:44:46.069] WARN TdjWebFilterHolder TdjWebFilterHolder.Stop: error in destroy
+  EDestroyFailed
+  error in destroy
+[20:44:46.069] WARN TdjWebFilterHolder TdjWebFilterHolder.Stop:
+  EDestroyFailed
+  error in destroy
+```
+
+With an exception attached, putting `E.Message` into the message as well
+shows it twice. That helps only where the backend's line layout doesn't
+include the exception (or a log viewer shows just the first line).
+
+The program also compiles with Free Pascal
+(`fpc -Mdelphi -Fu../../src/main LogException.dpr`).
 
 ## `log4d/`
 
