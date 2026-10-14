@@ -65,6 +65,7 @@ begin
 
   E := EAbort.Create('example');
   Logger.Debug('nop msg', E);
+  Logger.Debug('nop msg %s', ['a'], E);
   E.Free;
 end;
 

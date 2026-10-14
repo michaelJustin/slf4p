@@ -37,6 +37,9 @@ type
     procedure TestObjectArgWithCustomToString;
     procedure TestTwoObjectArgs;
     procedure TestObjectArgNotEvaluatedWhenLevelDisabled;
+    procedure TestFormatArgsWithException;
+    procedure TestFormatArgsWithExceptionWhenLevelDisabled;
+    procedure TestFormatArgsWithExceptionBadFormatDoesNotRaise;
   end;
 
 implementation
@@ -291,6 +294,130 @@ begin
 
     { restore the default used by the other tests in this suite }
     StringsLogger.Configure('defaultLogLevel', 'debug');
+  finally
+    SB.Free;
+  end;
+end;
+
+procedure TStringsLoggerTests.TestFormatArgsWithException;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  SB: TStringBuilder;
+  SL: TStrings;
+  E: EAbort;
+  I: Integer;
+const
+  Levels: array[0..4] of string = ('TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR');
+begin
+  SB := TStringBuilder.Create;
+  try
+    LoggerFactory := TStringsLoggerFactory.Create(SB);
+    StringsLogger.Configure('defaultLogLevel', 'trace');
+
+    Logger := LoggerFactory.GetLogger('test.stringslogger');
+
+    E := EAbort.Create('stopped');
+    try
+      Logger.Trace('%s failed %d times', ['job', 1], E);
+      Logger.Debug('%s failed %d times', ['job', 2], E);
+      Logger.Info('%s failed %d times', ['job', 3], E);
+      Logger.Warn('%s failed %d times', ['job', 4], E);
+      Logger.Error('%s failed %d times', ['job', 5], E);
+    finally
+      E.Free;
+    end;
+
+    SL := TStringList.Create;
+    try
+      SL.Text := SB.ToString;
+
+      CheckEquals(15, SL.Count);
+      for I := 0 to 4 do
+      begin
+        CheckEquals(Format('%s test.stringslogger - job failed %d times',
+          [Levels[I], I + 1]), SL[I * 3]);
+        CheckEquals('  EAbort', SL[I * 3 + 1]);
+        CheckEquals('  stopped', SL[I * 3 + 2]);
+      end;
+    finally
+      SL.Free;
+    end;
+
+    { restore the default used by the other tests in this suite }
+    StringsLogger.Configure('defaultLogLevel', 'debug');
+  finally
+    SB.Free;
+  end;
+end;
+
+procedure TStringsLoggerTests.TestFormatArgsWithExceptionWhenLevelDisabled;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  SB: TStringBuilder;
+  E: EAbort;
+begin
+  SB := TStringBuilder.Create;
+  try
+    LoggerFactory := TStringsLoggerFactory.Create(SB);
+    StringsLogger.Configure('defaultLogLevel', 'error');
+
+    Logger := LoggerFactory.GetLogger('test.stringslogger');
+
+    E := EAbort.Create('stopped');
+    try
+      { Warn is disabled (level is Error): nothing is written. }
+      Logger.Warn('%s failed', ['job'], E);
+    finally
+      E.Free;
+    end;
+
+    CheckEquals('', SB.ToString);
+
+    { restore the default used by the other tests in this suite }
+    StringsLogger.Configure('defaultLogLevel', 'debug');
+  finally
+    SB.Free;
+  end;
+end;
+
+procedure TStringsLoggerTests.TestFormatArgsWithExceptionBadFormatDoesNotRaise;
+var
+  LoggerFactory: ILoggerFactory;
+  Logger: ILogger;
+  SB: TStringBuilder;
+  SL: TStrings;
+  E: EAbort;
+begin
+  SB := TStringBuilder.Create;
+  try
+    LoggerFactory := TStringsLoggerFactory.Create(SB);
+    StringsLogger.Configure('defaultLogLevel', 'debug');
+
+    Logger := LoggerFactory.GetLogger('test.stringslogger');
+
+    E := EAbort.Create('stopped');
+    try
+      { '%d' given a non-numeric argument: the call must not raise, and the
+        exception must still be logged. }
+      Logger.Error('value is %d', ['not a number'], E);
+    finally
+      E.Free;
+    end;
+
+    SL := TStringList.Create;
+    try
+      SL.Text := SB.ToString;
+
+      CheckEquals(3, SL.Count);
+      CheckTrue(Pos('ERROR test.stringslogger - value is %d [FORMAT ERROR: ',
+        SL[0]) = 1, SL[0]);
+      CheckEquals('  EAbort', SL[1]);
+      CheckEquals('  stopped', SL[2]);
+    finally
+      SL.Free;
+    end;
   finally
     SB.Free;
   end;

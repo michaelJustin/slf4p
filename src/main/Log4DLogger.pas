@@ -29,6 +29,8 @@ type
 
     procedure Log(const ALevel: Log4D.TLogLevel; const AMsg: string); overload;
     procedure Log(const ALevel: Log4D.TLogLevel; const AFormat: string; const AArgs: array of const); overload;
+    procedure Log(const ALevel: Log4D.TLogLevel; const AFormat: string; const AArgs: array of const;
+      const AException: Exception); overload;
 
   public
     constructor Create(const AName: string);
@@ -38,30 +40,35 @@ type
     procedure Trace(const AFormat: string; const AArg: TObject); overload;
     procedure Trace(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Trace(const AMsg: string; const AException: Exception); overload;
+    procedure Trace(const AFormat: string; const AArgs: array of const; const AException: Exception); overload;
 
     procedure Debug(const AMsg: string); overload;
     procedure Debug(const AFormat: string; const AArgs: array of const); overload;
     procedure Debug(const AFormat: string; const AArg: TObject); overload;
     procedure Debug(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Debug(const AMsg: string; const AException: Exception); overload;
+    procedure Debug(const AFormat: string; const AArgs: array of const; const AException: Exception); overload;
 
     procedure Info(const AMsg: string); overload;
     procedure Info(const AFormat: string; const AArgs: array of const); overload;
     procedure Info(const AFormat: string; const AArg: TObject); overload;
     procedure Info(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Info(const AMsg: string; const AException: Exception); overload;
+    procedure Info(const AFormat: string; const AArgs: array of const; const AException: Exception); overload;
 
     procedure Warn(const AMsg: string); overload;
     procedure Warn(const AFormat: string; const AArgs: array of const); overload;
     procedure Warn(const AFormat: string; const AArg: TObject); overload;
     procedure Warn(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Warn(const AMsg: string; const AException: Exception); overload;
+    procedure Warn(const AFormat: string; const AArgs: array of const; const AException: Exception); overload;
 
     procedure Error(const AMsg: string); overload;
     procedure Error(const AFormat: string; const AArgs: array of const); overload;
     procedure Error(const AFormat: string; const AArg: TObject); overload;
     procedure Error(const AFormat: string; const AArg1, AArg2: TObject); overload;
     procedure Error(const AMsg: string; const AException: Exception); overload;
+    procedure Error(const AFormat: string; const AArgs: array of const; const AException: Exception); overload;
 
     function Name: string;
 
@@ -101,6 +108,13 @@ begin
     Delegate.Log(ALevel, SafeFormat(AFormat, AArgs));
 end;
 
+procedure TLog4DLogger.Log(const ALevel: Log4D.TLogLevel; const AFormat: string;
+  const AArgs: array of const; const AException: Exception);
+begin
+  if Delegate.IsEnabledFor(ALevel) then
+    Delegate.Log(ALevel, SafeFormat(AFormat, AArgs), AException);
+end;
+
 procedure TLog4DLogger.Trace(const AMsg: string);
 begin
   Log(Log4D.Trace, AMsg);
@@ -127,6 +141,12 @@ end;
 procedure TLog4DLogger.Trace(const AMsg: string; const AException: Exception);
 begin
   Delegate.Trace(AMsg, AException);
+end;
+
+procedure TLog4DLogger.Trace(const AFormat: string; const AArgs: array of const;
+  const AException: Exception);
+begin
+  Log(Log4D.Trace, AFormat, AArgs, AException);
 end;
 
 procedure TLog4DLogger.Debug(const AMsg: string);
@@ -156,6 +176,12 @@ begin
   Delegate.Debug(AMsg, AException);
 end;
 
+procedure TLog4DLogger.Debug(const AFormat: string; const AArgs: array of const;
+  const AException: Exception);
+begin
+  Log(Log4D.Debug, AFormat, AArgs, AException);
+end;
+
 procedure TLog4DLogger.Info(const AMsg: string);
 begin
   Log(Log4D.Info, AMsg);
@@ -181,6 +207,12 @@ end;
 procedure TLog4DLogger.Info(const AMsg: string; const AException: Exception);
 begin
   Delegate.Info(AMsg, AException);
+end;
+
+procedure TLog4DLogger.Info(const AFormat: string; const AArgs: array of const;
+  const AException: Exception);
+begin
+  Log(Log4D.Info, AFormat, AArgs, AException);
 end;
 
 procedure TLog4DLogger.Warn(const AMsg: string);
@@ -210,6 +242,12 @@ begin
   Delegate.Warn(AMsg, AException);
 end;
 
+procedure TLog4DLogger.Warn(const AFormat: string; const AArgs: array of const;
+  const AException: Exception);
+begin
+  Log(Log4D.Warn, AFormat, AArgs, AException);
+end;
+
 procedure TLog4DLogger.Error(const AMsg: string);
 begin
   Log(Log4D.Error, AMsg);
@@ -236,6 +274,12 @@ end;
 procedure TLog4DLogger.Error(const AMsg: string; const AException: Exception);
 begin
   Delegate.Error(AMsg, AException);
+end;
+
+procedure TLog4DLogger.Error(const AFormat: string; const AArgs: array of const;
+  const AException: Exception);
+begin
+  Log(Log4D.Error, AFormat, AArgs, AException);
 end;
 
 function TLog4DLogger.Name: string;
