@@ -31,6 +31,11 @@ type
 
   TdjLoggerFactoryTests = class(TTestCase)
   published
+    // Must stay the first test: it needs the state in which no factory is
+    // registered yet. That state exists only at the start of the FPC test
+    // run (Unittests.lpr uses no djLogOver... unit); the Delphi project
+    // registers the NOP factory at startup, so there this test can't fail.
+    procedure TestNoFactoryAssignedGetLoggerByClass;
     procedure TestNoFactoryAssigned;
 
   end;
@@ -41,6 +46,18 @@ uses
   djLogAPI, djLoggerFactory, SysUtils;
 
 { TLoggerFactoryTests }
+
+procedure TdjLoggerFactoryTests.TestNoFactoryAssignedGetLoggerByClass;
+var
+  Logger: ILogger;
+begin
+  // without a registered factory, the class overload must fall back to the
+  // NOP factory like the string overload does, not use a nil factory (#94)
+  Logger := TdjLoggerFactory.GetLogger(TdjLoggerFactoryTests);
+  CheckTrue(TdjLoggerFactory.IsRegistered);
+  CheckEquals('LoggerFactoryTests.TdjLoggerFactoryTests', Logger.Name);
+  Logger.Info('logging with NOP logger');
+end;
 
 procedure TdjLoggerFactoryTests.TestNoFactoryAssigned;
 var
