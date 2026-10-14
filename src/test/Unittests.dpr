@@ -53,6 +53,8 @@ begin
 
   if FindCmdLineSwitch('text-mode', ['-', '/'], True) then
   begin
+    // no leak report here: it is a message box, which blocks an unattended
+    // console run until someone closes it
     TextTestRunner.RunRegisteredTests(rxbContinue)
   end
   else
@@ -60,6 +62,4 @@ begin
     ReportMemoryLeaksOnShutDown := True;
     TGUITestRunner.RunRegisteredTests;
   end;
-
-  ReportMemoryLeaksOnShutdown := True;
 end.

@@ -106,6 +106,7 @@ merging.
     calls `SetHeapTraceOutput('heaptrace.log')`, so every run rewrites
     `src/test/heaptrace.log` with the leak report. Open it and confirm the
     unfreed-block count hasn't grown.
-  - Delphi — `ReportMemoryLeaksOnShutDown := True` is set, so a leak pops up
-    as a dialog when the GUI test window closes (or is reported on process
-    exit for the text runner).
+  - Delphi — the GUI runner sets `ReportMemoryLeaksOnShutDown := True`, so a
+    leak pops up as a dialog when the test window closes. The text runner
+    (`-text-mode`) doesn't, because that dialog would block an unattended
+    run. To check for leaks, use the GUI runner.
